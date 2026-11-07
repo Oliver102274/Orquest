@@ -1,10 +1,8 @@
-
 {
   "careers": [
     {
       "career_id": "career_software_developer",
       "title": "Software Developer",
-      "category": "Technology",
       "summary": "Software developers design, build, test, and maintain software applications and systems.",
       "requirements": [
         "Knowledge of programming languages",
@@ -19,19 +17,6 @@
         "building_things",
         "logical_thinking"
       ],
-      "skills": [
-        "Programming",
-        "Debugging",
-        "Software Testing",
-        "Version Control",
-        "Database Fundamentals"
-      ],
-      "occupation": {
-        "soc_code": "15-1252",
-        "median_salary_usd": null,
-        "salary_year": null,
-        "salary_region": "United States"
-      },
       "sources": [
         {
           "title": "BLS Occupational Outlook Handbook - Software Developers",
@@ -39,12 +24,13 @@
           "verified_at": null,
           "verification_status": "unverified"
         }
-      ]
+      ],
+      "mdc_resources": [],
+      "external_resources": []
     },
     {
       "career_id": "career_cybersecurity_analyst",
       "title": "Cybersecurity Analyst",
-      "category": "Technology",
       "summary": "Protects computer networks, systems, and information from cybersecurity threats.",
       "requirements": [
         "Understanding of computer networks",
@@ -59,19 +45,6 @@
         "investigation",
         "logical_thinking"
       ],
-      "skills": [
-        "Network Security",
-        "Threat Detection",
-        "Risk Assessment",
-        "Incident Response",
-        "Security Monitoring"
-      ],
-      "occupation": {
-        "soc_code": "15-1212",
-        "median_salary_usd": null,
-        "salary_year": null,
-        "salary_region": "United States"
-      },
       "sources": [
         {
           "title": "BLS Occupational Outlook Handbook - Information Security Analysts",
@@ -79,12 +52,13 @@
           "verified_at": null,
           "verification_status": "unverified"
         }
-      ]
+      ],
+      "mdc_resources": [],
+      "external_resources": []
     },
     {
       "career_id": "career_data_analyst",
       "title": "Data Analyst",
-      "category": "Technology",
       "summary": "Collects, organizes, and analyzes data to identify trends and support decision-making.",
       "requirements": [
         "Understanding of statistics",
@@ -99,19 +73,6 @@
         "statistics",
         "logical_thinking"
       ],
-      "skills": [
-        "SQL",
-        "Data Visualization",
-        "Excel",
-        "Python",
-        "Statistical Analysis"
-      ],
-      "occupation": {
-        "soc_code": null,
-        "median_salary_usd": null,
-        "salary_year": null,
-        "salary_region": "United States"
-      },
       "sources": [
         {
           "title": "O*NET OnLine",
@@ -119,9 +80,9 @@
           "verified_at": null,
           "verification_status": "unverified"
         }
-      ]
+      ],
+      "mdc_resources": [],
+      "external_resources": []
     }
   ]
 }
-
-
