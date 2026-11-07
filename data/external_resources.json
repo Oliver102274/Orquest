@@ -1,0 +1,82 @@
+{
+  "careers": [
+    {
+      "career_id": "career_software_developer",
+      "external_resources": [
+        {
+          "id": "resource_ext_odin_project",
+          "title": "The Odin Project: Full Stack Curriculum",
+          "organization": "The Odin Project",
+          "type": "course",
+          "source_url": "https://theodinproject.com/",
+          "verified_at": "2026-11-07T19:45:00Z",
+          "verification_status": "verified"
+        },
+        {
+          "id": "resource_ext_freecodecamp",
+          "title": "freeCodeCamp Developer Certifications",
+          "organization": "freeCodeCamp",
+          "type": "certification",
+          "source_url": "https://www.freecodecamp.org/learn",
+          "verified_at": "2026-11-07T19:45:00Z",
+          "verification_status": "verified"
+        },
+        {
+          "id": "resource_ext_cs50x",
+          "title": "CS50: Introduction to Computer Science",
+          "organization": "Harvard University",
+          "type": "course",
+          "source_url": "https://www.harvardonline.harvard.edu/node/79",
+          "verified_at": "2026-11-07T19:45:00Z",
+          "verification_status": "verified"
+        }
+      ]
+    },
+    {
+      "career_id": "career_cybersecurity_analyst",
+      "external_resources": [
+        {
+          "id": "resource_ext_tryhackme_presecurity",
+          "title": "TryHackMe Pre Security Learning Path",
+          "organization": "TryHackMe",
+          "type": "course",
+          "source_url": "https://tryhackme.com/path/outline/presecurity",
+          "verified_at": "2026-11-07T19:45:00Z",
+          "verification_status": "verified"
+        },
+        {
+          "id": "resource_ext_cs50_cybersecurity",
+          "title": "CS50's Introduction to Cybersecurity",
+          "organization": "Harvard University",
+          "type": "course",
+          "source_url": "https://www.harvardonline.harvard.edu/course/cs50s-introduction-cybersecurity",
+          "verified_at": "2026-11-07T19:45:00Z",
+          "verification_status": "verified"
+        }
+      ]
+    },
+    {
+      "career_id": "career_data_analyst",
+      "external_resources": [
+        {
+          "id": "resource_ext_google_data_analytics",
+          "title": "Google Data Analytics Professional Certificate",
+          "organization": "Google (on Coursera)",
+          "type": "certification",
+          "source_url": "https://www.coursera.org/professional-certificates/google-data-analytics",
+          "verified_at": "2026-11-07T19:45:00Z",
+          "verification_status": "verified"
+        },
+        {
+          "id": "resource_ext_ms_data_analytics_path",
+          "title": "Get started with Microsoft data analytics",
+          "organization": "Microsoft Learn",
+          "type": "course",
+          "source_url": "https://learn.microsoft.com/training/paths/data-analytics-microsoft",
+          "verified_at": "2026-11-07T19:45:00Z",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  ]
+}
