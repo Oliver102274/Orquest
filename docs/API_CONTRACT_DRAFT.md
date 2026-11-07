@@ -1,5 +1,9 @@
 # API contract — draft for team review
 
+Phase 4 implementation notes and proposed deviations are in
+[BACKEND_PHASE4.md](BACKEND_PHASE4.md). The historical route proposals below
+remain drafts; consult that document for the currently implemented routes.
+
 **Proposed only. Review with the frontend lead before adoption.** These interfaces
 establish communication boundaries; they do not prescribe UI, datasets, agent
 design, or progression rules. Only `GET /api/health` exists in Phase 1.
