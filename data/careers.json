@@ -1,0 +1,88 @@
+{
+  "careers": [
+    {
+      "career_id": "career_software_developer",
+      "title": "Software Developer",
+      "summary": "Software developers design, build, test, and maintain software applications and systems.",
+      "requirements": [
+        "Knowledge of programming languages",
+        "Problem-solving and analytical skills",
+        "Understanding of software development",
+        "Ability to collaborate with technical teams"
+      ],
+      "interest_tags": [
+        "technology",
+        "problem_solving",
+        "creativity",
+        "building_things",
+        "logical_thinking"
+      ],
+      "sources": [
+        {
+          "title": "BLS Occupational Outlook Handbook - Software Developers",
+          "url": "https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm",
+          "verified_at": null,
+          "verification_status": "unverified"
+        }
+      ],
+      "mdc_resources": [],
+      "external_resources": []
+    },
+    {
+      "career_id": "career_cybersecurity_analyst",
+      "title": "Cybersecurity Analyst",
+      "summary": "Protects computer networks, systems, and information from cybersecurity threats.",
+      "requirements": [
+        "Understanding of computer networks",
+        "Knowledge of information security principles",
+        "Analytical and problem-solving abilities",
+        "Familiarity with security tools and systems"
+      ],
+      "interest_tags": [
+        "technology",
+        "problem_solving",
+        "security",
+        "investigation",
+        "logical_thinking"
+      ],
+      "sources": [
+        {
+          "title": "BLS Occupational Outlook Handbook - Information Security Analysts",
+          "url": "https://www.bls.gov/ooh/computer-and-information-technology/information-security-analysts.htm",
+          "verified_at": null,
+          "verification_status": "unverified"
+        }
+      ],
+      "mdc_resources": [],
+      "external_resources": []
+    },
+    {
+      "career_id": "career_data_analyst",
+      "title": "Data Analyst",
+      "summary": "Collects, organizes, and analyzes data to identify trends and support decision-making.",
+      "requirements": [
+        "Understanding of statistics",
+        "Ability to interpret data",
+        "Knowledge of spreadsheets and databases",
+        "Strong analytical thinking"
+      ],
+      "interest_tags": [
+        "technology",
+        "data_analysis",
+        "problem_solving",
+        "statistics",
+        "logical_thinking"
+      ],
+      "sources": [
+        {
+          "title": "O*NET OnLine",
+          "url": "https://www.onetonline.org/",
+          "verified_at": null,
+          "verification_status": "unverified"
+        }
+      ],
+      "mdc_resources": [],
+      "external_resources": []
+    }
+  ]
+}
