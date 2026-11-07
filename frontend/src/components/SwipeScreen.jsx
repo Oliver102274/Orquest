@@ -1,14 +1,23 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import OrquestLogo from './OrquestLogo.jsx'
 import { getSwipeCards } from '../services/api.js'
 
-export default function SwipeScreen({ onComplete, onExit }) {
+const SWIPE_THRESHOLD = 82
+const SWIPE_ANIMATION_MS = 230
+
+export default function SwipeScreen({ onComplete, onExit, personalizationConsent, onPersonalizationConsentChange }) {
   const [cards, setCards] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [loadError, setLoadError] = useState('')
   const [reload, setReload] = useState(0)
   const [activeIndex, setActiveIndex] = useState(0)
   const [responses, setResponses] = useState([])
+  const [dragOffset, setDragOffset] = useState(0)
+  const [isDragging, setIsDragging] = useState(false)
+  const [isExiting, setIsExiting] = useState(false)
+  const dragRef = useRef(null)
+  const exitTimer = useRef(null)
+  const exitingRef = useRef(false)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -17,7 +26,7 @@ export default function SwipeScreen({ onComplete, onExit }) {
     getSwipeCards({ signal: controller.signal })
       .then((loadedCards) => {
         if (!controller.signal.aborted) {
-          setCards(loadedCards)
+          setCards(loadedCards.slice(0, 8))
           setActiveIndex(0)
           setResponses([])
         }
@@ -31,6 +40,10 @@ export default function SwipeScreen({ onComplete, onExit }) {
     return () => controller.abort()
   }, [reload])
 
+  useEffect(() => () => {
+    if (exitTimer.current) window.clearTimeout(exitTimer.current)
+  }, [])
+
   const card = cards[activeIndex]
 
   function answer(preference) {
@@ -42,6 +55,59 @@ export default function SwipeScreen({ onComplete, onExit }) {
     }
     setResponses(nextResponses)
     setActiveIndex((index) => index + 1)
+  }
+
+  function startDrag(event) {
+    if (isLoading || isExiting || exitingRef.current) return
+    if (event.pointerType === 'mouse' && event.button !== 0) return
+    if (event.target.closest('button, input, textarea, a')) return
+    dragRef.current = { pointerId: event.pointerId, startX: event.clientX }
+    setDragOffset(0)
+    setIsDragging(true)
+    try { event.currentTarget.setPointerCapture?.(event.pointerId) } catch { /* Pointer capture is optional in test and older browsers. */ }
+  }
+
+  function moveDrag(event) {
+    if (!dragRef.current || dragRef.current.pointerId !== event.pointerId) return
+    setDragOffset(event.clientX - dragRef.current.startX)
+  }
+
+  function finishDrag(event) {
+    if (!dragRef.current || dragRef.current.pointerId !== event.pointerId) return
+    const offset = event.clientX - dragRef.current.startX
+    dragRef.current = null
+    setIsDragging(false)
+    try { event.currentTarget.releasePointerCapture?.(event.pointerId) } catch { /* Capture may already have been released. */ }
+
+    if (Math.abs(offset) < SWIPE_THRESHOLD) {
+      setDragOffset(0)
+      return
+    }
+
+    const preference = offset > 0 ? 'like' : 'dislike'
+    exitingRef.current = true
+    setIsExiting(true)
+    setDragOffset(offset > 0 ? Math.max(window.innerWidth, 480) : -Math.max(window.innerWidth, 480))
+    exitTimer.current = window.setTimeout(() => {
+      exitingRef.current = false
+      setIsExiting(false)
+      setDragOffset(0)
+      answer(preference)
+    }, SWIPE_ANIMATION_MS)
+  }
+
+  function cancelDrag(event) {
+    if (!dragRef.current || dragRef.current.pointerId !== event.pointerId) return
+    dragRef.current = null
+    setIsDragging(false)
+    setDragOffset(0)
+  }
+
+  const rotation = Math.max(-10, Math.min(10, dragOffset / 18))
+  const dragStyle = {
+    '--drag-x': `${dragOffset}px`,
+    '--drag-rotation': `${rotation}deg`,
+    opacity: isExiting ? 0 : 1 - Math.min(Math.abs(dragOffset) / 700, .36),
   }
 
   return (
@@ -77,23 +143,42 @@ export default function SwipeScreen({ onComplete, onExit }) {
           </div>
 
           <div className="swipe-board">
-            <button className="response-tile response-disagree" type="button" aria-label="Disagree" onClick={() => answer('dislike')}>
-              <span className="response-key">A</span><span className="response-icon" aria-hidden="true">×</span><b>DISAGREE</b><small>Not my thing</small>
+            <button className="response-tile response-disagree" type="button" aria-label="Disagree" disabled={isExiting} onClick={() => answer('dislike')}>
+              <span className="response-icon" aria-hidden="true">×</span><b>DISAGREE</b><small>Not my thing</small>
             </button>
 
-            <article className="interest-card" key={card.id}>
+            <article
+              className={`interest-card ${isDragging ? 'is-dragging' : ''} ${isExiting ? 'is-exiting' : ''}`}
+              key={card.id}
+              role="group"
+              aria-label={`Swipe card ${activeIndex + 1}: ${card.activity}`}
+              style={dragStyle}
+              onPointerDown={startDrag}
+              onPointerMove={moveDrag}
+              onPointerUp={finishDrag}
+              onPointerCancel={cancelDrag}
+            >
               <div className="answer-card-top"><span>BACKEND CARD / {card.id}</span><span className="card-symbol" aria-hidden="true">{String(activeIndex + 1).padStart(2, '0')}</span></div>
               <div className="interest-card-copy"><span className="answer-label">DOES THIS SOUND LIKE YOU?</span><h2>{card.activity}</h2><p>Choose whether this activity sounds like something you would enjoy.</p></div>
               <div className="interest-tags">{card.interest_tags.map((interest) => <span key={interest}>{interest.replaceAll('_', ' ')}</span>)}</div>
               <span className="answer-corner" aria-hidden="true" />
             </article>
 
-            <button className="response-tile response-agree" type="button" aria-label="Agree" onClick={() => answer('like')}>
-              <span className="response-key">D</span><span className="response-icon" aria-hidden="true">✓</span><b>AGREE</b><small>That feels like me</small>
+            <button className="response-tile response-agree" type="button" aria-label="Agree" disabled={isExiting} onClick={() => answer('like')}>
+              <span className="response-icon" aria-hidden="true">✓</span><b>AGREE</b><small>That feels like me</small>
             </button>
           </div>
 
-          <div className="survey-footer"><span><i className="pixel-live" /> LIVE BACKEND DECK / {cards.length} CARDS</span><span>CLICK A OR D TO CONTINUE <b>→</b></span></div>
+          <label className="swipe-consent">
+            <input
+              type="checkbox"
+              checked={Boolean(personalizationConsent)}
+              onChange={(event) => onPersonalizationConsentChange?.(event.target.checked)}
+            />
+            <span>Allow AI to analyze my swipe responses to personalize my RPG experience.</span>
+          </label>
+
+          <div className="survey-footer"><span><i className="pixel-live" /> LIVE BACKEND DECK / {cards.length} CARDS</span><span>CHOOSE A SIDE OR SWIPE THE CARD <b>→</b></span></div>
               </>
             )}
         </div>

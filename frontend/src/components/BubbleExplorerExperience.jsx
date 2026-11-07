@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import OrquestLogo from './OrquestLogo.jsx'
+import CareerChatOverlay from './CareerChatOverlay.jsx'
 import { getCareer, getCareerMatches } from '../services/api.js'
 
 const TAG_COLORS = ['#91c6a0', '#8fb7cf', '#b99bd3', '#d39bb8', '#d6b887', '#94c2c5', '#b4c68c', '#a3a6d5']
@@ -63,16 +64,29 @@ function SearchIcon() {
   )
 }
 
-function QuestionPlaceholder() {
+function QuestionPlaceholder({ onOpenChat }) {
+  const [question, setQuestion] = useState('')
+
+  function submitQuestion(event) {
+    event.preventDefault()
+    const trimmedQuestion = question.trim()
+    if (!trimmedQuestion) return
+    onOpenChat(trimmedQuestion)
+    setQuestion('')
+  }
+
   return (
-    <div className="career-question-placeholder">
+    <form className="career-question-placeholder" onSubmit={submitQuestion}>
       <span aria-hidden="true">?</span>
       <input
         type="text"
         aria-label="Ask a question about this career"
         placeholder="Ask a question about this career..."
+        value={question}
+        onChange={(event) => setQuestion(event.target.value)}
       />
-    </div>
+      <button type="submit" aria-label="Open career chat" disabled={!question.trim()}>↗</button>
+    </form>
   )
 }
 
@@ -97,7 +111,14 @@ function ResourceList({ title, resources }) {
   )
 }
 
-export default function BubbleExplorer({ responses, onExit }) {
+export default function BubbleExplorer({
+  responses,
+  onExit,
+  onEnterRpg,
+  onCareerSelection,
+  careerChatPersonalizationConsent,
+  onCareerChatPersonalizationConsentChange,
+}) {
   const [matches, setMatches] = useState([])
   const [matchStatus, setMatchStatus] = useState('loading')
   const [matchError, setMatchError] = useState('')
@@ -110,6 +131,9 @@ export default function BubbleExplorer({ responses, onExit }) {
   const [selectedId, setSelectedId] = useState('')
   const [detailOpen, setDetailOpen] = useState(false)
   const [guideExpanded, setGuideExpanded] = useState(true)
+  const [careerChatHasOpened, setCareerChatHasOpened] = useState(false)
+  const [careerChatExpanded, setCareerChatExpanded] = useState(false)
+  const [careerChatDraft, setCareerChatDraft] = useState('')
   const clickTimer = useRef(null)
 
   const responsesJson = JSON.stringify(responses)
@@ -189,6 +213,7 @@ export default function BubbleExplorer({ responses, onExit }) {
   function selectCareer(match) {
     setSelectedId(match.career_id)
     setDetailOpen(false)
+    onCareerSelection?.(match)
   }
 
   function handleCareerClick(match) {
@@ -200,10 +225,22 @@ export default function BubbleExplorer({ responses, onExit }) {
     if (clickTimer.current) window.clearTimeout(clickTimer.current)
     setSelectedId(match.career_id)
     setDetailOpen(true)
+    onCareerSelection?.(match)
   }
 
   function retryCareerDetails() {
     setRetryDetails((value) => value + 1)
+  }
+
+  function openCareerChat(question) {
+    setCareerChatDraft(question)
+    setCareerChatHasOpened(true)
+    setCareerChatExpanded(true)
+  }
+
+  function toggleCareerChat() {
+    setCareerChatHasOpened(true)
+    setCareerChatExpanded((expanded) => !expanded)
   }
 
   const edges = []
@@ -232,10 +269,16 @@ export default function BubbleExplorer({ responses, onExit }) {
 
   return (
     <section className="bubble-screen">
-      <header className="map-header">
+      <header className="map-header" inert={careerChatExpanded} aria-hidden={careerChatExpanded}>
         <div className="map-brand">
           <OrquestLogo compact />
-          <div className="map-header-title"><span>ORQUEST / FIELD MAP</span><h1>Bubble Explorer</h1></div>
+          <div className="map-header-title">
+            <span>ORQUEST / FIELD MAP</span>
+            <div className="map-title-row">
+              <h1>Bubble Explorer</h1>
+              <button className="rpg-entry-button" type="button" onClick={onEnterRpg}>Enter RPG</button>
+            </div>
+          </div>
         </div>
         <label className="map-search" htmlFor="career-map-search">
           <SearchIcon />
@@ -253,7 +296,7 @@ export default function BubbleExplorer({ responses, onExit }) {
         <button className="pixel-quiet-button" type="button" onClick={onExit}>RESTART <span aria-hidden="true">↻</span></button>
       </header>
 
-      <main className="map-frame" inert={detailOpen} aria-hidden={detailOpen}>
+      <main className="map-frame" inert={detailOpen || careerChatExpanded} aria-hidden={detailOpen || careerChatExpanded}>
         <div className="map-filterbar">
           <div className="filter-title"><span>MATCH TAG FILTERS</span><small>CLICK TO MUTE / LIGHT</small></div>
           <div className="map-filter-list" aria-label="Backend interest tag filters">
@@ -330,7 +373,7 @@ export default function BubbleExplorer({ responses, onExit }) {
             }} title="Double-click this summary to open full career details">
               <div className="summary-header">
                 <div><span className="summary-kicker">CAREER SUMMARY / DOUBLE-CLICK TO EXPAND</span><h2>{selectedMatch.title}</h2></div>
-                <button type="button" aria-label="Close career summary" onClick={() => setSelectedId('')}>×</button>
+                <button type="button" aria-label="Close career summary" onClick={() => { setSelectedId(''); onCareerSelection?.(null) }}>×</button>
               </div>
               {careerDetails[selectedId] ? (
                 <p className="summary-copy">{selectedDetail.summary || 'Career summary is unavailable in the backend record.'}</p>
@@ -343,7 +386,7 @@ export default function BubbleExplorer({ responses, onExit }) {
               <div className="summary-tags">
                 {matchTags(selectedMatch).map((tag) => <span key={tag}>{formatTag(tag)}</span>)}
               </div>
-              <QuestionPlaceholder />
+              <QuestionPlaceholder onOpenChat={openCareerChat} />
             </aside>
           )}
 
@@ -365,15 +408,15 @@ export default function BubbleExplorer({ responses, onExit }) {
           )}
         </div>
       </main>
-      <footer className="map-footer"><span>CAREER LINKS SHOW SHARED BACKEND INTEREST TAGS</span><span>ORQUEST / API MAP</span></footer>
+      <footer className="map-footer" inert={careerChatExpanded} aria-hidden={careerChatExpanded}><span>CAREER LINKS SHOW SHARED BACKEND INTEREST TAGS</span><span>ORQUEST / API MAP</span></footer>
 
       {detailOpen && selectedMatch && (
-        <div className="career-detail-backdrop">
+        <div className="career-detail-backdrop" inert={careerChatExpanded} aria-hidden={careerChatExpanded}>
           <section className="career-detail-panel" role="dialog" aria-modal="true" aria-labelledby="career-detail-title" style={{ '--bubble-color': selectedColor }}>
             <header className="career-detail-header">
               <button type="button" className="detail-back" aria-label="Back to summary" onClick={() => setDetailOpen(false)}>←</button>
               <div><span>CAREER FILE / BACKEND DETAIL</span><h2 id="career-detail-title">{selectedMatch.title}</h2></div>
-              <button type="button" className="detail-close" aria-label="Close career details" onClick={() => { setDetailOpen(false); setSelectedId('') }}>×</button>
+              <button type="button" className="detail-close" aria-label="Close career details" onClick={() => { setDetailOpen(false); setSelectedId(''); onCareerSelection?.(null) }}>×</button>
             </header>
             <div className="career-detail-scroll">
               <p className="detail-tags">Matched interest tags: {matchTags(selectedMatch).map(formatTag).join(', ') || 'not supplied'}</p>
@@ -399,10 +442,21 @@ export default function BubbleExplorer({ responses, onExit }) {
                 <div className="detail-load-error" role="alert"><p>Career details are unavailable: {detailErrors[selectedId]}</p><button type="button" className="pixel-button" onClick={retryCareerDetails}>RETRY DETAILS</button></div>
               ) : <p role="status">LOADING CAREER DETAILS…</p>}
             </div>
-            <QuestionPlaceholder />
+            <QuestionPlaceholder onOpenChat={openCareerChat} />
           </section>
         </div>
       )}
+
+      <CareerChatOverlay
+        hasOpened={careerChatHasOpened}
+        expanded={careerChatExpanded}
+        draft={careerChatDraft}
+        onDraftChange={setCareerChatDraft}
+        onToggle={toggleCareerChat}
+        careerTitle={selectedMatch?.title || 'this career'}
+        personalizationConsent={careerChatPersonalizationConsent}
+        onPersonalizationConsentChange={onCareerChatPersonalizationConsentChange}
+      />
     </section>
   )
 }
