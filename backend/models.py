@@ -51,6 +51,15 @@ class SwipeCard(Model):
     interest_tags: list[Tag]
 
 
+class MDCPathwayLink(Model):
+    career_id: Identifier
+    mdc_resources: list[Resource]
+
+
+class MDCPathwayCatalog(Model):
+    pathways: list[MDCPathwayLink]
+
+
 class CardsResponse(Model):
     cards: list[SwipeCard]
 
