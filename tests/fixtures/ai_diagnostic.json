@@ -1,0 +1,12 @@
+{
+  "career": {
+    "career_id": "diagnostic_only",
+    "title": "Integration diagnostic, not a real career",
+    "summary": "No career facts or resources are supplied. State that evidence is insufficient. Keep the explanation to one sentence; return no resource IDs or URLs. For roadmap output, return an empty steps array.",
+    "requirements": [],
+    "sources": [],
+    "mdc_resources": [],
+    "external_resources": []
+  },
+  "interest_tags": []
+}
