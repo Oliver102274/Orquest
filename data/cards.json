@@ -1,0 +1,110 @@
+{
+  "cards": [
+    {
+      "id": "card_puzzle_bugs",
+      "activity": "Solving puzzles and hunting down bugs in code",
+      "interest_tags": [
+        "problem_solving",
+        "coding",
+        "logical_thinking"
+      ]
+    },
+    {
+      "id": "card_build_app",
+      "activity": "Building an app or website from scratch",
+      "interest_tags": [
+        "coding",
+        "building_things",
+        "technology"
+      ]
+    },
+    {
+      "id": "card_think_like_hacker",
+      "activity": "Thinking like a hacker to protect people from attacks",
+      "interest_tags": [
+        "security",
+        "investigation",
+        "technology"
+      ]
+    },
+    {
+      "id": "card_number_patterns",
+      "activity": "Spotting patterns hidden in numbers",
+      "interest_tags": [
+        "data_analysis",
+        "math",
+        "statistics",
+        "logical_thinking"
+      ]
+    },
+    {
+      "id": "card_clear_charts",
+      "activity": "Turning messy information into clear charts",
+      "interest_tags": [
+        "data_analysis",
+        "visual_design",
+        "technology"
+      ]
+    },
+    {
+      "id": "card_investigate_breaks",
+      "activity": "Investigating what went wrong after something breaks",
+      "interest_tags": [
+        "investigation",
+        "problem_solving",
+        "logical_thinking"
+      ]
+    },
+    {
+      "id": "card_automate_tasks",
+      "activity": "Writing a script that automates a boring task",
+      "interest_tags": [
+        "coding",
+        "automation",
+        "technology"
+      ]
+    },
+    {
+      "id": "card_rules_checklists",
+      "activity": "Following rules and checklists to keep things safe",
+      "interest_tags": [
+        "attention_to_detail",
+        "security"
+      ]
+    },
+    {
+      "id": "card_design_look",
+      "activity": "Designing how an app or website looks and feels",
+      "interest_tags": [
+        "visual_design",
+        "creativity",
+        "building_things"
+      ]
+    },
+    {
+      "id": "card_present_findings",
+      "activity": "Presenting what you discovered to a group",
+      "interest_tags": [
+        "communication",
+        "data_analysis"
+      ]
+    },
+    {
+      "id": "card_cooking",
+      "activity": "Cooking or experimenting with food flavors",
+      "interest_tags": [
+        "cooking",
+        "hands_on",
+        "creativity"
+      ]
+    },
+    {
+      "id": "card_mentoring",
+      "activity": "Mentoring others and helping them grow",
+      "interest_tags": [
+        "helping_others",
+        "communication"
+      ]
+    }
+  ]
+}
