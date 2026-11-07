@@ -5,7 +5,7 @@ from pathlib import Path
 
 from pydantic import ValidationError
 
-from backend.models import CardsResponse, CareerCatalog, MDCPathwayCatalog
+from backend.models import CardsResponse, CareerCatalog, MDCPathwayCatalog, ExternalResourceCatalog
 
 
 class DataError(Exception):
@@ -47,6 +47,15 @@ class DataRepository:
     def careers(self):
         result = self._load("careers.json", CareerCatalog)
         self._unique([career.career_id for career in result.careers], "careers.json")
+        # Optional contributor file. Absence preserves the original empty-list behavior.
+        if (self.directory / "external_resources.json").exists():
+            links = self._load("external_resources.json", ExternalResourceCatalog).careers
+            self._unique([link.career_id for link in links], "external_resources.json")
+            by_id = {career.career_id: career for career in result.careers}
+            for link in links:
+                if link.career_id not in by_id:
+                    raise DataError("invalid_data", "External resources reference a career absent from the supplied catalog.")
+                by_id[link.career_id].external_resources.extend(link.external_resources)
         if self.demo_directory is not None:
             overlay = DataRepository(self.demo_directory)._load("mdc_pathways.json", MDCPathwayCatalog)
             self._unique([link.career_id for link in overlay.pathways], "demo/mdc_pathways.json")

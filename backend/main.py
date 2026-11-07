@@ -12,6 +12,9 @@ from starlette.exceptions import HTTPException
 from backend.models import CardsResponse, CareerDetail, ErrorResponse, MatchRequest, MatchesResponse
 from backend.services.data import DataError, DataRepository
 from backend.services.matching import UnknownCardError, match_careers
+from backend.job_models import JobRequest, QuestionRequest, QuestionResponse, RoadmapResponse
+from backend.agents.job_coordinator import JobFirstCoordinator
+from backend.integrations.common import AIServiceError
 
 
 def create_app(data_directory: Path | None = None, origins: list[str] | None = None,
@@ -43,6 +46,10 @@ def create_app(data_directory: Path | None = None, origins: list[str] | None = N
     async def validation_error(_request, _exc):
         return error(422, "validation_error", "Invalid request. Check the documented field types, required fields, and unique card IDs.")
 
+    @application.exception_handler(AIServiceError)
+    async def ai_configuration_error(_request, _exc):
+        return error(503, "ai_unavailable", "AI configuration is unavailable. Existing career matching remains available.")
+
     @application.exception_handler(HTTPException)
     async def http_error(_request, exc):
         return error(exc.status_code, "not_found" if exc.status_code == 404 else "http_error", str(exc.detail))
@@ -73,6 +80,18 @@ def create_app(data_directory: Path | None = None, origins: list[str] | None = N
             if record.career_id == career_id:
                 return CareerDetail.model_validate(record.model_dump(exclude={"interest_tags"}))
         raise HTTPException(404, "Career not found in the supplied catalog.")
+
+    @application.post("/api/career-questions", response_model=QuestionResponse,
+                      responses={**errors, 404: {"model": ErrorResponse}})
+    def career_question(request: QuestionRequest):
+        target = career(request.career_id)  # Validate the target before any provider access.
+        return JobFirstCoordinator().answer(target, request)
+
+    @application.post("/api/roadmaps", response_model=RoadmapResponse,
+                      responses={**errors, 404: {"model": ErrorResponse}})
+    def job_roadmap(request: JobRequest):
+        target = career(request.career_id)
+        return JobFirstCoordinator().roadmap(target, request)
 
     return application
 

@@ -1,1 +1,1 @@
-"""Future AI interfaces only. No provider implementations are registered."""
+"""Specialist protocols and job-first orchestration over existing provider adapters."""

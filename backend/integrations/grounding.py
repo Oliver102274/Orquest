@@ -14,6 +14,15 @@ class CareerContext(Model):
     interest_tags: list[Tag] = Field(default_factory=list)
 
 
+class JobContext(CareerContext):
+    """Student input is untrusted context, never provider/system instructions."""
+    education_level: str | None = None
+    starting_point: str | None = None
+    preferences: list[str] = Field(default_factory=list)
+    goals: list[str] = Field(default_factory=list)
+    question: str | None = None
+
+
 class Explanation(Model):
     explanation: Text
     source_urls: list[str]
