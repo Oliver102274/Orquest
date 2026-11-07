@@ -14,12 +14,16 @@ from backend.services.data import DataError, DataRepository
 from backend.services.matching import UnknownCardError, match_careers
 
 
-def create_app(data_directory: Path | None = None, origins: list[str] | None = None) -> FastAPI:
+def create_app(data_directory: Path | None = None, origins: list[str] | None = None,
+               *, demo_enabled: bool | None = None) -> FastAPI:
     application = FastAPI(title="Orquestra API", version="0.2.0")
     directory = data_directory if data_directory is not None else Path(
         os.environ.get("ORQUESTRA_DATA_DIR") or str(Path(__file__).resolve().parents[1] / "data")
     )
-    repository = DataRepository(directory)
+    if demo_enabled is None:
+        demo_enabled = os.environ.get("ORQUESTRA_MDC_DEMO_ENABLED", "false").lower() == "true"
+    demo_directory = Path(__file__).resolve().parents[1] / "data" / "demo" if demo_enabled else None
+    repository = DataRepository(directory, demo_directory=demo_directory)
     allowed_origins = origins if origins is not None else [
         os.environ.get("FRONTEND_ORIGIN") or "http://localhost:5173"
     ]

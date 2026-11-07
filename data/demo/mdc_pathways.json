@@ -1,0 +1,18 @@
+{
+  "pathways": [
+    {
+      "career_id": "career_cybersecurity_analyst",
+      "mdc_resources": [
+        {
+          "id": "resource_mdc_cybersecurity_as_demo",
+          "title": "Cybersecurity — Associate in Science: 60 credits, approximately 2 years; cybersecurity, network defense, and incident response",
+          "organization": "Miami Dade College",
+          "type": "program",
+          "source_url": "https://www.mdc.edu/cybersecurityas/",
+          "verified_at": "2026-11-07T00:00:00Z",
+          "verification_status": "verified"
+        }
+      ]
+    }
+  ]
+}

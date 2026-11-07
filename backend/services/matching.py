@@ -1,6 +1,7 @@
 """Transparent tag alignment, not AI inference or career suitability prediction."""
 
 from backend.models import CareerMatch, MatchRequest, MatchesResponse
+from backend.services.tags import canonical_tags
 
 
 class UnknownCardError(ValueError):
@@ -13,7 +14,7 @@ def match_careers(request: MatchRequest, cards, careers) -> MatchesResponse:
     for response in request.responses:
         if response.card_id not in by_id:
             raise UnknownCardError("One or more card IDs are not in the current deck.")
-        tags = by_id[response.card_id].interest_tags
+        tags = canonical_tags(by_id[response.card_id].interest_tags)
         if response.preference == "like":
             liked.update(tags)
         elif response.preference == "dislike":
@@ -22,7 +23,7 @@ def match_careers(request: MatchRequest, cards, careers) -> MatchesResponse:
     positive, negative = liked - disliked, disliked - liked
     matches = []
     for career in careers:
-        tags = set(career.interest_tags)
+        tags = canonical_tags(career.interest_tags)
         aligned = sorted(tags & positive)
         net = len(aligned) - len(tags & negative)
         if not tags or net <= 0:
