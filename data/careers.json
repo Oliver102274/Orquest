@@ -1,0 +1,127 @@
+
+{
+  "careers": [
+    {
+      "career_id": "career_software_developer",
+      "title": "Software Developer",
+      "category": "Technology",
+      "summary": "Software developers design, build, test, and maintain software applications and systems.",
+      "requirements": [
+        "Knowledge of programming languages",
+        "Problem-solving and analytical skills",
+        "Understanding of software development",
+        "Ability to collaborate with technical teams"
+      ],
+      "interest_tags": [
+        "technology",
+        "problem_solving",
+        "creativity",
+        "building_things",
+        "logical_thinking"
+      ],
+      "skills": [
+        "Programming",
+        "Debugging",
+        "Software Testing",
+        "Version Control",
+        "Database Fundamentals"
+      ],
+      "occupation": {
+        "soc_code": "15-1252",
+        "median_salary_usd": null,
+        "salary_year": null,
+        "salary_region": "United States"
+      },
+      "sources": [
+        {
+          "title": "BLS Occupational Outlook Handbook - Software Developers",
+          "url": "https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm",
+          "verified_at": null,
+          "verification_status": "unverified"
+        }
+      ]
+    },
+    {
+      "career_id": "career_cybersecurity_analyst",
+      "title": "Cybersecurity Analyst",
+      "category": "Technology",
+      "summary": "Protects computer networks, systems, and information from cybersecurity threats.",
+      "requirements": [
+        "Understanding of computer networks",
+        "Knowledge of information security principles",
+        "Analytical and problem-solving abilities",
+        "Familiarity with security tools and systems"
+      ],
+      "interest_tags": [
+        "technology",
+        "problem_solving",
+        "security",
+        "investigation",
+        "logical_thinking"
+      ],
+      "skills": [
+        "Network Security",
+        "Threat Detection",
+        "Risk Assessment",
+        "Incident Response",
+        "Security Monitoring"
+      ],
+      "occupation": {
+        "soc_code": "15-1212",
+        "median_salary_usd": null,
+        "salary_year": null,
+        "salary_region": "United States"
+      },
+      "sources": [
+        {
+          "title": "BLS Occupational Outlook Handbook - Information Security Analysts",
+          "url": "https://www.bls.gov/ooh/computer-and-information-technology/information-security-analysts.htm",
+          "verified_at": null,
+          "verification_status": "unverified"
+        }
+      ]
+    },
+    {
+      "career_id": "career_data_analyst",
+      "title": "Data Analyst",
+      "category": "Technology",
+      "summary": "Collects, organizes, and analyzes data to identify trends and support decision-making.",
+      "requirements": [
+        "Understanding of statistics",
+        "Ability to interpret data",
+        "Knowledge of spreadsheets and databases",
+        "Strong analytical thinking"
+      ],
+      "interest_tags": [
+        "technology",
+        "data_analysis",
+        "problem_solving",
+        "statistics",
+        "logical_thinking"
+      ],
+      "skills": [
+        "SQL",
+        "Data Visualization",
+        "Excel",
+        "Python",
+        "Statistical Analysis"
+      ],
+      "occupation": {
+        "soc_code": null,
+        "median_salary_usd": null,
+        "salary_year": null,
+        "salary_region": "United States"
+      },
+      "sources": [
+        {
+          "title": "O*NET OnLine",
+          "url": "https://www.onetonline.org/",
+          "verified_at": null,
+          "verification_status": "unverified"
+        }
+      ]
+    }
+  ]
+}
+
+
