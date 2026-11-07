@@ -1,0 +1,49 @@
+# Python and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.conda/
+conda-env/
+conda-envs/
+envs/
+.python-version
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Frontend dependencies and build output (keep dependency lockfiles)
+node_modules/
+dist/
+build/
+.vite/
+coverage/
+*.tsbuildinfo
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+service-account*.json
+secrets/
+secrets.*
+
+# Local database files, logs, and generated output
+*.db
+*.sqlite
+*.sqlite3
+*.log
+outputs/
+tmp/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
