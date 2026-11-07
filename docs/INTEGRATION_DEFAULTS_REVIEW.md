@@ -1,5 +1,9 @@
 # Phase 2 integration defaults — recommendations only
 
+See [Phase 4 backend decisions](BACKEND_PHASE4.md) for current provisional
+implementation choices, including stateless matching and exact-origin CORS
+without cookies. Earlier persistence and session proposals remain unimplemented.
+
 Review these proposals with the frontend lead and affected data owners before
 adopting `API_CONTRACT_DRAFT.md`. No feature behavior is implemented here.
 The earlier Phase 2 plan was not available in this chat; this review addresses
