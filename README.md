@@ -14,14 +14,21 @@ learning platforms, certifications, internships, and career opportunities.
 Career facts and resources must be supported by verifiable sources; programs,
 job listings, and salary figures must not be invented.
 
-## Phase 1 scope
+## Backend scope
 
-Only `GET /api/health` is implemented. It returns `{"status":"ok"}` and checks
+`GET /api/health` returns `{"status":"ok"}` and checks
 application liveness, not database or provider connectivity. FastAPI also
 provides `/docs`, `/redoc`, and `/openapi.json` for API documentation.
 
+Phase 4 adds cards, deterministic interest matches, and career details from
+contributor JSON. See [backend handoff and draft decisions](docs/BACKEND_PHASE4.md)
+for routes, file schemas, scoring, errors, and tests. Missing datasets produce
+clear 503 errors; no career or swipe data is bundled.
+
 React + Vite, Gemini, Swarms, Prune, Tiger Data / PostgreSQL, and React Flow
-are planned; none is integrated or required for this phase.
+remain part of the planned stack. Phase 5 adds explicitly invoked Gemini, Swarms,
+and Prune adapters; they are disabled by default and not used by current routes.
+See [AI integration setup and limits](docs/AI_INTEGRATIONS_PHASE5.md).
 
 ## Start the backend
 
@@ -43,7 +50,8 @@ Stop the server with Ctrl+C.
 
 No secrets, environment file, database, or paid services are needed.
 `.env.example` reserves proposed variable names for later integrations; the
-application does not load them yet. Dependency ranges allow compatible initial
+application reads configured process environment variables but does not load
+`.env` files automatically. Dependency ranges allow compatible initial
 installs; agree on locking versions before reproducible deployment.
 
 ## Collaboration
