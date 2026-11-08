@@ -117,7 +117,7 @@ class ResourceDiscoveryService:
         for program in programs:
             candidates.append({
                 "id": f"mdc_{program['plan_code']}",
-                "title": program["name"],
+                "title": f'{program["name"]} ({program["award_type"]})' if program.get("award_type") else program["name"],
                 "organization": "Miami Dade College",
                 "type": "educational_program",
                 "source_url": program["source_url"],
@@ -192,7 +192,7 @@ class ResourceDiscoveryService:
 
             matches.append({
                 "id": f"mdc_{program['plan_code']}",
-                "title": program["name"],
+                "title": f'{program["name"]} ({program["award_type"]})' if program.get("award_type") else program["name"],
                 "organization": "Miami Dade College",
                 "type": "educational_program",
                 "source_url": program["source_url"],
