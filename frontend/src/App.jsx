@@ -7,18 +7,32 @@ import StartYourJourney from './components/StartYourJourney.jsx'
 import RpgGame from './components/RpgGame.jsx'
 import { grantQuizPersonalizationConsent, initialPersonalizationConsents, setPersonalizationConsent } from './logic/personalizationConsent.js'
 import { createSaveFile } from './logic/saveFile.js'
-import { getCareerDiscoveryMatches } from './services/api.js'
+import { matchCareerDiscoveryResponses } from './logic/careerDiscoveryMatching.js'
 
 export default function App() {
   const [screen, setScreen] = useState('login')
   const [responses, setResponses] = useState([])
   const [discoveryMatches, setDiscoveryMatches] = useState(null)
+  const [discoveryMatchSource, setDiscoveryMatchSource] = useState(null)
   const [experienceScreen, setExperienceScreen] = useState(null)
   const [quizAnswers, setQuizAnswers] = useState([])
   const [exploredCareers, setExploredCareers] = useState([])
   const [careerPaths, setCareerPaths] = useState([])
   const [activeTargetCareer, setActiveTargetCareer] = useState(null)
   const [personalizationConsents, setPersonalizationConsents] = useState(initialPersonalizationConsents)
+  // Phase 15 RPG progress sessions, keyed by target id. The access token lives in
+  // memory only: it is never persisted and never written into an exported save file.
+  const [progressSessions, setProgressSessions] = useState({})
+
+  function updateProgressSession(targetId, session) {
+    if (!targetId) return
+    setProgressSessions((current) => {
+      const next = { ...current }
+      if (session) next[targetId] = session
+      else delete next[targetId]
+      return next
+    })
+  }
 
   function updatePersonalizationConsent(source, value) {
     setPersonalizationConsents((current) => setPersonalizationConsent(current, source, value))
@@ -66,6 +80,7 @@ export default function App() {
     const { data } = saveFile
     setResponses(data.swipe_responses)
     setDiscoveryMatches(null)
+    setDiscoveryMatchSource(null)
     setExploredCareers(data.explored_career_ids.map((career_id) => ({ career_id })))
     setCareerPaths(data.career_paths)
     setActiveTargetCareer(data.career_paths.find((path) => path.career_id === data.active_career_id) || null)
@@ -75,6 +90,7 @@ export default function App() {
       swipes: data.personalization_consents.swipes,
       careerChat: false,
     })
+    setProgressSessions({})
     setExperienceScreen(null)
     setScreen('bubbles')
   }
@@ -86,14 +102,26 @@ export default function App() {
 
   async function completeDiscovery(discovery) {
     try {
-      const matches = await getCareerDiscoveryMatches(discovery)
+      const matches = matchCareerDiscoveryResponses(discovery)
       setResponses([])
       setDiscoveryMatches(matches)
+      setDiscoveryMatchSource(matches.careerDiscoverySource)
       setScreen('bubbles')
       return null
     } catch (error) {
       return error.message || 'Bubble matching could not be completed. Please retry.'
     }
+  }
+
+  function skipCareerDiscovery() {
+    // Skipping creates no survey answers, no negative responses, and no match score.
+    // The Bubble Explorer opens directly in its full career-catalog view.
+    setResponses([])
+    setDiscoveryMatches([])
+    setDiscoveryMatchSource('skipped')
+    setPersonalizationConsents((current) => setPersonalizationConsent(current, 'swipes', false))
+    setExperienceScreen(null)
+    setScreen('bubbles')
   }
 
   function skipQuiz() {
@@ -108,6 +136,7 @@ export default function App() {
       {screen === 'swipe' && (
         <SwipeScreen
           onComplete={completeDiscovery}
+          onSkipDiscovery={skipCareerDiscovery}
           personalizationConsent={personalizationConsents.swipes}
           onPersonalizationConsentChange={(value) => updatePersonalizationConsent('swipes', value)}
         />
@@ -118,6 +147,7 @@ export default function App() {
             <BubbleExplorer
               responses={responses}
               providedMatches={discoveryMatches}
+              matchSource={discoveryMatchSource}
               onEnterRpg={() => setExperienceScreen('quiz')}
               onCareerExploration={recordCareerExplored}
               exploredCareerIds={exploredCareers.map((career) => career.career_id)}
@@ -155,6 +185,8 @@ export default function App() {
               swipePersonalizationConsent={personalizationConsents.swipes}
               quizAnswers={quizAnswers}
               quizPersonalizationConsent={personalizationConsents.quiz}
+              progressSession={activeTargetCareer ? progressSessions[activeTargetCareer.career_id] || null : null}
+              onProgressSessionChange={updateProgressSession}
               onExportSave={exportSavedProgress}
               onBackToExplorer={() => setExperienceScreen(null)}
             />

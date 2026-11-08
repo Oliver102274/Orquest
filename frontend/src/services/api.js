@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE_URL = 'http://localhost:8000'
+const DEFAULT_API_BASE_URL = 'http://127.0.0.1:8000'
 
 export class ApiError extends Error {
   constructor(message, { status = 0, code = 'network_error' } = {}) {
@@ -10,6 +10,10 @@ export class ApiError extends Error {
 }
 
 function getApiBaseUrl() {
+  // Use the backend's explicit IPv4 loopback address in development. The
+  // backend CORS allowlist includes localhost:5173 and 127.0.0.1:5173, and
+  // this avoids accidentally receiving Vite's index.html from an unconfigured
+  // same-origin /api request.
   const configured = import.meta.env.VITE_API_BASE_URL || DEFAULT_API_BASE_URL
   return configured.replace(/\/+$/, '')
 }
@@ -152,6 +156,8 @@ export async function getCareerMatches(responses, { signal } = {}) {
   return body.matches
 }
 
+// Server-backed contract for a later backend route merge. The current survey UI
+// uses its bundled question bank and local matching map instead of these calls.
 export async function getCareerDiscoveryQuestionBank({ signal } = {}) {
   const body = await request('/api/career-discovery/questions', { signal })
   if (typeof body?.bank_id !== 'string'
@@ -231,6 +237,22 @@ export async function submitCareerQuestion(payload, { signal } = {}) {
   return body
 }
 
+function assertRoadmapResponse(body, expectedCareerId) {
+  if (!isTargetOccupation(body?.target_occupation)
+    || body.target_occupation.career_id !== expectedCareerId
+    || !isStringList(body?.relevant_skills_and_qualifications)
+    || !Array.isArray(body?.mdc_pathways) || !body.mdc_pathways.every(isResource)
+    || !Array.isArray(body?.alternative_resources) || !body.alternative_resources.every(isResource)
+    || !Array.isArray(body?.career_milestones) || !body.career_milestones.every(isMissionSuggestion)
+    || !Array.isArray(body?.suggested_missions) || !body.suggested_missions.every(isMissionSuggestion)
+    || !isStringList(body?.source_urls)
+    || !isStringList(body?.evidence_gaps)
+    || !isGuidanceMetadata(body?.metadata)) {
+    unexpectedGuidanceResponse('The backend roadmap response does not match the expected format.')
+  }
+  return body
+}
+
 export async function getCareerRoadmap(payload, { signal } = {}) {
   const roadmapPayload = { career_id: payload?.career_id }
   if (Array.isArray(payload?.interest_tags)) roadmapPayload.interest_tags = payload.interest_tags
@@ -244,17 +266,90 @@ export async function getCareerRoadmap(payload, { signal } = {}) {
     signal,
     body: JSON.stringify(roadmapPayload),
   })
-  if (!isTargetOccupation(body?.target_occupation)
-    || body.target_occupation.career_id !== roadmapPayload.career_id
-    || !isStringList(body?.relevant_skills_and_qualifications)
-    || !Array.isArray(body?.mdc_pathways) || !body.mdc_pathways.every(isResource)
-    || !Array.isArray(body?.alternative_resources) || !body.alternative_resources.every(isResource)
-    || !Array.isArray(body?.career_milestones) || !body.career_milestones.every(isMissionSuggestion)
-    || !Array.isArray(body?.suggested_missions) || !body.suggested_missions.every(isMissionSuggestion)
-    || !isStringList(body?.source_urls)
-    || !isStringList(body?.evidence_gaps)
-    || !isGuidanceMetadata(body?.metadata)) {
-    unexpectedGuidanceResponse('The backend roadmap response does not match the expected format.')
+  return assertRoadmapResponse(body, roadmapPayload.career_id)
+}
+
+// RPG progress (Phase 15). The access token is returned once per session and is
+// held in memory by the caller; it is never persisted or written into a save file.
+
+function progressHeaders(accessToken) {
+  return { Authorization: `Bearer ${accessToken}` }
+}
+
+// xp_reward is server-owned. Accept any non-negative integer instead of pinning the
+// current reward so a backend reward change cannot break the RPG screen.
+function isProgressMission(value) {
+  return typeof value?.id === 'string'
+    && typeof value?.title === 'string'
+    && typeof value?.instruction === 'string'
+    && isStringList(value?.resource_ids)
+    && typeof value?.completed === 'boolean'
+    && Number.isInteger(value?.xp_reward) && value.xp_reward >= 0
+}
+
+function assertProgressResponse(body) {
+  if (typeof body?.id !== 'string'
+    || typeof body?.storage !== 'string'
+    || typeof body?.notice !== 'string'
+    || !Number.isInteger(body?.total_xp) || body.total_xp < 0
+    || !Array.isArray(body?.missions) || !body.missions.every(isProgressMission)
+    || body?.roadmap == null) {
+    unexpectedGuidanceResponse('The backend RPG progress response does not match the expected format.')
   }
+  assertRoadmapResponse(body.roadmap, body.roadmap.target_occupation.career_id)
   return body
+}
+
+function requireSession(progressId, accessToken) {
+  if (typeof progressId !== 'string' || typeof accessToken !== 'string' || !progressId || !accessToken) {
+    throw new ApiError('This mission path needs an active progress session. Start the mission path again.', {
+      status: 401,
+      code: 'progress_session_required',
+    })
+  }
+}
+
+export async function startProgress(payload, { signal } = {}) {
+  const progressPayload = { target_id: payload?.target_id }
+  if (Array.isArray(payload?.interest_tags)) progressPayload.interest_tags = payload.interest_tags
+  addConsentedQuestionnaireContext(
+    progressPayload,
+    payload?.questionnaire_answers,
+    payload?.questionnaire_personalization_consent === true,
+  )
+  const body = await request('/api/progress', {
+    method: 'POST',
+    signal,
+    body: JSON.stringify(progressPayload),
+  })
+  if (typeof body?.access_token !== 'string' || !body.access_token) {
+    unexpectedGuidanceResponse('The backend RPG progress response did not include a session token.')
+  }
+  return { access_token: body.access_token, progress: assertProgressResponse(body?.progress) }
+}
+
+export async function getProgress({ progressId, accessToken }, { signal } = {}) {
+  requireSession(progressId, accessToken)
+  const body = await request(`/api/progress/${encodeURIComponent(progressId)}`, {
+    signal,
+    headers: progressHeaders(accessToken),
+  })
+  return assertProgressResponse(body)
+}
+
+export async function completeProgressMission({ progressId, accessToken, missionId }, { signal } = {}) {
+  requireSession(progressId, accessToken)
+  if (typeof missionId !== 'string' || !missionId) {
+    throw new ApiError('A mission id is required to record a completion.', { code: 'mission_id_required' })
+  }
+  const body = await request(
+    `/api/progress/${encodeURIComponent(progressId)}/missions/${encodeURIComponent(missionId)}/completion`,
+    {
+      method: 'PUT',
+      signal,
+      headers: progressHeaders(accessToken),
+      body: JSON.stringify({ completed: true }),
+    },
+  )
+  return assertProgressResponse(body)
 }

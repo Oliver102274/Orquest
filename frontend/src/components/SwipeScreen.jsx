@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import OrquestLogo from './OrquestLogo.jsx'
-import { getCareerDiscoveryQuestionBank } from '../services/api.js'
+import { CAREER_DISCOVERY_BANK } from '../data/careerDiscoveryQuestionBank.js'
 import {
   isFollowUpEligible,
   recordAnsweredFollowUp,
@@ -8,6 +8,7 @@ import {
   recordSkippedFollowUp,
   selectMainQuestion,
 } from '../logic/careerDiscovery.js'
+import './SwipeScreen.css'
 
 function toggleSelection(current, optionId) {
   if (optionId === 'undisclosed') return current.includes('undisclosed') ? [] : ['undisclosed']
@@ -20,10 +21,8 @@ function toggleSelection(current, optionId) {
 const SWIPE_THRESHOLD = 82
 const SWIPE_ANIMATION_MS = 230
 
-export default function SwipeScreen({ onComplete, personalizationConsent, onPersonalizationConsentChange }) {
-  const [bank, setBank] = useState(null)
-  const [bankError, setBankError] = useState('')
-  const [loadingBank, setLoadingBank] = useState(true)
+export default function SwipeScreen({ onComplete, onSkipDiscovery, personalizationConsent, onPersonalizationConsentChange }) {
+  const bank = CAREER_DISCOVERY_BANK
   const [slotIndex, setSlotIndex] = useState(0)
   const [answersBySlot, setAnswersBySlot] = useState({})
   const [phase, setPhase] = useState('main')
@@ -36,19 +35,11 @@ export default function SwipeScreen({ onComplete, personalizationConsent, onPers
   const dragRef = useRef(null)
   const exitTimer = useRef(null)
 
-  useEffect(() => {
-    const controller = new AbortController()
-    getCareerDiscoveryQuestionBank({ signal: controller.signal })
-      .then((nextBank) => { if (!controller.signal.aborted) setBank(nextBank) })
-      .catch((loadError) => { if (!controller.signal.aborted) setBankError(loadError.message) })
-      .finally(() => { if (!controller.signal.aborted) setLoadingBank(false) })
-    return () => {
-      controller.abort()
-      if (exitTimer.current) window.clearTimeout(exitTimer.current)
-    }
+  useEffect(() => () => {
+    if (exitTimer.current) window.clearTimeout(exitTimer.current)
   }, [])
 
-  const slot = bank?.slots[slotIndex]
+  const slot = bank.slots[slotIndex]
   const question = useMemo(
     () => (slot ? selectMainQuestion(slot, answersBySlot) : null),
     [slot, answersBySlot],
@@ -222,15 +213,21 @@ export default function SwipeScreen({ onComplete, personalizationConsent, onPers
       <header className="game-header">
         <OrquestLogo compact />
         <div className="game-level"><span>CAREER DISCOVERY</span><b>8 QUESTION QUEST</b></div>
-        <span className="session-note">NEW SESSION ON RELOAD</span>
+        <div className="game-header-actions">
+          <span className="session-note">NEW SESSION ON RELOAD</span>
+          <button
+            className="discovery-skip-button"
+            type="button"
+            onClick={onSkipDiscovery}
+            disabled={phase === 'submitting'}
+          >
+            SKIP QUESTIONNAIRE · EXPLORE CAREERS →
+          </button>
+        </div>
       </header>
       <main className="swipe-playfield">
         <section className="pixel-survey-frame discovery-frame" aria-labelledby="discovery-question-title">
-          {loadingBank ? (
-            <div className="swipe-data-state" role="status"><strong>LOADING CAREER DISCOVERY…</strong></div>
-          ) : bankError ? (
-            <div className="swipe-data-state" role="alert"><strong>CAREER DISCOVERY COULD NOT LOAD</strong><p>{bankError}</p><p>Reload this page to begin a new session.</p></div>
-          ) : phase === 'complete' ? (
+          {phase === 'complete' ? (
             <div className="swipe-data-state discovery-complete" role="status">
               <span className="pixel-kicker">CAREER DISCOVERY / BUBBLE MAP</span>
               <h1 id="discovery-question-title">BUBBLE MATCHING NEEDS A RETRY</h1>

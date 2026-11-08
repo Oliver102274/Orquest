@@ -1,0 +1,199 @@
+{
+  "bank_id": "orquest-career-discovery",
+  "version": "1.0.0",
+  "matching_tags": {
+    "interest_areas_v1": {
+      "math": [
+        "statistics",
+        "data_analysis",
+        "logical_thinking"
+      ],
+      "science": [
+        "investigation"
+      ],
+      "social_science": [],
+      "arts_humanities": [
+        "creativity"
+      ],
+      "technology": [
+        "technology",
+        "logical_thinking"
+      ],
+      "business": [],
+      "health": [],
+      "education": [],
+      "undisclosed": []
+    },
+    "task_style_analytical_v1": {
+      "agree": [
+        "technology",
+        "problem_solving",
+        "logical_thinking",
+        "investigation"
+      ],
+      "disagree": [
+        "technology",
+        "problem_solving",
+        "logical_thinking",
+        "investigation"
+      ]
+    },
+    "task_style_general_v1": {
+      "agree": [
+        "creativity",
+        "building_things"
+      ],
+      "disagree": [
+        "creativity",
+        "building_things"
+      ]
+    },
+    "learning_mode_v1": {
+      "practice": [
+        "building_things"
+      ],
+      "read_research": [
+        "investigation"
+      ],
+      "talk_it_through": [],
+      "see_example": [
+        "creativity"
+      ],
+      "varies": [],
+      "undisclosed": []
+    },
+    "pathway_high_school_v1": {},
+    "pathway_general_v1": {},
+    "work_environment_people_v1": {},
+    "work_environment_general_v1": {},
+    "problem_area_analytical_v1": {
+      "how_systems_work": [
+        "technology",
+        "logical_thinking"
+      ],
+      "why_patterns_appear": [
+        "data_analysis",
+        "statistics"
+      ],
+      "how_to_improve": [
+        "problem_solving"
+      ],
+      "how_environment_changes": [
+        "investigation"
+      ],
+      "undisclosed": []
+    },
+    "problem_area_general_v1": {
+      "help_a_person": [],
+      "design_an_idea": [
+        "creativity",
+        "building_things"
+      ],
+      "improve_a_process": [
+        "problem_solving"
+      ],
+      "understand_a_topic": [
+        "investigation"
+      ],
+      "undisclosed": []
+    },
+    "work_priorities_v1": {
+      "keep_learning": [],
+      "help_others": [],
+      "creative_expression": [
+        "creativity"
+      ],
+      "stable_work": [],
+      "independence": [],
+      "teamwork": [],
+      "practical_results": [
+        "building_things"
+      ],
+      "undisclosed": []
+    },
+    "education_status_followup_v1": {},
+    "interest_areas_followup_v1": {},
+    "task_style_analytical_followup_v1": {
+      "data_tools": [
+        "data_analysis",
+        "statistics"
+      ],
+      "hands_on_tools": [
+        "building_things"
+      ],
+      "digital_tools": [
+        "technology"
+      ],
+      "not_sure": []
+    },
+    "task_style_general_followup_v1": {},
+    "learning_mode_followup_v1": {
+      "class_project": [
+        "building_things"
+      ],
+      "community": [],
+      "workplace": [],
+      "personal_project": [
+        "creativity"
+      ]
+    },
+    "pathway_high_school_followup_v1": {},
+    "pathway_general_followup_v1": {},
+    "work_environment_people_followup_v1": {},
+    "work_environment_general_followup_v1": {},
+    "problem_area_analytical_followup_v1": {
+      "collect_information": [
+        "investigation"
+      ],
+      "run_a_test": [
+        "problem_solving",
+        "investigation"
+      ],
+      "make_a_model": [
+        "building_things",
+        "logical_thinking"
+      ],
+      "compare_evidence": [
+        "data_analysis",
+        "statistics"
+      ]
+    },
+    "problem_area_general_followup_v1": {},
+    "work_priorities_followup_v1": {}
+  },
+  "careers": [
+    {
+      "career_id": "career_software_developer",
+      "title": "Software Developer",
+      "interest_tags": [
+        "technology",
+        "problem_solving",
+        "creativity",
+        "building_things",
+        "logical_thinking"
+      ]
+    },
+    {
+      "career_id": "career_cybersecurity_analyst",
+      "title": "Cybersecurity Analyst",
+      "interest_tags": [
+        "technology",
+        "problem_solving",
+        "security",
+        "investigation",
+        "logical_thinking"
+      ]
+    },
+    {
+      "career_id": "career_data_analyst",
+      "title": "Data Analyst",
+      "interest_tags": [
+        "technology",
+        "data_analysis",
+        "problem_solving",
+        "statistics",
+        "logical_thinking"
+      ]
+    }
+  ]
+}

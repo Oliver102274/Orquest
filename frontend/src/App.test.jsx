@@ -90,6 +90,45 @@ const roadmapResponse = {
   metadata: { status: 'deterministic', provider: 'deterministic', reason: 'ai_disabled', review_required: true },
 }
 
+const catalogMetadata = {
+  schema_version: '1.0',
+  title: 'OrQuest job-first occupation reference catalog',
+  based_on: 'job_families_20.md',
+  source_data_date_as_reported: '2026-11-07',
+  provenance: 'Contributor-provided reference data',
+  usage_notes: ['Browse by job family.'],
+  sources: { national_wages: 'https://www.bls.gov/oes/tables.htm' },
+  salary_scope: 'United States national figures; not Florida or Miami salaries.',
+  verification_notice: 'Reference data; inspect verified_per_row.',
+}
+const catalogFamily = {
+  id: 'family_01_computer_information_technology',
+  name: 'Computer & Information Technology',
+  ordinal: 1,
+  bls_group_code: '15-1200',
+  bls_group_title: 'Computer occupations',
+  jobs_2025_thousands: 5036.2,
+  median_wage_2025_usd: 109470,
+  projected_growth_2025_2035_percent: 5.7,
+  occupation_ids: ['occupation_15_1252'],
+}
+const catalogOccupation = {
+  id: 'occupation_15_1252',
+  family_id: catalogFamily.id,
+  title: 'Software Developer',
+  bls_title: 'Software developers',
+  soc_code: '15-1252',
+  onet_soc_code: '15-1252.00',
+  summary: 'Design and build software.',
+  national_wage_2025: { median_annual_usd: 133080, p10_annual_usd: 80000, p90_annual_usd: 211000 },
+  entry_requirements_as_reported: "Bachelor's degree",
+  projected_growth_2025_2035_percent: 16,
+  projected_job_change_as_reported: '+267,700',
+  source_refs: ['national_wages'],
+  verified_per_row: false,
+  verified_at: null,
+}
+
 let fetchMock
 let careerQuestionResult
 let careerRoadmapResult
@@ -117,6 +156,12 @@ beforeEach(() => {
         ...careerRoadmapResult,
         target_occupation: { career_id: requestedCareer.career_id, title: requestedCareer.title },
       }
+    }
+    else if (url.endsWith('/api/job-families')) body = { families: [catalogFamily], metadata: catalogMetadata }
+    else if (url.endsWith('/api/occupations')) body = { occupations: [catalogOccupation], metadata: catalogMetadata }
+    else if (url.endsWith('/api/occupation-mappings')) body = {
+      career_to_occupation: { career_software_developer: catalogOccupation.id },
+      unmapped_career_ids: ['career_data_analyst'],
     }
     else return { ok: false, status: 404, json: async () => ({ error: { message: 'not found' } }) }
     return { ok: true, status: 200, json: async () => body }
@@ -444,6 +489,19 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
     expect(await screen.findByRole('heading', { name: /which option best describes your education right now/i })).toBeTruthy()
     expect(screen.getByText(/MAIN QUESTION 1 OF 8/i)).toBeTruthy()
     expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith('/api/cards'))).toBe(false)
+    expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith('/api/matches'))).toBe(false)
+  })
+
+  it('lets a student skip Career Discovery and opens the career-field catalog without creating survey answers', async () => {
+    render(<App />)
+    enterDemoCredentials()
+    expect(await screen.findByText(/MAIN QUESTION 1 OF 8/i)).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: /skip questionnaire.*explore careers/i }))
+
+    expect(await screen.findByRole('heading', { name: 'Bubble Explorer' })).toBeTruthy()
+    expect(await screen.findByRole('button', { name: 'Explore Engineering & Technology career field' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'CAREER CATALOG' }).getAttribute('aria-pressed')).toBe('true')
+    expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith('/api/career-discovery/matches'))).toBe(false)
     expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith('/api/matches'))).toBe(false)
   })
 

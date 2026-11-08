@@ -1,0 +1,30 @@
+.game-header-actions {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  justify-self: end;
+  gap: 6px;
+}
+.game-header-actions .session-note { justify-self: auto; }
+.discovery-skip-button {
+  min-height: 25px;
+  border: 2px solid #2c2e33;
+  background: linear-gradient(145deg, #c8c9c3, #aeb2ad);
+  box-shadow: 2px 2px 0 #34363b;
+  color: #343a3d;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: .045em;
+  padding: 4px 8px;
+}
+.discovery-skip-button:hover:not(:disabled) {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0 #34363b;
+  background: #d3d5ce;
+}
+.discovery-skip-button:disabled { cursor: wait; opacity: .55; }
+@media (max-width: 700px) {
+  .game-header-actions { gap: 3px; }
+  .game-header-actions .session-note { font-size: 6px; }
+  .discovery-skip-button { min-height: 22px; font-size: 6px; padding: 3px 5px; }
+}
