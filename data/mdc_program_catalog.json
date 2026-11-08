@@ -1,0 +1,2719 @@
+[
+  {
+    "name": "Aircraft Structural Assembly and Fabrication Apprenticeship",
+    "award_type": "APPR",
+    "cip_code": "47.0609",
+    "florida_cip_code": "0847060908",
+    "plan_code": "59005",
+    "soc_codes": [
+      "51-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Accounting Technology",
+    "award_type": "AS",
+    "cip_code": "52.0302",
+    "florida_cip_code": "1552030201",
+    "plan_code": "25022",
+    "soc_codes": [
+      "43-3031"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Animation & Game Art",
+    "award_type": "AS",
+    "cip_code": "10.0304",
+    "florida_cip_code": "1610030400",
+    "plan_code": "25074",
+    "soc_codes": [
+      "27-1011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Applied Artificial Intelligence",
+    "award_type": "AS",
+    "cip_code": "11.0102",
+    "florida_cip_code": "1511010200",
+    "plan_code": "25080",
+    "soc_codes": [
+      "15-1252"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Architectural Design & Construction Technology",
+    "award_type": "AS",
+    "cip_code": "04.0901",
+    "florida_cip_code": "1604090100",
+    "plan_code": "26034",
+    "soc_codes": [
+      "17-3011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Aviation Administration",
+    "award_type": "AS",
+    "cip_code": "49.0104",
+    "florida_cip_code": "1649010403",
+    "plan_code": "26028",
+    "soc_codes": [
+      "53-2022"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Aviation Maintenance Management",
+    "award_type": "AS",
+    "cip_code": "49.0104",
+    "florida_cip_code": "1649010401",
+    "plan_code": "26027",
+    "soc_codes": [
+      "49-3011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Biomedical Engineering Technology",
+    "award_type": "AS",
+    "cip_code": "15.0401",
+    "florida_cip_code": "1615040102",
+    "plan_code": "26053",
+    "soc_codes": [
+      "49-9062"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Biotechnology",
+    "award_type": "AS",
+    "cip_code": "41.0101",
+    "florida_cip_code": "1341010100",
+    "plan_code": "22027",
+    "soc_codes": [
+      "19-4021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Biotechnology - Bioinformatics",
+    "award_type": "AS",
+    "cip_code": "41.0101",
+    "florida_cip_code": "1341010100",
+    "plan_code": "22028",
+    "soc_codes": [
+      "19-4021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Biotechnology - Chemical Technology",
+    "award_type": "AS",
+    "cip_code": "41.0101",
+    "florida_cip_code": "1341010100",
+    "plan_code": "22029",
+    "soc_codes": [
+      "19-4021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Building Construction Technology",
+    "award_type": "AS",
+    "cip_code": "15.1001",
+    "florida_cip_code": "1615100102",
+    "plan_code": "26033",
+    "soc_codes": [
+      "11-9021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Administration",
+    "award_type": "AS",
+    "cip_code": "52.0201",
+    "florida_cip_code": "1552020102",
+    "plan_code": "25051",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Intelligence Specialist",
+    "award_type": "AS",
+    "cip_code": "30.7001",
+    "florida_cip_code": "1530700101",
+    "plan_code": "25073",
+    "soc_codes": [
+      "15-2051"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Civil Engineering Technology",
+    "award_type": "AS",
+    "cip_code": "15.0201",
+    "florida_cip_code": "1715020101",
+    "plan_code": "26035",
+    "soc_codes": [
+      "17-3022"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Clinical Laboratory Sciences",
+    "award_type": "AS",
+    "cip_code": "51.1004",
+    "florida_cip_code": "1351100405",
+    "plan_code": "23024",
+    "soc_codes": [
+      "29-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Computer Crime Investigation",
+    "award_type": "AS",
+    "cip_code": "43.0116",
+    "florida_cip_code": "1743040300",
+    "plan_code": "27028",
+    "soc_codes": [
+      "15-1199"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Computer Engineering Technology",
+    "award_type": "AS",
+    "cip_code": "15.1201",
+    "florida_cip_code": "1615120100",
+    "plan_code": "26052",
+    "soc_codes": [
+      "15-1199"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Computer Information Technology",
+    "award_type": "AS",
+    "cip_code": "11.0103",
+    "florida_cip_code": "1511010307",
+    "plan_code": "25055",
+    "soc_codes": [
+      "15-1211"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Computer Programming and Analysis - Business App. Programming",
+    "award_type": "AS",
+    "cip_code": "11.0201",
+    "florida_cip_code": "1511020101",
+    "plan_code": "25065",
+    "soc_codes": [
+      "15-1131"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Computer Programming and Analysis - Internet of Things (IoT) Applications",
+    "award_type": "AS",
+    "cip_code": "11.0201",
+    "florida_cip_code": "1511020101",
+    "plan_code": "25076",
+    "soc_codes": [
+      "15-1131"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Computer Programming and Analysis - Mobile Applications Development",
+    "award_type": "AS",
+    "cip_code": "11.0201",
+    "florida_cip_code": "1511020101",
+    "plan_code": "25070",
+    "soc_codes": [
+      "15-1131"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Crime Scene Technology - Crime Scene Investigation",
+    "award_type": "AS",
+    "cip_code": "43.0406",
+    "florida_cip_code": "1743040600",
+    "plan_code": "27026",
+    "soc_codes": [
+      "19-4092"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Crime Scene Technology - Forensic Science",
+    "award_type": "AS",
+    "cip_code": "43.0406",
+    "florida_cip_code": "1743040600",
+    "plan_code": "27027",
+    "soc_codes": [
+      "19-4092"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Criminal Justice Technology",
+    "award_type": "AS",
+    "cip_code": "43.0103",
+    "florida_cip_code": "1743010302",
+    "plan_code": "27012",
+    "soc_codes": [
+      "33-1012"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Culinary Arts Management",
+    "award_type": "AS",
+    "cip_code": "12.0504",
+    "florida_cip_code": "1612050401",
+    "plan_code": "22031",
+    "soc_codes": [
+      "11-9051"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Cybersecurity",
+    "award_type": "AS",
+    "cip_code": "11.1003",
+    "florida_cip_code": "1511100308",
+    "plan_code": "25079",
+    "soc_codes": [
+      "15-1212"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Database Technology - Oracle Database Administration",
+    "award_type": "AS",
+    "cip_code": "11.0802",
+    "florida_cip_code": "1511080200",
+    "plan_code": "25058",
+    "soc_codes": [
+      "15-1141"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Dental Hygiene",
+    "award_type": "AS",
+    "cip_code": "51.0602",
+    "florida_cip_code": "1351060200",
+    "plan_code": "23021",
+    "soc_codes": [
+      "29-2021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Diagnostic Medical Sonography Specialist",
+    "award_type": "AS",
+    "cip_code": "51.0910",
+    "florida_cip_code": "1351091004",
+    "plan_code": "23038",
+    "soc_codes": [
+      "29-2032"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Early Childhood Education",
+    "award_type": "AS",
+    "cip_code": "13.1210",
+    "florida_cip_code": "1413121004",
+    "plan_code": "27014",
+    "soc_codes": [
+      "25-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Early Childhood Education - Administrators",
+    "award_type": "AS",
+    "cip_code": "13.1210",
+    "florida_cip_code": "1413121004",
+    "plan_code": "27033",
+    "soc_codes": [
+      "25-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Early Childhood Education - Infant Toddler",
+    "award_type": "AS",
+    "cip_code": "13.1210",
+    "florida_cip_code": "1413121004",
+    "plan_code": "27032",
+    "soc_codes": [
+      "25-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Early Childhood Education - Preschool",
+    "award_type": "AS",
+    "cip_code": "13.1210",
+    "florida_cip_code": "1413121004",
+    "plan_code": "27031",
+    "soc_codes": [
+      "25-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Electronics Engineering Technology",
+    "award_type": "AS",
+    "cip_code": "15.0303",
+    "florida_cip_code": "1615030301",
+    "plan_code": "26039",
+    "soc_codes": [
+      "17-3023"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Emergency Medical Services",
+    "award_type": "AS",
+    "cip_code": "51.0904",
+    "florida_cip_code": "1351090402",
+    "plan_code": "23047",
+    "soc_codes": [
+      "29-2041"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Entrepreneurship",
+    "award_type": "AS",
+    "cip_code": "52.0703",
+    "florida_cip_code": "1552070308",
+    "plan_code": "20002",
+    "soc_codes": [
+      "11-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Fashion Design",
+    "award_type": "AS",
+    "cip_code": "50.0407",
+    "florida_cip_code": "1450040700",
+    "plan_code": "22005",
+    "soc_codes": [
+      "27-1022"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Fashion Merchandising",
+    "award_type": "AS",
+    "cip_code": "52.1902",
+    "florida_cip_code": "1252190200",
+    "plan_code": "22020",
+    "soc_codes": [
+      "41-4012"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Film Production Technology",
+    "award_type": "AS",
+    "cip_code": "50.0602",
+    "florida_cip_code": "1650060213",
+    "plan_code": "26044",
+    "soc_codes": [
+      "27-4032"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Financial Services - Banking",
+    "award_type": "AS",
+    "cip_code": "52.0801",
+    "florida_cip_code": "1252080100",
+    "plan_code": "22026",
+    "soc_codes": [
+      "11-3031"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Financial Services - Wealth Management",
+    "award_type": "AS",
+    "cip_code": "52.0801",
+    "florida_cip_code": "1252080100",
+    "plan_code": "22024",
+    "soc_codes": [
+      "11-3031"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Fire Science Technology",
+    "award_type": "AS",
+    "cip_code": "43.0201",
+    "florida_cip_code": "1743020112",
+    "plan_code": "27018",
+    "soc_codes": [
+      "33-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Funeral Services",
+    "award_type": "AS",
+    "cip_code": "12.0301",
+    "florida_cip_code": "1312030100",
+    "plan_code": "23049",
+    "soc_codes": [
+      "11-9171"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Game Development & Design",
+    "award_type": "AS",
+    "cip_code": "50.0411",
+    "florida_cip_code": "1550041100",
+    "plan_code": "25075",
+    "soc_codes": [
+      "15-1132"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Graphic Design Technology",
+    "award_type": "AS",
+    "cip_code": "11.0803",
+    "florida_cip_code": "1611080300",
+    "plan_code": "26031",
+    "soc_codes": [
+      "27-1024"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Graphic Internet Technology",
+    "award_type": "AS",
+    "cip_code": "11.0801",
+    "florida_cip_code": "1611080103",
+    "plan_code": "26050",
+    "soc_codes": [
+      "15-1134"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Health Information Technology",
+    "award_type": "AS",
+    "cip_code": "51.0707",
+    "florida_cip_code": "1351070700",
+    "plan_code": "23052",
+    "soc_codes": [
+      "29-2071"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Health Sciences",
+    "award_type": "AS",
+    "cip_code": "51.0701",
+    "florida_cip_code": "1351070101",
+    "plan_code": "23081",
+    "soc_codes": [
+      "11-9111"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Health Sciences - Health Services Management",
+    "award_type": "AS",
+    "cip_code": "51.0701",
+    "florida_cip_code": "1351070101",
+    "plan_code": "23082",
+    "soc_codes": [
+      "11-9111"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Histologic Technology",
+    "award_type": "AS",
+    "cip_code": "51.1008",
+    "florida_cip_code": "1351100800",
+    "plan_code": "23064",
+    "soc_codes": [
+      "29-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Hospitality & Tourism Management",
+    "award_type": "AS",
+    "cip_code": "52.0901",
+    "florida_cip_code": "1252090101",
+    "plan_code": "22016",
+    "soc_codes": [
+      "11-9081"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Interior Design Technology",
+    "award_type": "AS",
+    "cip_code": "50.0408",
+    "florida_cip_code": "1450040801",
+    "plan_code": "26030",
+    "soc_codes": [
+      "27-1029"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Landscape & Horticulture Technology",
+    "award_type": "AS",
+    "cip_code": "01.0605",
+    "florida_cip_code": "1101060502",
+    "plan_code": "21005",
+    "soc_codes": [
+      "37-1012"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Marketing",
+    "award_type": "AS",
+    "cip_code": "52.1401",
+    "florida_cip_code": "1252140101",
+    "plan_code": "25047",
+    "soc_codes": [
+      "11-2021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Music Business - Business Management",
+    "award_type": "AS",
+    "cip_code": "50.0913",
+    "florida_cip_code": "1650091300",
+    "plan_code": "25019",
+    "soc_codes": [
+      "27-2041"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Music Business - Performance and Production",
+    "award_type": "AS",
+    "cip_code": "50.0913",
+    "florida_cip_code": "1650091300",
+    "plan_code": "25044",
+    "soc_codes": [
+      "27-2041"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Networking Services Technology - Enterprise Cloud Computing",
+    "award_type": "AS",
+    "cip_code": "11.1001",
+    "florida_cip_code": "1511100112",
+    "plan_code": "25077",
+    "soc_codes": [
+      "15-1152"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Networking Services Technology - Network Infrastructure",
+    "award_type": "AS",
+    "cip_code": "11.1001",
+    "florida_cip_code": "1511100112",
+    "plan_code": "25062",
+    "soc_codes": [
+      "15-1152"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Nuclear Medicine Technology",
+    "award_type": "AS",
+    "cip_code": "51.0905",
+    "florida_cip_code": "1351090502",
+    "plan_code": "23068",
+    "soc_codes": [
+      "29-2033"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Nursing - R.N. (Accelerated)",
+    "award_type": "AS",
+    "cip_code": "51.3801",
+    "florida_cip_code": "1351380100",
+    "plan_code": "23031",
+    "soc_codes": [
+      "29-1141"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Nursing - R.N. (Generic Full-Time)",
+    "award_type": "AS",
+    "cip_code": "51.3801",
+    "florida_cip_code": "1351380100",
+    "plan_code": "23028",
+    "soc_codes": [
+      "29-1141"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Nursing - R.N. (Generic Part-Time)",
+    "award_type": "AS",
+    "cip_code": "51.3801",
+    "florida_cip_code": "1351380100",
+    "plan_code": "23027",
+    "soc_codes": [
+      "29-1141"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Nursing - R.N. (Transitional Full-Time)",
+    "award_type": "AS",
+    "cip_code": "51.3801",
+    "florida_cip_code": "1351380100",
+    "plan_code": "23025",
+    "soc_codes": [
+      "29-1141"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Nursing - R.N. (Transitional Part-Time)",
+    "award_type": "AS",
+    "cip_code": "51.3801",
+    "florida_cip_code": "1351380100",
+    "plan_code": "23026",
+    "soc_codes": [
+      "29-1141"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Opticianry",
+    "award_type": "AS",
+    "cip_code": "51.1801",
+    "florida_cip_code": "1351180100",
+    "plan_code": "23041",
+    "soc_codes": [
+      "29-2081"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Paralegal Studies - ABA Approved",
+    "award_type": "AS",
+    "cip_code": "22.0302",
+    "florida_cip_code": "1722030200",
+    "plan_code": "27013",
+    "soc_codes": [
+      "23-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Photographic Technology",
+    "award_type": "AS",
+    "cip_code": "50.0605",
+    "florida_cip_code": "1650060500",
+    "plan_code": "26032",
+    "soc_codes": [
+      "27-4021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Physical Therapist Assistant",
+    "award_type": "AS",
+    "cip_code": "51.0806",
+    "florida_cip_code": "1351080601",
+    "plan_code": "23034",
+    "soc_codes": [
+      "31-2021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Radiation Therapy",
+    "award_type": "AS",
+    "cip_code": "51.0907",
+    "florida_cip_code": "1351090701",
+    "plan_code": "23058",
+    "soc_codes": [
+      "29-1124"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Radio & Television Broadcast Programming",
+    "award_type": "AS",
+    "cip_code": "10.0202",
+    "florida_cip_code": "1610020202",
+    "plan_code": "26043",
+    "soc_codes": [
+      "27-4032"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Radiography",
+    "award_type": "AS",
+    "cip_code": "51.0911",
+    "florida_cip_code": "1351091100",
+    "plan_code": "23037",
+    "soc_codes": [
+      "29-2034"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Respiratory Care",
+    "award_type": "AS",
+    "cip_code": "51.0908",
+    "florida_cip_code": "1351090800",
+    "plan_code": "23046",
+    "soc_codes": [
+      "29-1126"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Respiratory Care (Accelerated)",
+    "award_type": "AS",
+    "cip_code": "51.0908",
+    "florida_cip_code": "1351090800",
+    "plan_code": "23067",
+    "soc_codes": [
+      "29-1126"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Sign Language Interpretation",
+    "award_type": "AS",
+    "cip_code": "13.1003",
+    "florida_cip_code": "1713100305",
+    "plan_code": "23033",
+    "soc_codes": [
+      "27-3091"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Social and Human Services - Addictions Studies",
+    "award_type": "AS",
+    "cip_code": "51.1599",
+    "florida_cip_code": "1451159901",
+    "plan_code": "25067",
+    "soc_codes": [
+      "21-1093"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Social and Human Services - Generalist",
+    "award_type": "AS",
+    "cip_code": "51.1599",
+    "florida_cip_code": "1451159901",
+    "plan_code": "25026",
+    "soc_codes": [
+      "21-1093"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Surgical Technology",
+    "award_type": "AS",
+    "cip_code": "51.0909",
+    "florida_cip_code": "1351090901",
+    "plan_code": "23077",
+    "soc_codes": [
+      "29-2055"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Translation/Interpretation Studies",
+    "award_type": "AS",
+    "cip_code": "13.1003",
+    "florida_cip_code": "1713100304",
+    "plan_code": "24050",
+    "soc_codes": [
+      "27-3091"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Sport Management",
+    "award_type": "AS",
+    "cip_code": "31.0504",
+    "florida_cip_code": "1531050100",
+    "plan_code": "28010",
+    "soc_codes": [
+      "11-9072"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Transportation and Logistics",
+    "award_type": "AS",
+    "cip_code": "52.0203",
+    "florida_cip_code": "1652020301",
+    "plan_code": "28000",
+    "soc_codes": [
+      "11-3071"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Veterinary Technology",
+    "award_type": "AS",
+    "cip_code": "01.8301",
+    "florida_cip_code": "1301830100",
+    "plan_code": "23065",
+    "soc_codes": [
+      "29-2056"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Museum Studies",
+    "award_type": "ATC",
+    "cip_code": "50.0102",
+    "florida_cip_code": "0650010266",
+    "plan_code": "C6050",
+    "soc_codes": [
+      "25-4013"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Certified Flight Instructor",
+    "award_type": "ATC",
+    "cip_code": "49.0102",
+    "florida_cip_code": "0649010266",
+    "plan_code": "C6027",
+    "soc_codes": [
+      "53-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Compensation and Benefits",
+    "award_type": "ATC",
+    "cip_code": "52.0201",
+    "florida_cip_code": "0552020166",
+    "plan_code": "C6002",
+    "soc_codes": [
+      "11-3111"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Hospitality Management",
+    "award_type": "ATC",
+    "cip_code": "52.0901",
+    "florida_cip_code": "0252090166",
+    "plan_code": "C6000",
+    "soc_codes": [
+      "11-9081"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Human Resources Management",
+    "award_type": "ATC",
+    "cip_code": "52.0201",
+    "florida_cip_code": "0552020166",
+    "plan_code": "C6001",
+    "soc_codes": [
+      "11-3121"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Procurement Management",
+    "award_type": "ATC",
+    "cip_code": "52.0209",
+    "florida_cip_code": "0652020967",
+    "plan_code": "C6003",
+    "soc_codes": [
+      "11-3071"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Project Management",
+    "award_type": "ATC",
+    "cip_code": "52.0209",
+    "florida_cip_code": "0652020968",
+    "plan_code": "C6004",
+    "soc_codes": [
+      "11-3071"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Supply Chain Analytics",
+    "award_type": "ATC",
+    "cip_code": "52.0203",
+    "florida_cip_code": "0652020366",
+    "plan_code": "C6005",
+    "soc_codes": [
+      "11-3071"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Computed Tomography",
+    "award_type": "ATC",
+    "cip_code": "61.2612",
+    "florida_cip_code": "0351091166",
+    "plan_code": "C6037",
+    "soc_codes": [
+      "29-2034"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Magnetic Resonance Imaging",
+    "award_type": "ATC",
+    "cip_code": "51.0920",
+    "florida_cip_code": "0351091066",
+    "plan_code": "C6036",
+    "soc_codes": [
+      "29-3025"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Biotechnology",
+    "award_type": "ATC",
+    "cip_code": "41.0101",
+    "florida_cip_code": "0341010166",
+    "plan_code": "C6028",
+    "soc_codes": [
+      "19-4021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Biotechnology - Bioinformatics",
+    "award_type": "ATC",
+    "cip_code": "41.0101",
+    "florida_cip_code": "0341010166",
+    "plan_code": "C6029",
+    "soc_codes": [
+      "19-4021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Biotechnology - Chemical Technology",
+    "award_type": "ATC",
+    "cip_code": "41.0101",
+    "florida_cip_code": "0341010166",
+    "plan_code": "C6030",
+    "soc_codes": [
+      "19-4021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Leadership and Management Innovation",
+    "award_type": "BAS",
+    "cip_code": "52.0299",
+    "florida_cip_code": "1105202991",
+    "plan_code": "P9200",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Leadership and Management Innovation - Accounting",
+    "award_type": "BAS",
+    "cip_code": "52.0299",
+    "florida_cip_code": "1105202991",
+    "plan_code": "P9203",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Leadership and Management Innovation - Digital Marketing Concentration",
+    "award_type": "BAS",
+    "cip_code": "52.0299",
+    "florida_cip_code": "1105202991",
+    "plan_code": "P9204",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Leadership and Management Innovation - Hospitality Management",
+    "award_type": "BAS",
+    "cip_code": "52.0299",
+    "florida_cip_code": "1105202991",
+    "plan_code": "P9201",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Leadership and Management Innovation - Human Resource Management",
+    "award_type": "BAS",
+    "cip_code": "52.0299",
+    "florida_cip_code": "1105202991",
+    "plan_code": "P9202",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Supply Chain Management",
+    "award_type": "BAS",
+    "cip_code": "52.0203",
+    "florida_cip_code": "1105202032",
+    "plan_code": "P9300",
+    "soc_codes": [
+      "11-3071"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Supply Chain Management - Procurement Management",
+    "award_type": "BAS",
+    "cip_code": "52.0203",
+    "florida_cip_code": "1105202032",
+    "plan_code": "P9301",
+    "soc_codes": [
+      "11-3071"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Supply Chain Management - Project Management",
+    "award_type": "BAS",
+    "cip_code": "52.0203",
+    "florida_cip_code": "1105202032",
+    "plan_code": "P9302",
+    "soc_codes": [
+      "11-3071"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Supply Chain Management - Supply Chain Analytics",
+    "award_type": "BAS",
+    "cip_code": "52.0203",
+    "florida_cip_code": "1105202032",
+    "plan_code": "P9303",
+    "soc_codes": [
+      "11-3071"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Film, Television & Digital Production",
+    "award_type": "BAS",
+    "cip_code": "50.0602",
+    "florida_cip_code": "1105006021",
+    "plan_code": "P9220",
+    "soc_codes": [
+      "27-2012"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Clinical Laboratory Science",
+    "award_type": "BAS",
+    "cip_code": "51.0000",
+    "florida_cip_code": "1105100002",
+    "plan_code": "P9211",
+    "soc_codes": [
+      "29-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Health Science - Histotechnology Concentration",
+    "award_type": "BAS",
+    "cip_code": "51.0000",
+    "florida_cip_code": "1105100002",
+    "plan_code": "P9212",
+    "soc_codes": [
+      "29-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Health Science - Physician Assistant Studies Concentration",
+    "award_type": "BAS",
+    "cip_code": "51.0000",
+    "florida_cip_code": "1105100002",
+    "plan_code": "P9210",
+    "soc_codes": [
+      "29-1071"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Public Safety Management - Crime Scene Investigation Option",
+    "award_type": "BAS",
+    "cip_code": "43.9999",
+    "florida_cip_code": "1104399991",
+    "plan_code": "P9106",
+    "soc_codes": [
+      "99-9999"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Public Safety Management - Criminal Justice Option",
+    "award_type": "BAS",
+    "cip_code": "43.9999",
+    "florida_cip_code": "1104399991",
+    "plan_code": "P9110",
+    "soc_codes": [
+      "99-9999"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Public Safety Management - Emergency Management Option",
+    "award_type": "BAS",
+    "cip_code": "43.9999",
+    "florida_cip_code": "1104399991",
+    "plan_code": "P9105",
+    "soc_codes": [
+      "99-9999"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Bachelor of Science in Nursing (RN to BSN)",
+    "award_type": "BS",
+    "cip_code": "51.3801",
+    "florida_cip_code": "1105138012",
+    "plan_code": "N9100",
+    "soc_codes": [
+      "29-1141"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Early Childhood Education",
+    "award_type": "BS",
+    "cip_code": "13.1210",
+    "florida_cip_code": "1101312101",
+    "plan_code": "S9270",
+    "soc_codes": [
+      "25-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Exceptional Student Education (K-12)",
+    "award_type": "BS",
+    "cip_code": "13.1001",
+    "florida_cip_code": "1101310011",
+    "plan_code": "S9260",
+    "soc_codes": [
+      "25-2059"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Secondary Mathematics Education",
+    "award_type": "BS",
+    "cip_code": "13.1311",
+    "florida_cip_code": "1101313111",
+    "plan_code": "S9250",
+    "soc_codes": [
+      "25-1022"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Secondary Science Education - Biology",
+    "award_type": "BS",
+    "cip_code": "13.1322",
+    "florida_cip_code": "1101313221",
+    "plan_code": "S9210",
+    "soc_codes": [
+      "25-1042"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Applied Artificial Intelligence",
+    "award_type": "BS",
+    "cip_code": "11.0102",
+    "florida_cip_code": "1101101021",
+    "plan_code": "S9520",
+    "soc_codes": [
+      "15-1256"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Cybersecurity",
+    "award_type": "BS",
+    "cip_code": "11.1003",
+    "florida_cip_code": "1101110031",
+    "plan_code": "S9515",
+    "soc_codes": [
+      "15-1212"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Data Analytics",
+    "award_type": "BS",
+    "cip_code": "30.7101",
+    "florida_cip_code": "1103071011",
+    "plan_code": "S9510",
+    "soc_codes": [
+      "15-2051"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Electrical and Computer Engineering Technology",
+    "award_type": "BS",
+    "cip_code": "15.0303",
+    "florida_cip_code": "1101503031",
+    "plan_code": "S9100",
+    "soc_codes": [
+      "17-3023"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Information Systems Technology - Networking Concentration",
+    "award_type": "BS",
+    "cip_code": "11.0103",
+    "florida_cip_code": "1101101034",
+    "plan_code": "S9500",
+    "soc_codes": [
+      "11-3021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Information Systems Technology - Software Engineering Concentration",
+    "award_type": "BS",
+    "cip_code": "11.0103",
+    "florida_cip_code": "1101101034",
+    "plan_code": "S9501",
+    "soc_codes": [
+      "11-3021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Biological Sciences - Biopharmaceutical Sciences Concentration",
+    "award_type": "BS",
+    "cip_code": "26.0101",
+    "florida_cip_code": "1102601011",
+    "plan_code": "S9121",
+    "soc_codes": [
+      "19-1029"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Biological Sciences - Biotechnology Concentration",
+    "award_type": "BS",
+    "cip_code": "26.0101",
+    "florida_cip_code": "1102601011",
+    "plan_code": "S9120",
+    "soc_codes": [
+      "19-1029"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Biological Sciences - Science Education",
+    "award_type": "BS",
+    "cip_code": "26.0101",
+    "florida_cip_code": "1102601011",
+    "plan_code": "S9122",
+    "soc_codes": [
+      "19-1029"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Accounting and Budgeting",
+    "award_type": "CCC",
+    "cip_code": "52.0302",
+    "florida_cip_code": "0552030203",
+    "plan_code": "65075",
+    "soc_codes": [
+      "43-3031"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Accounting Technology Management",
+    "award_type": "CCC",
+    "cip_code": "52.0302",
+    "florida_cip_code": "0552030205",
+    "plan_code": "65077",
+    "soc_codes": [
+      "43-3031"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Addiction Studies",
+    "award_type": "CCC",
+    "cip_code": "15.1501",
+    "florida_cip_code": "0451150100",
+    "plan_code": "65078",
+    "soc_codes": [
+      "21-1093"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Air Cargo Management",
+    "award_type": "CCC",
+    "cip_code": "49.0104",
+    "florida_cip_code": "0649010404",
+    "plan_code": "66030",
+    "soc_codes": [
+      "53-1011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Airline Maintenance Procedures and Records Management",
+    "award_type": "CCC",
+    "cip_code": "49.0104",
+    "florida_cip_code": "0649010411",
+    "plan_code": "63018",
+    "soc_codes": [
+      "49-1011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Airline/Aviation Management",
+    "award_type": "CCC",
+    "cip_code": "49.0104",
+    "florida_cip_code": "0649010403",
+    "plan_code": "63012",
+    "soc_codes": [
+      "53-2021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Airport Management",
+    "award_type": "CCC",
+    "cip_code": "49.0104",
+    "florida_cip_code": "0649010405",
+    "plan_code": "63017",
+    "soc_codes": [
+      "53-2021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "American Sign Language",
+    "award_type": "CCC",
+    "cip_code": "13.1003",
+    "florida_cip_code": "0713100307",
+    "plan_code": "64053",
+    "soc_codes": [
+      "21-1093"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Artificial Intelligence Awareness",
+    "award_type": "CCC",
+    "cip_code": "11.0201",
+    "florida_cip_code": "0511020113",
+    "plan_code": "66040",
+    "soc_codes": [
+      "15-1251"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Artificial Intelligence Practitioner",
+    "award_type": "CCC",
+    "cip_code": "11.0102",
+    "florida_cip_code": "0511010200",
+    "plan_code": "66041",
+    "soc_codes": [
+      "15-1252"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Audio Technology",
+    "award_type": "CCC",
+    "cip_code": "10.0203",
+    "florida_cip_code": "0610020303",
+    "plan_code": "61000",
+    "soc_codes": [
+      "27-4011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Automation",
+    "award_type": "CCC",
+    "cip_code": "15.0406",
+    "florida_cip_code": "0615040601",
+    "plan_code": "68000",
+    "soc_codes": [
+      "17-3027"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Biotechnology",
+    "award_type": "CCC",
+    "cip_code": "41.0101",
+    "florida_cip_code": "0641010100",
+    "plan_code": "60002",
+    "soc_codes": [
+      "19-4021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Building Construction Specialist",
+    "award_type": "CCC",
+    "cip_code": "15.1001",
+    "florida_cip_code": "0615100103",
+    "plan_code": "66025",
+    "soc_codes": [
+      "11-9021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Entrepreneurship Operations - Family-Owned Business",
+    "award_type": "CCC",
+    "cip_code": "52.0703",
+    "florida_cip_code": "0552070303",
+    "plan_code": "65109",
+    "soc_codes": [
+      "11-9179"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Entrepreneurship Operations - Social Venture",
+    "award_type": "CCC",
+    "cip_code": "52.0703",
+    "florida_cip_code": "0552070303",
+    "plan_code": "65111",
+    "soc_codes": [
+      "11-9179"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Entrepreneurship Specialist - Family-Owned Business",
+    "award_type": "CCC",
+    "cip_code": "52.0703",
+    "florida_cip_code": "0552070308",
+    "plan_code": "65098",
+    "soc_codes": [
+      "11-9179"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Entrepreneurship Specialist - Social Venture",
+    "award_type": "CCC",
+    "cip_code": "52.0703",
+    "florida_cip_code": "0552070308",
+    "plan_code": "65097",
+    "soc_codes": [
+      "11-9179"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Entrepreneurship Specialist - Start-Up Venture",
+    "award_type": "CCC",
+    "cip_code": "52.0703",
+    "florida_cip_code": "0552070308",
+    "plan_code": "65101",
+    "soc_codes": [
+      "11-9179"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Industry Operations",
+    "award_type": "CCC",
+    "cip_code": "52.0205",
+    "florida_cip_code": "0652020502",
+    "plan_code": "65061",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Intelligence Professional",
+    "award_type": "CCC",
+    "cip_code": "52.1301",
+    "florida_cip_code": "0552130101",
+    "plan_code": "66038",
+    "soc_codes": [
+      "15-1199"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Operations - Business Management",
+    "award_type": "CCC",
+    "cip_code": "52.0201",
+    "florida_cip_code": "0552020104",
+    "plan_code": "65022",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Operations - Human Resources",
+    "award_type": "CCC",
+    "cip_code": "52.0201",
+    "florida_cip_code": "0552020104",
+    "plan_code": "65025",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Operations - Marketing",
+    "award_type": "CCC",
+    "cip_code": "52.0201",
+    "florida_cip_code": "0552020104",
+    "plan_code": "65027",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Operations - Small Business",
+    "award_type": "CCC",
+    "cip_code": "52.0201",
+    "florida_cip_code": "0552020104",
+    "plan_code": "65031",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Specialist - Business Management",
+    "award_type": "CCC",
+    "cip_code": "52.0201",
+    "florida_cip_code": "0552020103",
+    "plan_code": "65011",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Specialist - General Business",
+    "award_type": "CCC",
+    "cip_code": "52.0201",
+    "florida_cip_code": "0552020103",
+    "plan_code": "65100",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Specialist - Human Resources",
+    "award_type": "CCC",
+    "cip_code": "52.0201",
+    "florida_cip_code": "0552020103",
+    "plan_code": "65014",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Specialist - International Business",
+    "award_type": "CCC",
+    "cip_code": "52.0201",
+    "florida_cip_code": "0552020103",
+    "plan_code": "65015",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Specialist - Marketing",
+    "award_type": "CCC",
+    "cip_code": "52.0201",
+    "florida_cip_code": "0552020103",
+    "plan_code": "65016",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Business Specialist - Small Business",
+    "award_type": "CCC",
+    "cip_code": "52.0201",
+    "florida_cip_code": "0552020103",
+    "plan_code": "65020",
+    "soc_codes": [
+      "11-1021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Chef Apprentice",
+    "award_type": "CCC",
+    "cip_code": "12.0503",
+    "florida_cip_code": "0612050302",
+    "plan_code": "65059",
+    "soc_codes": [
+      "35-2014"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Cisco Certified Network Associate (CCNA)",
+    "award_type": "CCC",
+    "cip_code": "11.1001",
+    "florida_cip_code": "0511100114",
+    "plan_code": "66050",
+    "soc_codes": [
+      "15-1152"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Commercial Transport Pilot",
+    "award_type": "CCC",
+    "cip_code": "49.0102",
+    "florida_cip_code": "0649010202",
+    "plan_code": "68012",
+    "soc_codes": [
+      "53-2012"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Computer Aided Design Assistant",
+    "award_type": "CCC",
+    "cip_code": "15.1303",
+    "florida_cip_code": "0615130304",
+    "plan_code": "66070",
+    "soc_codes": [
+      "17-3026"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Computer Aided Design Operator",
+    "award_type": "CCC",
+    "cip_code": "15.1302",
+    "florida_cip_code": "0615130204",
+    "plan_code": "66071",
+    "soc_codes": [
+      "17-3011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Computer Programmer - Business Applications",
+    "award_type": "CCC",
+    "cip_code": "11.0202",
+    "florida_cip_code": "0511020200",
+    "plan_code": "66045",
+    "soc_codes": [
+      "15-1131"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Computer Programmer - Mobile Applications Development",
+    "award_type": "CCC",
+    "cip_code": "11.0202",
+    "florida_cip_code": "0511020200",
+    "plan_code": "66036",
+    "soc_codes": [
+      "15-1131"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Crime Scene Technician",
+    "award_type": "CCC",
+    "cip_code": "43.0406",
+    "florida_cip_code": "0743040600",
+    "plan_code": "66072",
+    "soc_codes": [
+      "19-4092"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Cruise Line Operations",
+    "award_type": "CCC",
+    "cip_code": "52.0901",
+    "florida_cip_code": "0252090102",
+    "plan_code": "65053",
+    "soc_codes": [
+      "11-9081"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Culinary Arts Management Operations",
+    "award_type": "CCC",
+    "cip_code": "12.0504",
+    "florida_cip_code": "0612050401",
+    "plan_code": "65060",
+    "soc_codes": [
+      "35-2014"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Cybersecurity Analyst",
+    "award_type": "CCC",
+    "cip_code": "11.1003",
+    "florida_cip_code": "0511100314",
+    "plan_code": "66061",
+    "soc_codes": [
+      "15-1212"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Digital Marketing Specialist",
+    "award_type": "CCC",
+    "cip_code": "52.1401",
+    "florida_cip_code": "0252140112",
+    "plan_code": "65096",
+    "soc_codes": [
+      "11-2021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Digital Marketing Strategy",
+    "award_type": "CCC",
+    "cip_code": "52.1404",
+    "florida_cip_code": "0252140400",
+    "plan_code": "65102",
+    "soc_codes": [
+      "11-2021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Early Childhood Education - Administrator",
+    "award_type": "CCC",
+    "cip_code": "19.0709",
+    "florida_cip_code": "0419070906",
+    "plan_code": "60004",
+    "soc_codes": [
+      "11-9031"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Early Childhood Education - Child Development Early Intervention Specialization",
+    "award_type": "CCC",
+    "cip_code": "19.0709",
+    "florida_cip_code": "0419070904",
+    "plan_code": "60007",
+    "soc_codes": [
+      "25-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Early Childhood Education - Early Childhood Education Inclusion Specialization",
+    "award_type": "CCC",
+    "cip_code": "13.1210",
+    "florida_cip_code": "0413121000",
+    "plan_code": "60006",
+    "soc_codes": [
+      "25-2051"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Early Childhood Education - Preschool",
+    "award_type": "CCC",
+    "cip_code": "19.0709",
+    "florida_cip_code": "0419070908",
+    "plan_code": "60003",
+    "soc_codes": [
+      "25-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Emergency Medical Technician",
+    "award_type": "CCC",
+    "cip_code": "51.0904",
+    "florida_cip_code": "0351090415",
+    "plan_code": "63013",
+    "soc_codes": [
+      "29-2041"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Endoscopic Technician",
+    "award_type": "CCC",
+    "cip_code": "51.0999",
+    "florida_cip_code": "0351099902",
+    "plan_code": "63030",
+    "soc_codes": [
+      "31-9099"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Engineering Technology Support Specialist",
+    "award_type": "CCC",
+    "cip_code": "15.0000",
+    "florida_cip_code": "0615000007",
+    "plan_code": "66052",
+    "soc_codes": [
+      "17-3029"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Enterprise Cloud Computing",
+    "award_type": "CCC",
+    "cip_code": "11.1001",
+    "florida_cip_code": "0511100116",
+    "plan_code": "66058",
+    "soc_codes": [
+      "15-1142"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Film Production Fundamentals",
+    "award_type": "CCC",
+    "cip_code": "50.0602",
+    "florida_cip_code": "0650060203",
+    "plan_code": "61001",
+    "soc_codes": [
+      "27-4099"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Florida Funeral Director",
+    "award_type": "CCC",
+    "cip_code": "12.0301",
+    "florida_cip_code": "0312030102",
+    "plan_code": "63024",
+    "soc_codes": [
+      "39-4031"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Food and Beverage Management",
+    "award_type": "CCC",
+    "cip_code": "52.0905",
+    "florida_cip_code": "0252090503",
+    "plan_code": "65051",
+    "soc_codes": [
+      "11-9051"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Food and Beverage Operations",
+    "award_type": "CCC",
+    "cip_code": "52.0905",
+    "florida_cip_code": "0252090508",
+    "plan_code": "65058",
+    "soc_codes": [
+      "11-9051"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Food and Beverage Specialist",
+    "award_type": "CCC",
+    "cip_code": "52.0905",
+    "florida_cip_code": "0252090507",
+    "plan_code": "65057",
+    "soc_codes": [
+      "11-9051"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Geographic Information Systems (GIS) Technology",
+    "award_type": "CCC",
+    "cip_code": "45.0702",
+    "florida_cip_code": "0545070213",
+    "plan_code": "66080",
+    "soc_codes": [
+      "17-3031"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Graphic Design Support",
+    "award_type": "CCC",
+    "cip_code": "11.0803",
+    "florida_cip_code": "0611080302",
+    "plan_code": "61002",
+    "soc_codes": [
+      "27-1024"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Health Care Services Specialist",
+    "award_type": "CCC",
+    "cip_code": "51.0701",
+    "florida_cip_code": "0351070102",
+    "plan_code": "63021",
+    "soc_codes": [
+      "11-9111"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Healthcare Informatics Specialist",
+    "award_type": "CCC",
+    "cip_code": "51.0707",
+    "florida_cip_code": "0351070712",
+    "plan_code": "63014",
+    "soc_codes": [
+      "29-2072"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Help Desk Support Technician",
+    "award_type": "CCC",
+    "cip_code": "11.0103",
+    "florida_cip_code": "0511010313",
+    "plan_code": "66037",
+    "soc_codes": [
+      "15-1211"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Homeland Security",
+    "award_type": "CCC",
+    "cip_code": "43.0103",
+    "florida_cip_code": "0743010306",
+    "plan_code": "66074",
+    "soc_codes": [
+      "33-1012"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Horticulture Professional",
+    "award_type": "CCC",
+    "cip_code": "01.0605",
+    "florida_cip_code": "0101060504",
+    "plan_code": "63025",
+    "soc_codes": [
+      "37-1012"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Horticulture Specialist",
+    "award_type": "CCC",
+    "cip_code": "01.0605",
+    "florida_cip_code": "0101060503",
+    "plan_code": "63026",
+    "soc_codes": [
+      "37-3011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Infant/Toddler Specialization",
+    "award_type": "CCC",
+    "cip_code": "19.0709",
+    "florida_cip_code": "0419070907",
+    "plan_code": "67014",
+    "soc_codes": [
+      "25-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Information Technology Support",
+    "award_type": "CCC",
+    "cip_code": "11.0103",
+    "florida_cip_code": "0511010311",
+    "plan_code": "66044",
+    "soc_codes": [
+      "15-1212"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Intelligence Studies",
+    "award_type": "CCC",
+    "cip_code": "43.0403",
+    "florida_cip_code": "0743040300",
+    "plan_code": "66075",
+    "soc_codes": [
+      "15-1212"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Intermodal Freight Transportation",
+    "award_type": "CCC",
+    "cip_code": "52.0203",
+    "florida_cip_code": "0652020303",
+    "plan_code": "68011",
+    "soc_codes": [
+      "11-3071"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "International Freight Transportation",
+    "award_type": "CCC",
+    "cip_code": "52.0203",
+    "florida_cip_code": "0652020302",
+    "plan_code": "68010",
+    "soc_codes": [
+      "11-3071"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Internet of Things (IoT) Applications",
+    "award_type": "CCC",
+    "cip_code": "11.0201",
+    "florida_cip_code": "0511020110",
+    "plan_code": "66057",
+    "soc_codes": [
+      "15-1252"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Lean Manufacturing",
+    "award_type": "CCC",
+    "cip_code": "15.0613",
+    "florida_cip_code": "0615061302",
+    "plan_code": "68001",
+    "soc_codes": [
+      "17-3027"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Lending",
+    "award_type": "CCC",
+    "cip_code": "52.0801",
+    "florida_cip_code": "0252080113",
+    "plan_code": "65080",
+    "soc_codes": [
+      "13-2072"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Logistics and Transportation Specialist",
+    "award_type": "CCC",
+    "cip_code": "52.0209",
+    "florida_cip_code": "0652020901",
+    "plan_code": "63019",
+    "soc_codes": [
+      "11-3071"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Mechatronics",
+    "award_type": "CCC",
+    "cip_code": "15.0000",
+    "florida_cip_code": "0615000013",
+    "plan_code": "66053",
+    "soc_codes": [
+      "17-3024"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Medical Coder/Biller",
+    "award_type": "CCC",
+    "cip_code": "51.0714",
+    "florida_cip_code": "0351071404",
+    "plan_code": "63020",
+    "soc_codes": [
+      "43-3021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Mental Health - Neuroscience and Aging",
+    "award_type": "CCC",
+    "cip_code": "51.1599",
+    "florida_cip_code": "0451159902",
+    "plan_code": "65079",
+    "soc_codes": [
+      "21-1093"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Microcomputer Repairer/Installer",
+    "award_type": "CCC",
+    "cip_code": "47.0104",
+    "florida_cip_code": "0647010406",
+    "plan_code": "66032",
+    "soc_codes": [
+      "15-1151"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Network Server Administration",
+    "award_type": "CCC",
+    "cip_code": "11.1001",
+    "florida_cip_code": "0511100112",
+    "plan_code": "66035",
+    "soc_codes": [
+      "15-1142"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Network Systems Developer",
+    "award_type": "CCC",
+    "cip_code": "11.1001",
+    "florida_cip_code": "0511100115",
+    "plan_code": "66034",
+    "soc_codes": [
+      "15-1231"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Oracle Certified Database Administrator",
+    "award_type": "CCC",
+    "cip_code": "11.0203",
+    "florida_cip_code": "0511020307",
+    "plan_code": "66048",
+    "soc_codes": [
+      "15-1252"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Paramedic",
+    "award_type": "CCC",
+    "cip_code": "51.0904",
+    "florida_cip_code": "0351090405",
+    "plan_code": "63008",
+    "soc_codes": [
+      "29-2043"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Passenger Service Agent",
+    "award_type": "CCC",
+    "cip_code": "49.0104",
+    "florida_cip_code": "0649010406",
+    "plan_code": "66028",
+    "soc_codes": [
+      "11-3071"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Patternmaking and Construction",
+    "award_type": "CCC",
+    "cip_code": "50.0407",
+    "florida_cip_code": "0450040702",
+    "plan_code": "64002",
+    "soc_codes": [
+      "27-1022"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Rapid Prototyping Specialist",
+    "award_type": "CCC",
+    "cip_code": "15.1302",
+    "florida_cip_code": "0615130211",
+    "plan_code": "66054",
+    "soc_codes": [
+      "17-3029"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Real Estate Legal Specialization Certificate",
+    "award_type": "CCC",
+    "cip_code": "22.0302",
+    "florida_cip_code": "0722030203",
+    "plan_code": "67015",
+    "soc_codes": [
+      "23-2099"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Rooms Division Management",
+    "award_type": "CCC",
+    "cip_code": "52.0904",
+    "florida_cip_code": "0252090402",
+    "plan_code": "65048",
+    "soc_codes": [
+      "11-9081"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Rooms Division Operations",
+    "award_type": "CCC",
+    "cip_code": "52.0904",
+    "florida_cip_code": "0252090406",
+    "plan_code": "65056",
+    "soc_codes": [
+      "11-9081"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Sales and Customer Management",
+    "award_type": "CCC",
+    "cip_code": "52.1804",
+    "florida_cip_code": "0252180400",
+    "plan_code": "65107",
+    "soc_codes": [
+      "41-3091"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Solar Energy Systems Specialist",
+    "award_type": "CCC",
+    "cip_code": "15.1701",
+    "florida_cip_code": "0615170101",
+    "plan_code": "66056",
+    "soc_codes": [
+      "17-3029"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Sport Management Operations",
+    "award_type": "CCC",
+    "cip_code": "52.0201",
+    "florida_cip_code": "0552020117",
+    "plan_code": "65120",
+    "soc_codes": [
+      "39-1098"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Tax Specialist",
+    "award_type": "CCC",
+    "cip_code": "52.0302",
+    "florida_cip_code": "0552030204",
+    "plan_code": "65076",
+    "soc_codes": [
+      "43-3031"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Television Studio Production",
+    "award_type": "CCC",
+    "cip_code": "50.0602",
+    "florida_cip_code": "0650060204",
+    "plan_code": "61003",
+    "soc_codes": [
+      "27-4099"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Translation and Interpretation",
+    "award_type": "CCC",
+    "cip_code": "13.1003",
+    "florida_cip_code": "0713100306",
+    "plan_code": "64052",
+    "soc_codes": [
+      "27-3091"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Virtual and Augmented Reality Technologies",
+    "award_type": "CCC",
+    "cip_code": "50.0411",
+    "florida_cip_code": "0550041118",
+    "plan_code": "66060",
+    "soc_codes": [
+      "27-1014"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Educator Preparation Institute",
+    "award_type": "CPP",
+    "cip_code": "13.9999",
+    "florida_cip_code": "0551399990",
+    "plan_code": "CPP01",
+    "soc_codes": [
+      "25-1081"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Instructional Design and Technology",
+    "award_type": "CPP",
+    "cip_code": "13.0301",
+    "florida_cip_code": "5551303010",
+    "plan_code": "PBC03",
+    "soc_codes": [
+      "25-9031"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Reading Endorsement",
+    "award_type": "CPP",
+    "cip_code": "13.1315",
+    "florida_cip_code": "5551313150",
+    "plan_code": "PBC02",
+    "soc_codes": [
+      "25-1081"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Cyber Defense",
+    "award_type": "CPP",
+    "cip_code": "43.0403",
+    "florida_cip_code": "5554304030",
+    "plan_code": "PBC04",
+    "soc_codes": [
+      "15-1212"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Networking",
+    "award_type": "CPP",
+    "cip_code": "11.1001",
+    "florida_cip_code": "5551110010",
+    "plan_code": "PBC05",
+    "soc_codes": [
+      "15-1244"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Software Engineering",
+    "award_type": "CPP",
+    "cip_code": "11.0201",
+    "florida_cip_code": "5551102010",
+    "plan_code": "PBC06",
+    "soc_codes": [
+      "15-1252"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Vulnerability Assessment",
+    "award_type": "CPP",
+    "cip_code": "11.1003",
+    "florida_cip_code": "5551110030",
+    "plan_code": "PBC07",
+    "soc_codes": [
+      "15-1212"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Advanced Automotive Service Technology - Tesla Technician",
+    "award_type": "CTC",
+    "cip_code": "47.0604",
+    "florida_cip_code": "0647060413",
+    "plan_code": "51000",
+    "soc_codes": [
+      "49-3023"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Central Sterile Processing Technician",
+    "award_type": "CTC",
+    "cip_code": "51.1012",
+    "florida_cip_code": "0351101201",
+    "plan_code": "53014",
+    "soc_codes": [
+      "31-9093"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Commercial Class \"B\" Driving",
+    "award_type": "CTC",
+    "cip_code": "49.0205",
+    "florida_cip_code": "0649020502",
+    "plan_code": "56016",
+    "soc_codes": [
+      "53-3032"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Commercial Vehicle Driving",
+    "award_type": "CTC",
+    "cip_code": "49.0205",
+    "florida_cip_code": "0649020500",
+    "plan_code": "56015",
+    "soc_codes": [
+      "53-3032"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Correctional Officer - State",
+    "award_type": "CTC",
+    "cip_code": "43.0102",
+    "florida_cip_code": "0743010200",
+    "plan_code": "57021",
+    "soc_codes": [
+      "33-3012"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Dental Assisting Technology and Management",
+    "award_type": "CTC",
+    "cip_code": "51.0601",
+    "florida_cip_code": "0351060112",
+    "plan_code": "53015",
+    "soc_codes": [
+      "31-9091"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Fire Fighter Minimum Standards",
+    "award_type": "CTC",
+    "cip_code": "43.0203",
+    "florida_cip_code": "0743020313",
+    "plan_code": "57004",
+    "soc_codes": [
+      "33-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Fire Fighter/Emergency Medical Technician - Combined",
+    "award_type": "CTC",
+    "cip_code": "43.0203",
+    "florida_cip_code": "0743020304",
+    "plan_code": "58000",
+    "soc_codes": [
+      "33-2011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Florida Law Enforcement Academy",
+    "award_type": "CTC",
+    "cip_code": "43.0107",
+    "florida_cip_code": "0743010700",
+    "plan_code": "57022",
+    "soc_codes": [
+      "33-3051"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Licensed Practical Nursing",
+    "award_type": "CTC",
+    "cip_code": "51.3901",
+    "florida_cip_code": "0351390101",
+    "plan_code": "53020",
+    "soc_codes": [
+      "29-2061"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Low Voltage",
+    "award_type": "CTC",
+    "cip_code": "47.0101",
+    "florida_cip_code": "0647010106",
+    "plan_code": "56010",
+    "soc_codes": [
+      "49-2097"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Massage Therapy - Accelerated Option",
+    "award_type": "CTC",
+    "cip_code": "51.3501",
+    "florida_cip_code": "0351350102",
+    "plan_code": "53022",
+    "soc_codes": [
+      "31-9011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Massage Therapy - Generic Option",
+    "award_type": "CTC",
+    "cip_code": "51.3501",
+    "florida_cip_code": "0351350102",
+    "plan_code": "53021",
+    "soc_codes": [
+      "31-9011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Massage Therapy - Transitional Option",
+    "award_type": "CTC",
+    "cip_code": "51.3501",
+    "florida_cip_code": "0351350102",
+    "plan_code": "53023",
+    "soc_codes": [
+      "31-9011"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Medical Assisting",
+    "award_type": "CTC",
+    "cip_code": "51.0801",
+    "florida_cip_code": "0351080102",
+    "plan_code": "53007",
+    "soc_codes": [
+      "31-9092"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Pharmacy Technician",
+    "award_type": "CTC",
+    "cip_code": "51.0805",
+    "florida_cip_code": "0351080506",
+    "plan_code": "53004",
+    "soc_codes": [
+      "29-2052"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Phlebotomy Technician",
+    "award_type": "CTC",
+    "cip_code": "51.1009",
+    "florida_cip_code": "0351100901",
+    "plan_code": "53003",
+    "soc_codes": [
+      "31-9097"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Private Investigator Intern",
+    "award_type": "CTC",
+    "cip_code": "43.0109",
+    "florida_cip_code": "0743010907",
+    "plan_code": "57023",
+    "soc_codes": [
+      "33-9021"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Private Security Officer",
+    "award_type": "CTC",
+    "cip_code": "43.0109",
+    "florida_cip_code": "0743010900",
+    "plan_code": "57006",
+    "soc_codes": [
+      "33-9032"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  },
+  {
+    "name": "Professional Nursing (LPN-RN)",
+    "award_type": "CTC",
+    "cip_code": "51.3801",
+    "florida_cip_code": "0351380102",
+    "plan_code": "53018",
+    "soc_codes": [
+      "29-1141"
+    ],
+    "source_url": "https://www.mdc.edu/academics/documents/academic-programs-cip.pdf"
+  }
+]

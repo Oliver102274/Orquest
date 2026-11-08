@@ -1,3 +1,5 @@
+import { resolveOccupationId } from '../data/careerOccupationMap.js'
+import { getOccupationResources } from '../services/api'
 import { useEffect, useRef, useState } from 'react'
 import ExperienceLayout from './ExperienceLayout.jsx'
 import SavedCareerPaths from './SavedCareerPaths.jsx'
@@ -78,6 +80,113 @@ function RoadmapResult({ roadmap, active = false }) {
               <ul>{sourceUrls.map((url) => <li key={url}><a href={url} target="_blank" rel="noreferrer">{url}</a></li>)}</ul>
             </section>
           )}
+        </>
+      )}
+    </section>
+  )
+}
+
+
+function EducationalResources({ occupationId }) {
+  const [resources, setResources] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    if (!occupationId?.startsWith('occupation_')) {
+      setResources(null)
+      setError('')
+      setLoading(false)
+      return
+    }
+
+    const controller = new AbortController()
+
+    setResources(null)
+    setLoading(true)
+    setError('')
+
+    getOccupationResources(occupationId, {
+      signal: controller.signal,
+    })
+      .then(data => {
+        if (!controller.signal.aborted) setResources(data)
+      })
+      .catch(err => {
+        if (!controller.signal.aborted) setError(err.message)
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false)
+      })
+
+    return () => controller.abort()
+  }, [occupationId])
+
+  if (!occupationId?.startsWith('occupation_')) return null
+
+  return (
+    <section className="roadmap-panel" aria-label="Educational resources">
+      <h2>Educational Resources</h2>
+      <p>
+        Explore possible training pathways for your selected occupation.
+        Discovered programs are not verified qualifications.
+      </p>
+
+      {loading && <p role="status">Finding educational resources...</p>}
+      {error && <p className="roadmap-error" role="alert">{error}</p>}
+
+      {resources && (
+        <>
+          <section className="roadmap-section">
+            <h3>MDC Programs — SOC Matches</h3>
+            {resources.resources.length ? (
+              <ul>
+                {resources.resources.map(item => (
+                  <li key={item.id}>
+                    <strong>{item.title}</strong>
+                    <p>{item.organization} — Unverified candidate</p>
+                    {item.source_url && (
+                      <a href={item.source_url} target="_blank" rel="noopener noreferrer">
+                        View official catalog
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : <p>No exact MDC matches found.</p>}
+          </section>
+
+          <section className="roadmap-section">
+            <h3>Related MDC Programs</h3>
+            {resources.related_resources.length ? (
+              <ul>
+                {resources.related_resources.map(item => (
+                  <li key={item.id}>
+                    <strong>{item.title}</strong>
+                    <p>Potential match — not individually verified</p>
+                    <a href={item.source_url} target="_blank" rel="noopener noreferrer">
+                      View MDC catalog
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : <p>No related MDC candidates found.</p>}
+          </section>
+
+          <section className="roadmap-section">
+            <h3>Explore Additional Training</h3>
+            <ul>
+              {resources.external_search_options.map(item => (
+                <li key={item.url}>
+                  <strong>{item.title}</strong>
+                  <p>Search for: {item.search_term}</p>
+                  <a href={item.url} target="_blank" rel="noopener noreferrer">
+                    Open training directory
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
         </>
       )}
     </section>
@@ -193,6 +302,10 @@ export default function RpgGame({ activeTargetCareer, careerPaths, onSelectCaree
             <small>Suggestions are not active missions; progress and rewards are not tracked.</small>
           </section>
         )}
+        <EducationalResources
+          key={activeTargetCareer?.career_id || 'none'}
+          occupationId={resolveOccupationId(activeTargetCareer?.career_id)}
+        />
         <div className="journey-secondary-actions">
           <button className="save-export-button" type="button" onClick={onExportSave}>EXPORT SAVED PROGRESS</button>
           <button className="pixel-quiet-button experience-back-button" type="button" onClick={onBackToExplorer}>← Return to Bubble Explorer</button>
