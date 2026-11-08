@@ -7,21 +7,18 @@ import StartYourJourney from './components/StartYourJourney.jsx'
 import RpgGame from './components/RpgGame.jsx'
 import { grantQuizPersonalizationConsent, initialPersonalizationConsents, setPersonalizationConsent } from './logic/personalizationConsent.js'
 import { createSaveFile } from './logic/saveFile.js'
+import { getCareerDiscoveryMatches } from './services/api.js'
 
 export default function App() {
   const [screen, setScreen] = useState('login')
   const [responses, setResponses] = useState([])
+  const [discoveryMatches, setDiscoveryMatches] = useState(null)
   const [experienceScreen, setExperienceScreen] = useState(null)
   const [quizAnswers, setQuizAnswers] = useState([])
   const [exploredCareers, setExploredCareers] = useState([])
   const [careerPaths, setCareerPaths] = useState([])
   const [activeTargetCareer, setActiveTargetCareer] = useState(null)
   const [personalizationConsents, setPersonalizationConsents] = useState(initialPersonalizationConsents)
-
-  function finishSwipe(nextResponses) {
-    setResponses(nextResponses)
-    setScreen('bubbles')
-  }
 
   function updatePersonalizationConsent(source, value) {
     setPersonalizationConsents((current) => setPersonalizationConsent(current, source, value))
@@ -68,6 +65,7 @@ export default function App() {
   function importSavedProgress(saveFile) {
     const { data } = saveFile
     setResponses(data.swipe_responses)
+    setDiscoveryMatches(null)
     setExploredCareers(data.explored_career_ids.map((career_id) => ({ career_id })))
     setCareerPaths(data.career_paths)
     setActiveTargetCareer(data.career_paths.find((path) => path.career_id === data.active_career_id) || null)
@@ -86,27 +84,22 @@ export default function App() {
     setExperienceScreen('journey')
   }
 
+  async function completeDiscovery(discovery) {
+    try {
+      const matches = await getCareerDiscoveryMatches(discovery)
+      setResponses([])
+      setDiscoveryMatches(matches)
+      setScreen('bubbles')
+      return null
+    } catch (error) {
+      return error.message || 'Bubble matching could not be completed. Please retry.'
+    }
+  }
+
   function skipQuiz() {
     setQuizAnswers([])
     setPersonalizationConsents((current) => setPersonalizationConsent(current, 'quiz', false))
     setExperienceScreen('journey')
-  }
-
-  function resetDemo() {
-    setResponses([])
-    setExperienceScreen(null)
-    setQuizAnswers([])
-    setExploredCareers([])
-    setCareerPaths([])
-    setActiveTargetCareer(null)
-    setPersonalizationConsents(initialPersonalizationConsents)
-    setScreen('login')
-  }
-
-  function confirmStartFresh() {
-    const hasProgress = responses.length > 0 || careerPaths.length > 0 || quizAnswers.some((answer) => answer?.trim())
-    if (hasProgress && !window.confirm('Starting fresh clears this demo session. Export saved progress first if you want to keep it. Continue?')) return
-    resetDemo()
   }
 
   return (
@@ -114,8 +107,7 @@ export default function App() {
       {screen === 'login' && <LoginScreen onLogin={() => setScreen('swipe')} onImportSave={importSavedProgress} />}
       {screen === 'swipe' && (
         <SwipeScreen
-          onComplete={finishSwipe}
-          onExit={resetDemo}
+          onComplete={completeDiscovery}
           personalizationConsent={personalizationConsents.swipes}
           onPersonalizationConsentChange={(value) => updatePersonalizationConsent('swipes', value)}
         />
@@ -125,7 +117,7 @@ export default function App() {
           <div className={`experience-background ${experienceScreen ? 'is-softened' : ''}`} inert={Boolean(experienceScreen)} aria-hidden={Boolean(experienceScreen)}>
             <BubbleExplorer
               responses={responses}
-              onExit={confirmStartFresh}
+              providedMatches={discoveryMatches}
               onEnterRpg={() => setExperienceScreen('quiz')}
               onCareerExploration={recordCareerExplored}
               exploredCareerIds={exploredCareers.map((career) => career.career_id)}

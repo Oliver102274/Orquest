@@ -480,3 +480,33 @@ button:focus-visible, input:focus-visible { outline: 3px solid #d5f28f; outline-
   .map-guide { width: 158px; }
   .career-chat-dock { right: 8px; bottom: 8px; }
 }
+/* Career Discovery keeps the retro survey frame while supporting bank-driven answers. */
+.discovery-frame { overflow: hidden; }
+.discovery-heading { min-height: 150px; }
+.discovery-question-body { display: grid; gap: 18px; padding: 22px; }
+.discovery-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr)); gap: 10px; }
+.discovery-option { display: flex; min-height: 54px; align-items: center; gap: 11px; border: 3px solid #66696b; background: linear-gradient(135deg, #d0d1ce, #b8bab8); box-shadow: 3px 3px 0 #777a7c; color: #34373b; cursor: pointer; font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; line-height: 1.35; padding: 11px 13px; }
+.discovery-option:has(input:checked) { border-color: #485a49; background: linear-gradient(135deg, #bad2ab, #a4c499); box-shadow: 3px 3px 0 #4d594f; }
+.discovery-option input { width: 17px; height: 17px; flex: none; accent-color: #648663; margin: 0; }
+.discovery-text-answer { display: grid; gap: 7px; }
+.discovery-text-answer textarea { width: 100%; resize: vertical; border: 3px solid #66696b; border-radius: 0; background: linear-gradient(135deg, #d0d1ce, #b8bab8); color: #30343a; font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 1.5; padding: 12px; }
+.discovery-text-answer small { justify-self: end; color: #686b6d; font-size: 9px; }
+.discovery-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; }
+.discovery-actions .pixel-quiet-button { justify-self: initial; }
+.discovery-error { margin: 0; }
+.discovery-complete { min-height: 390px; }
+.discovery-complete strong { font-size: 19px; letter-spacing: .04em; }
+@media (max-width: 600px) {
+  .discovery-heading { min-height: 120px; }
+  .discovery-question-body { padding: 14px; }
+  .discovery-actions { justify-content: stretch; }
+  .discovery-actions > button { flex: 1; justify-content: center; }
+}
+.discovery-option:has(input:disabled) { cursor: not-allowed; opacity: .55; }
+.discovery-complete h1 { margin: 0; font-size: clamp(19px, 3vw, 27px); line-height: 1.2; }
+.session-note, .session-active-label { justify-self: end; color: #e0e1dc; font-size: 8px; font-weight: 900; letter-spacing: .1em; }
+.session-active-label { align-self: center; }
+.discovery-swipe-board { padding: 0; }
+.discovery-swipe-hint { justify-content: flex-end; padding: 4px 0 0; }
+.discovery-undisclosed { position: relative; z-index: 3; align-self: flex-start; border: 2px solid #737677; background: rgba(245, 245, 237, .4); color: #54595b; font-size: 8px; font-weight: 900; letter-spacing: .06em; padding: 7px 9px; }
+.discovery-undisclosed:hover { background: rgba(245, 245, 237, .7); }

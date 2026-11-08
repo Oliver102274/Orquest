@@ -113,7 +113,7 @@ function ResourceList({ title, resources }) {
 
 export default function BubbleExplorer({
   responses,
-  onExit,
+  providedMatches = null,
   onEnterRpg,
   onCareerExploration,
   exploredCareerIds = [],
@@ -123,8 +123,8 @@ export default function BubbleExplorer({
   careerChatPersonalizationConsent,
   onCareerChatPersonalizationConsentChange,
 }) {
-  const [matches, setMatches] = useState([])
-  const [matchStatus, setMatchStatus] = useState('loading')
+  const [matches, setMatches] = useState(providedMatches || [])
+  const [matchStatus, setMatchStatus] = useState(providedMatches ? 'ready' : 'loading')
   const [matchError, setMatchError] = useState('')
   const [retryMatches, setRetryMatches] = useState(0)
   const [careerDetails, setCareerDetails] = useState({})
@@ -146,7 +146,14 @@ export default function BubbleExplorer({
   const careerChatController = useRef(null)
 
   const responsesJson = JSON.stringify(responses)
+  const providedMatchesJson = JSON.stringify(providedMatches)
   useEffect(() => {
+    if (providedMatches !== null) {
+      setMatches(JSON.parse(providedMatchesJson))
+      setMatchStatus('ready')
+      setMatchError('')
+      return undefined
+    }
     const controller = new AbortController()
     setMatchStatus('loading')
     setMatchError('')
@@ -162,7 +169,7 @@ export default function BubbleExplorer({
         setMatchStatus('error')
       })
     return () => controller.abort()
-  }, [responsesJson, retryMatches])
+  }, [responsesJson, providedMatches, providedMatchesJson, retryMatches])
 
   useEffect(() => {
     if (matchStatus !== 'ready') return undefined
@@ -340,7 +347,7 @@ export default function BubbleExplorer({
         <div className="map-header-status"><i /> {matchStatus === 'loading' ? 'LOADING MATCHES' : matchStatus === 'error' ? 'API UNAVAILABLE' : `${matches.length} BACKEND MATCHES`}</div>
         <div className="map-header-actions">
           <button className="save-export-button save-export-compact" type="button" aria-label="Export saved progress" onClick={onExportSave}>SAVE</button>
-          <button className="pixel-quiet-button" type="button" onClick={onExit}>RESTART <span aria-hidden="true">↻</span></button>
+          <span className="session-active-label">SESSION ACTIVE</span>
         </div>
       </header>
 

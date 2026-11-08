@@ -152,6 +152,48 @@ export async function getCareerMatches(responses, { signal } = {}) {
   return body.matches
 }
 
+export async function getCareerDiscoveryQuestionBank({ signal } = {}) {
+  const body = await request('/api/career-discovery/questions', { signal })
+  if (typeof body?.bank_id !== 'string'
+    || typeof body?.version !== 'string'
+    || body?.main_question_count !== 8
+    || !Array.isArray(body?.slots)
+    || body.slots.length !== 8
+    || body.slots.some((slot) => typeof slot?.slot_id !== 'string'
+      || !Array.isArray(slot?.variants)
+      || slot.variants.length === 0
+      || slot.variants.some((question) => typeof question?.question_id !== 'string'
+        || !['single_choice', 'multi_choice', 'agree_disagree', 'short_text'].includes(question?.answer_type)))) {
+    throw new ApiError('The Career Discovery question bank does not match the expected format.', {
+      code: 'unexpected_response',
+    })
+  }
+  return body
+}
+
+export async function getCareerDiscoveryMatches(payload, { signal } = {}) {
+  const body = await request('/api/career-discovery/matches', {
+    method: 'POST',
+    signal,
+    body: JSON.stringify({
+      bank_version: payload?.bank_version,
+      responses: payload?.responses,
+    }),
+  })
+  if (!Array.isArray(body?.matches) || !body.matches.every((match) =>
+    typeof match?.career_id === 'string'
+    && typeof match?.title === 'string'
+    && typeof match?.rationale === 'string'
+    && isStringList(match?.matched_interest_tags)
+    && typeof match?.interest_score === 'number'
+  )) {
+    throw new ApiError('The Career Discovery match response does not match the expected format.', {
+      code: 'unexpected_response',
+    })
+  }
+  return body.matches
+}
+
 export async function getCareer(careerId, { signal } = {}) {
   const body = await request(`/api/careers/${encodeURIComponent(careerId)}`, { signal })
   if (typeof body?.career_id !== 'string'
