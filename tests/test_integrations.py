@@ -36,6 +36,8 @@ ROADMAP = {"steps": [{"title": "Explore", "instruction": "Review the supplied gu
 def settings(**overrides):
     return AISettings(**{
         "enabled": True, "max_requests": 5,
+        "swarms_enabled": True, "prune_enabled": True,
+        "openrouter_model": "fixture/model:free",
         "gemini_key": "test-gemini-only", "swarms_key": "test-swarms-only", "prune_key": "test-prune-only",
         "gemini_model": "test-gemini-model", "swarms_model": "test-swarms-model", "prune_model": "test-prune-model",
         **overrides,

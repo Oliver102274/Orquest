@@ -14,6 +14,7 @@ class PruneService:
     def explain_career(self, context: CareerContext) -> ProviderResult:
         payload = {
             "model": self.settings.prune_model, "max_tokens": self.settings.max_output_tokens,
+            "stream": False,
             "messages": [{"role": "system", "content": POLICY + " Return only JSON matching: " + json.dumps(Explanation.model_json_schema())},
                          {"role": "user", "content": prompt(context, "Explain this career using the supplied interests and evidence.")}],
         }
@@ -21,7 +22,14 @@ class PruneService:
         data = post_json("prune", "https://api.withprune.com/v1/chat/completions",
                          self.settings.prune_key.get_secret_value(), payload, self.settings, self.transport)
         try:
-            content = data["choices"][0]["message"]["content"]
+            choice = data["choices"][0]
+            if not isinstance(choice, dict) or not isinstance(choice.get("message"), dict):
+                raise ValueError("Invalid choice")
+            if choice["message"].get("refusal") or choice.get("finish_reason") == "content_filter":
+                raise AIServiceError("safety_refusal", "prune")
+            if choice.get("finish_reason") == "length":
+                raise AIServiceError("truncated_response", "prune")
+            content = choice["message"]["content"]
             if not isinstance(content, str) or not content.strip():
                 raise ValueError("Empty content")
             output = check_references(Explanation.model_validate_json(content), context, "prune")
