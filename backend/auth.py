@@ -11,7 +11,7 @@ class Auth0Verifier:
         self.domain = os.getenv('AUTH0_DOMAIN', '')
         self.audience = os.getenv('AUTH0_AUDIENCE', '')
         self.jwks = None
-        if self.enabled and re.fullmatch(r'[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+', self.domain) and self.audience:
+        if self.enabled and re.fullmatch(r'[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+', self.domain) and self.audience == 'https://api.orquest.app':
             self.jwks = jwt.PyJWKClient(f'https://{self.domain}/.well-known/jwks.json', timeout=5)
 
     def __call__(self, authorization: str | None = Header(default=None)):

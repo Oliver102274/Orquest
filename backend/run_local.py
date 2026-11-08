@@ -3,7 +3,7 @@ from backend.integrations.verify import ROOT, load_local_env
 
 
 def local_app():
-    load_local_env(ROOT / ".env")
+    load_local_env(ROOT / ".env", include_accounts=True)
     from backend.main import create_app
     return create_app()
 

@@ -12,7 +12,14 @@ vi.mock('@auth0/auth0-react', () => ({
   useAuth0: () => sdk.auth,
 }))
 vi.mock('../components/BubbleExplorer.jsx', () => ({ default: () => <div>Explorer</div> }))
-const config = { enabled: true, domain: 'example.auth0.com', clientId: 'public-client', audience: 'https://orquest-api' }
+const config = { enabled: true, domain: 'example.auth0.com', clientId: 'public-client', audience: 'https://api.orquest.app' }
+
+it('rejects a different configured audience without initializing Auth0', () => {
+  render(<AccountProvider config={{ ...config, audience: 'https://wrong-api.example' }}><App /></AccountProvider>)
+  expect(screen.getByRole('alert').textContent).toMatch(/not configured/)
+  expect(sdk.props).toBeNull()
+  expect(fetch).not.toHaveBeenCalled()
+})
 const career = { career_id: 'career_test', title: 'Synthetic occupation', summary: 'Test', requirements: [], sources: [], mdc_resources: [], external_resources: [] }
 const mission = { id: 'mission-test', title: 'Synthetic mission', instruction: 'Practice', resource_ids: [], completed: false, xp_reward: 10 }
 const roadmap = { target_occupation: career, metadata: { status: 'deterministic', provider: 'deterministic', review_required: true },

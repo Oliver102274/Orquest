@@ -44,7 +44,7 @@ function Session({ children, returnedState, clearNavigation }) {
 export default function AccountProvider({ children, config = authConfiguration() }) {
   const [returnedState, setReturnedState] = useState(null)
   if (!config.enabled) return children
-  if (!/^[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+$/.test(config.domain) || !config.clientId || !config.audience) {
+  if (!/^[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+$/.test(config.domain) || !config.clientId || config.audience !== 'https://api.orquest.app') {
     return <><p role="alert">Account login is not configured. Guest access remains available.</p>{children}</>
   }
   return <Auth0Provider domain={config.domain} clientId={config.clientId} cacheLocation="memory" useRefreshTokens={false}

@@ -16,7 +16,13 @@ VARIABLES = {
 }
 
 
-def load_local_env(path: Path):
+ACCOUNT_VARIABLES = {
+    "AUTH0_ENABLED", "AUTH0_DOMAIN", "AUTH0_AUDIENCE", "PERSISTENCE_BACKEND",
+    "DATABASE_URL", "DATABASE_CREDENTIALS_ROTATED", "DATABASE_ZERO_COST_CONFIRMED", "DATABASE_SSLROOTCERT",
+}
+
+
+def load_local_env(path: Path, *, include_accounts: bool = False):
     """Literal single-line KEY=value subset; no expansion, execution, or logging."""
     if not path.exists():
         return
@@ -30,7 +36,7 @@ def load_local_env(path: Path):
             if not separator:
                 raise ValueError()
             key, value = key.strip(), value.strip()
-            if key not in VARIABLES:
+            if key not in (VARIABLES | ACCOUNT_VARIABLES if include_accounts else VARIABLES):
                 continue
             if key in values:
                 raise ValueError()

@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 from threading import RLock
 import time
+import tempfile
 from types import SimpleNamespace
 import unittest
 from unittest.mock import patch, Mock
@@ -99,20 +100,56 @@ class AccountTests(unittest.TestCase):
 
     def setUp(self):
         env = patch.dict(os.environ, {'AUTH0_ENABLED': 'true', 'AUTH0_DOMAIN': 'test.auth0.com',
-            'AUTH0_AUDIENCE': 'https://orquest-api', 'PERSISTENCE_BACKEND': 'memory', 'ORQUESTRA_AI_ENABLED': 'false'})
+            'AUTH0_AUDIENCE': 'https://api.orquest.app', 'PERSISTENCE_BACKEND': 'memory', 'ORQUESTRA_AI_ENABLED': 'false'})
         env.start(); self.addCleanup(env.stop)
         self.verifier = Auth0Verifier()
         self.verifier.jwks = Mock()
         self.verifier.jwks.get_signing_key_from_jwt.return_value = SimpleNamespace(key=self.key.public_key())
 
     def token(self, sub='auth0|student-a', **updates):
-        claims = {'iss': 'https://test.auth0.com/', 'aud': 'https://orquest-api', 'exp': int(time.time()) + 60,
+        claims = {'iss': 'https://test.auth0.com/', 'aud': 'https://api.orquest.app', 'exp': int(time.time()) + 60,
                   'iat': int(time.time()) - 1, 'sub': sub}
         claims.update(updates)
         return jwt.encode(claims, self.key, algorithm='RS256', headers={'kid': 'test-key'})
 
     def test_valid_token(self):
         self.assertEqual(self.verifier('Bearer ' + self.token()), 'auth0|student-a')
+
+    def test_local_account_configuration_is_explicit_and_preserves_process_values(self):
+        from backend.integrations.verify import load_local_env
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / '.env'
+            path.write_text('AUTH0_ENABLED=true\nAUTH0_DOMAIN=test.auth0.com\nAUTH0_AUDIENCE=https://api.orquest.app\n'
+                            'PERSISTENCE_BACKEND=postgres\nDATABASE_URL=fixture-not-a-real-url\n'
+                            'DATABASE_CREDENTIALS_ROTATED=true\nDATABASE_ZERO_COST_CONFIRMED=true\n'
+                            'DATABASE_SSLROOTCERT=system\nVITE_AUTH0_CLIENT_ID=public-fixture\n', encoding='utf-8')
+            with patch.dict(os.environ, {}, clear=True):
+                load_local_env(path)
+                self.assertNotIn('DATABASE_URL', os.environ)
+                self.assertNotIn('AUTH0_ENABLED', os.environ)
+                with patch('builtins.print') as output:
+                    load_local_env(path, include_accounts=True)
+                    output.assert_not_called()
+                self.assertEqual(os.environ['AUTH0_AUDIENCE'], 'https://api.orquest.app')
+                self.assertEqual(os.environ['DATABASE_URL'], 'fixture-not-a-real-url')
+                self.assertEqual(os.environ['PERSISTENCE_BACKEND'], 'postgres')
+                self.assertNotIn('VITE_AUTH0_CLIENT_ID', os.environ)
+                os.environ['PERSISTENCE_BACKEND'] = 'memory'
+                load_local_env(path, include_accounts=True)
+                self.assertEqual(os.environ['PERSISTENCE_BACKEND'], 'memory')
+
+    def test_exact_audience_issuer_and_jwks_configuration(self):
+        with patch('backend.auth.jwt.PyJWKClient') as client:
+            verifier = Auth0Verifier()
+            client.assert_called_once_with('https://test.auth0.com/.well-known/jwks.json', timeout=5)
+            self.assertEqual(verifier.audience, 'https://api.orquest.app')
+        with patch('backend.auth.jwt.decode', wraps=jwt.decode) as decode:
+            self.verifier('Bearer '+self.token())
+            self.assertEqual(decode.call_args.kwargs['issuer'], 'https://test.auth0.com/')
+            self.assertEqual(decode.call_args.kwargs['audience'], 'https://api.orquest.app')
+            self.assertEqual(decode.call_args.kwargs['algorithms'], ['RS256'])
+        with patch.dict(os.environ, {'AUTH0_AUDIENCE': 'https://wrong-api.example'}):
+            self.assertIsNone(Auth0Verifier().jwks)
 
     def test_expired_audience_issuer_and_missing_claims(self):
         for updates in [{'exp': 1}, {'aud': 'id-token-client'}, {'iss': 'https://wrong.auth0.com/'}, {'sub': ''}]:
