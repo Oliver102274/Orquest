@@ -130,7 +130,9 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(len(captured), 1)
         self.assertEqual(captured[0].url.host, "generativelanguage.googleapis.com")
         self.assertEqual(captured[0].headers["x-goog-api-key"], "test-gemini-only")
-        self.assertIn("responseSchema", json.loads(captured[0].content)["generationConfig"])
+        config = json.loads(captured[0].content)["generationConfig"]
+        self.assertIn("responseJsonSchema", config)
+        self.assertNotIn("responseSchema", config)
 
     def test_swarms_agents_endpoint_and_limits(self):
         service, captured = self.http_service("swarms")

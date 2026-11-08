@@ -1,4 +1,4 @@
-"""One-provider Phase 12 proposal; dry-run unless explicitly approved via --live."""
+"""One-provider diagnostic; dry-run unless explicitly approved via --live."""
 import argparse
 import json
 from pathlib import Path
@@ -31,19 +31,22 @@ def prepare(provider, settings):
     if len(context.career.mdc_resources) != 1:
         raise AIServiceError("missing_demo_evidence", "configuration")
     limited = settings.model_copy(update={
-        "enabled": True, "max_requests": 1, "max_input_chars": 6000,
+        "enabled": True, "max_requests": 1, "max_input_chars": 4000 if provider == "gemini" else 6000,
         "max_output_tokens": 512, "timeout_seconds": 30,
         "gemini_model": "gemini-3.1-flash-lite", "openrouter_model": "openrouter/free",
         "swarms_key": SecretStr(""), "prune_key": SecretStr(""),
+        ("openrouter_key" if provider == "gemini" else "gemini_key"): SecretStr(""),
     })
     return context, limited
 
 
-def execute(provider, settings, *, approved=False):
+def execute(provider, settings, *, approved=False, unbilled_project_confirmed=False):
     if not approved:
         raise AIServiceError("approval_required", provider)
     if provider == "gemini" and not settings.gemini_free_tier_confirmed:
         raise AIServiceError("free_tier_not_confirmed", provider)
+    if provider == "gemini" and not unbilled_project_confirmed:
+        raise AIServiceError("unbilled_project_not_confirmed", provider)
     context, limited = prepare(provider, settings)
     service = (GeminiService if provider == "gemini" else OpenRouterService)(limited, budget=RequestBudget())
     result = service.answer_question(context)  # Exactly one adapter call; no fallback.
@@ -59,24 +62,31 @@ def main(argv=None):
     parser.add_argument("provider", choices=["gemini", "openrouter"])
     parser.add_argument("--env-file", type=Path, default=ROOT / ".env")
     parser.add_argument("--live", action="store_true", help="Only after explicit approval of this exact test and free eligibility")
+    parser.add_argument("--confirm-unbilled-project", action="store_true",
+                        help="Attest that this Gemini key's project is Free Tier with no linked billing account; not an automated billing check")
     args = parser.parse_args(argv)
     try:
         load_local_env(args.env_file)  # Existing allowlist excludes DATABASE_URL.
         settings = AISettings.from_env()
         if args.live:
-            print(execute(args.provider, settings, approved=True).model_dump_json())
+            print(execute(args.provider, settings, approved=True,
+                          unbilled_project_confirmed=args.confirm_unbilled_project).model_dump_json())
         else:
             context, limited = prepare(args.provider, settings)
             print(json.dumps({"dry_run": True, "provider": args.provider,
                 "credential_present": bool(getattr(settings, args.provider + "_key").get_secret_value().strip()),
                 "gemini_free_tier_confirmed": settings.gemini_free_tier_confirmed,
                 "model": getattr(limited, args.provider + "_model"), "max_requests": 1,
-                "max_input_chars": 6000, "max_output_tokens": 512, "timeout_seconds": 30,
+                "max_input_chars": limited.max_input_chars, "max_output_tokens": 512, "timeout_seconds": 30,
+                "billing_verified_by_code": False,
                 "retries": 0, "fallback": False, "question": QUESTION,
                 "source_urls": [str(r.source_url) for r in context.career.mdc_resources]}))
         return 0
     except (AIServiceError, DataError) as exc:
-        print(json.dumps({"error": exc.code}))
+        report = {"error": exc.code}
+        if getattr(exc, "diagnostics", None) is not None:
+            report["diagnostics"] = exc.diagnostics
+        print(json.dumps(report))
         return 1
     except (ValueError, StopIteration):
         print(json.dumps({"error": "invalid_verification_data_or_response"}))

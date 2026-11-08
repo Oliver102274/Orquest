@@ -63,7 +63,7 @@ class JobFirstCoordinator:
     def target(context):
         return TargetOccupation(career_id=context.career.career_id, title=context.career.title)
 
-    def answer(self, career, request):
+    def answer(self, career, request, *, catalog_fallback=None):
         context = evidence_context(career, request)
         output, metadata = self.generate(context, "answer_question", Explanation)
         resources = context.career.mdc_resources + context.career.external_resources
@@ -71,6 +71,11 @@ class JobFirstCoordinator:
             return QuestionResponse(target_occupation=self.target(context), answer=output.explanation,
                                     source_urls=output.source_urls, resource_ids=output.resource_ids, metadata=metadata)
         blocked = metadata.status == "blocked"
+        if not blocked and catalog_fallback is not None:
+            local = catalog_fallback()
+            if local is not None:
+                return QuestionResponse(target_occupation=self.target(context), answer=local.answer,
+                                        source_urls=local.source_urls, resource_ids=local.resource_ids, metadata=metadata)
         answer = "The AI response could not be provided safely." if blocked else (
             "AI is unavailable. This is a catalog-based fallback, not an AI answer to your question. "
             + ("Review the linked verified resources for this target occupation; they are options, not required degrees."
