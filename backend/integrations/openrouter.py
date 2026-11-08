@@ -2,6 +2,7 @@
 
 import json
 import re
+from pydantic import ValidationError
 
 from backend.integrations.common import AIServiceError, AISettings, PROCESS_BUDGET, ProviderResult, post_json, status_error, refusal_error
 from backend.integrations.grounding import CareerContext, Explanation, RoadmapSuggestions, POLICY, check_references, prompt
@@ -32,6 +33,9 @@ class OpenRouterService:
             "model": self.settings.openrouter_model,
             "max_tokens": self.settings.max_output_tokens,
             "stream": False,
+            "response_format": {"type": "json_schema", "json_schema": {
+                "name": schema.__name__, "strict": True, "schema": schema.model_json_schema(),
+            }},
             "provider": {"max_price": {"prompt": 0, "completion": 0, "request": 0},
                          "allow_fallbacks": False, "require_parameters": True},
             "messages": [{"role": "system", "content": POLICY + " Return only JSON matching: " + json.dumps(schema.model_json_schema())},
@@ -52,11 +56,20 @@ class OpenRouterService:
             message = choice["message"]
             if message.get("refusal") or choice.get("finish_reason") in {"content_filter", "refusal"}:
                 raise AIServiceError("safety_refusal", "openrouter")
-            parsed = schema.model_validate_json(message["content"])
-            check_references(parsed, context, "openrouter")
             usage = data.get("usage")
             if usage is not None and (not isinstance(usage, dict) or float(usage.get("cost") or 0) != 0):
                 raise AIServiceError("unexpected_cost", "openrouter")
+            if choice.get("finish_reason") == "length":
+                raise AIServiceError("truncated_response", "openrouter")
+            content = message["content"]
+            # Do not repair prose/refusals or invent missing JSON fields.
+            if not isinstance(content, str) or not content.lstrip().startswith("{"):
+                raise AIServiceError("invalid_response", "openrouter")
+            try:
+                parsed = schema.model_validate_json(content)
+            except ValidationError:
+                raise AIServiceError("invalid_structured_response", "openrouter") from None
+            check_references(parsed, context, "openrouter")
             return ProviderResult(provider="openrouter", model=data.get("model", self.settings.openrouter_model),
                                   output=parsed.model_dump(mode="json"), usage=usage)
         except (KeyError, IndexError, TypeError, ValueError):

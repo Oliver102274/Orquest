@@ -7,7 +7,7 @@ from backend.integrations.common import AISettings, AIServiceError
 from backend.integrations.gemini import GeminiService
 from backend.integrations.openrouter import OpenRouterService
 from backend.integrations.grounding import JobContext, Explanation, RoadmapSuggestions, check_references
-from backend.services.ai_fallback import FREE_GEMINI_MODELS, RECOVERABLE
+from backend.services.ai_fallback import FREE_GEMINI_MODELS, RECOVERABLE, LOCAL_ONLY_FAILURES
 
 
 def verified(item):
@@ -53,6 +53,8 @@ class JobFirstCoordinator:
                 return None, GuidanceMetadata(status="blocked", provider="none", reason="invalid_response")
             except AIServiceError as exc:
                 reason = exc.code
+                if exc.code in LOCAL_ONLY_FAILURES:
+                    break
                 if exc.code not in RECOVERABLE:
                     return None, GuidanceMetadata(status="blocked", provider="none", reason=exc.code)
         return None, GuidanceMetadata(status="deterministic", provider="deterministic", reason=reason)
@@ -100,6 +102,9 @@ class JobFirstCoordinator:
             steps += [dict(title="Review remaining gaps", instruction="Compare your current skills with verified job requirements and agree on next steps with an advisor.", resource_ids=[])]
             urls = sorted({str(r.source_url) for r in resources} | {str(s.url) for s in context.career.sources})
         missions = [MissionSuggestion(id=f"draft_step_{i+1}", **(s.model_dump() if hasattr(s, "model_dump") else s)) for i, s in enumerate(steps)]
+        for mission in missions:
+            if not mission.resource_ids:
+                mission.instruction = "Suggested activity, not a verified educational resource: " + mission.instruction
         return RoadmapResponse(target_occupation=self.target(context),
             relevant_skills_and_qualifications=context.career.requirements,
             mdc_pathways=context.career.mdc_resources, alternative_resources=context.career.external_resources,

@@ -6,13 +6,16 @@ from backend.models import Model, Identifier, Tag, Resource
 StudentText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=1000)]
 
 
-class JobRequest(Model):
-    career_id: Identifier
+class StudentProfile(Model):
     interest_tags: list[Tag] = Field(default_factory=list, max_length=40)
     education_level: StudentText | None = None
     starting_point: StudentText | None = None
     preferences: list[StudentText] = Field(default_factory=list, max_length=10)
     goals: list[StudentText] = Field(default_factory=list, max_length=10)
+
+
+class JobRequest(StudentProfile):
+    career_id: Identifier
 
 
 class QuestionRequest(JobRequest):

@@ -15,6 +15,9 @@ from backend.services.matching import UnknownCardError, match_careers
 from backend.job_models import JobRequest, QuestionRequest, QuestionResponse, RoadmapResponse
 from backend.agents.job_coordinator import JobFirstCoordinator
 from backend.integrations.common import AIServiceError
+from backend.job_models import StudentProfile
+from backend.catalog_models import FamiliesResponse, OccupationsResponse, OccupationResponse
+from backend.services.job_catalog import JobCatalogRepository, CAREER_OCCUPATIONS
 
 
 def create_app(data_directory: Path | None = None, origins: list[str] | None = None,
@@ -27,6 +30,7 @@ def create_app(data_directory: Path | None = None, origins: list[str] | None = N
         demo_enabled = os.environ.get("ORQUESTRA_MDC_DEMO_ENABLED", "false").lower() == "true"
     demo_directory = Path(__file__).resolve().parents[1] / "data" / "demo" if demo_enabled else None
     repository = DataRepository(directory, demo_directory=demo_directory)
+    job_catalog = JobCatalogRepository(directory)
     allowed_origins = origins if origins is not None else [
         os.environ.get("FRONTEND_ORIGIN") or "http://localhost:5173"
     ]
@@ -92,6 +96,40 @@ def create_app(data_directory: Path | None = None, origins: list[str] | None = N
     def job_roadmap(request: JobRequest):
         target = career(request.career_id)
         return JobFirstCoordinator().roadmap(target, request)
+
+    @application.get("/api/job-families", response_model=FamiliesResponse, responses=errors)
+    def job_families():
+        catalog = job_catalog.load()
+        return FamiliesResponse(families=catalog.families, metadata=job_catalog.metadata(catalog))
+
+    @application.get("/api/occupations", response_model=OccupationsResponse, responses={**errors, 404: {"model": ErrorResponse}})
+    def occupations(family_id: str | None = None):
+        catalog = job_catalog.load()
+        if family_id is not None and family_id not in {f.id for f in catalog.families}:
+            raise HTTPException(404, "Job family not found.")
+        return OccupationsResponse(occupations=[o for o in catalog.occupations if family_id is None or o.family_id == family_id], metadata=job_catalog.metadata(catalog))
+
+    @application.get("/api/occupation-mappings")
+    def occupation_mappings():
+        return {"career_to_occupation": CAREER_OCCUPATIONS, "unmapped_career_ids": [c.career_id for c in repository.careers() if c.career_id not in CAREER_OCCUPATIONS]}
+
+    def selected_occupation(occupation_id):
+        catalog = job_catalog.load()
+        occupation = job_catalog.lookup(catalog, occupation_id)
+        if occupation is None:
+            raise HTTPException(404, "Occupation not found.")
+        return catalog, occupation
+
+    @application.get("/api/occupations/{occupation_id}", response_model=OccupationResponse, responses={**errors, 404: {"model": ErrorResponse}})
+    def occupation_detail(occupation_id: str):
+        catalog, occupation = selected_occupation(occupation_id)
+        return OccupationResponse(occupation=occupation, linked_career_ids=[key for key, value in CAREER_OCCUPATIONS.items() if value == occupation_id], metadata=job_catalog.metadata(catalog))
+
+    @application.post("/api/occupations/{occupation_id}/roadmap", response_model=RoadmapResponse, responses={**errors, 404: {"model": ErrorResponse}})
+    def occupation_roadmap(occupation_id: str, request: StudentProfile):
+        catalog, occupation = selected_occupation(occupation_id)
+        target = job_catalog.guidance_career(catalog, occupation, repository)
+        return JobFirstCoordinator().roadmap(target, JobRequest(career_id=occupation.id, **request.model_dump()))
 
     return application
 
