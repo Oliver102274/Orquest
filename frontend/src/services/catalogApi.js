@@ -178,6 +178,42 @@ function isCatalogResource(value) {
     && (value?.source_url == null || typeof value.source_url === 'string')
 }
 
+
+export async function getOccupationResources(occupationId, { signal } = {}) {
+  if (typeof occupationId !== 'string' || !occupationId.trim()) {
+    throw new CatalogApiError('An occupation ID is required.', {
+      code: 'occupation_id_required',
+    })
+  }
+
+  const body = await requestCatalog(
+    `/api/occupations/${encodeURIComponent(occupationId)}/resources`,
+    { signal },
+  )
+
+  if (!Array.isArray(body?.resources)
+    || !body.resources.every(isCatalogResource)
+    || !Array.isArray(body?.related_resources)
+    || !Array.isArray(body?.external_search_options)
+    || typeof body?.occupation_id !== 'string'
+    || typeof body?.occupation_title !== 'string') {
+    throw new CatalogApiError(
+      'The occupation resources did not match the expected backend format.',
+      { code: 'unexpected_response' },
+    )
+  }
+
+  return {
+    occupation_id: body.occupation_id,
+    occupation_title: body.occupation_title,
+    total_resources: body.total_resources,
+    resources: body.resources,
+    related_resources: body.related_resources,
+    external_search_options: body.external_search_options,
+    discovery_status: body.discovery_status,
+  }
+}
+
 export async function getOccupationRoadmap(occupationId, { signal, profile = {} } = {}) {
   if (typeof occupationId !== 'string' || !occupationId.trim()) {
     throw new CatalogApiError('An occupation ID is required.', { code: 'occupation_id_required' })

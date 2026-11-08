@@ -19,6 +19,7 @@ from backend.job_models import StudentProfile
 from backend.catalog_models import FamiliesResponse, OccupationsResponse, OccupationResponse
 from backend.services.job_catalog import JobCatalogRepository, CAREER_OCCUPATIONS
 from backend.services.progress import ProgressStore
+from backend.services.resource_discovery import ResourceDiscoveryService
 from backend.job_models import ProgressRequest, CompletionRequest, ProgressResponse, CreatedProgressResponse
 
 
@@ -127,6 +128,35 @@ def create_app(data_directory: Path | None = None, origins: list[str] | None = N
     def occupation_detail(occupation_id: str):
         catalog, occupation = selected_occupation(occupation_id)
         return OccupationResponse(occupation=occupation, linked_career_ids=[key for key, value in CAREER_OCCUPATIONS.items() if value == occupation_id], metadata=job_catalog.metadata(catalog))
+
+
+    @application.get("/api/occupations/{occupation_id}/resources")
+    def occupation_resources(occupation_id: str):
+        catalog, occupation = selected_occupation(occupation_id)
+        discovery = ResourceDiscoveryService()
+
+        exact = discovery.discover_mdc_resources(occupation.id)
+        related = discovery.discover_related_programs(
+            occupation.model_dump(mode="json")
+        )
+
+        return {
+            "occupation_id": occupation.id,
+            "occupation_title": occupation.title,
+            "total_resources": len(exact) + len(related),
+            "resources": [
+                resource.model_dump(mode="json")
+                for resource in exact
+            ],
+            "related_resources": related,
+            "external_search_options": discovery.external_search_options(
+                occupation.model_dump(mode="json")
+            ),
+            "discovery_status": (
+                "candidates_found" if exact or related else "no_matches"
+            ),
+            "match_methods": ["exact_soc", "keyword_candidate"],
+        }
 
     @application.post("/api/occupations/{occupation_id}/roadmap", response_model=RoadmapResponse, responses={**errors, 404: {"model": ErrorResponse}})
     def occupation_roadmap(occupation_id: str, request: StudentProfile):
