@@ -1,5 +1,5 @@
 import { resolveOccupationId } from '../data/careerOccupationMap.js'
-import { getOccupationResources } from '../services/api'
+import { getCareer, getOccupationResources } from '../services/api'
 import { useEffect, useRef, useState } from 'react'
 import ExperienceLayout from './ExperienceLayout.jsx'
 import SavedCareerPaths from './SavedCareerPaths.jsx'
@@ -23,7 +23,7 @@ function ResourceSection({ title, resources }) {
   )
 }
 
-function RoadmapResult({ roadmap, active = false }) {
+function RoadmapResult({ roadmap, active = false, showEducationalResources = false }) {
   const blocked = roadmap.metadata.status === 'blocked'
   const missionSuggestions = roadmap.suggested_missions
   const sourceUrls = [...new Set(roadmap.source_urls)]
@@ -48,9 +48,18 @@ function RoadmapResult({ roadmap, active = false }) {
               <ul>{roadmap.relevant_skills_and_qualifications.map((item, index) => <li key={`${item}-${index}`}>{item}</li>)}</ul>
             </section>
           )}
-
-          <ResourceSection title="MDC pathways to investigate" resources={roadmap.mdc_pathways} />
-          <ResourceSection title="Alternative resources to investigate" resources={roadmap.alternative_resources} />
+          {!showEducationalResources && (
+            <>
+              <ResourceSection
+                title="MDC pathways to investigate"
+                resources={roadmap.mdc_pathways}
+              />
+              <ResourceSection
+                title="Alternative resources to investigate"
+                resources={roadmap.alternative_resources}
+              />
+            </>
+          )}
 
           {missionSuggestions.length > 0 && (
             <section className="roadmap-section">
@@ -87,28 +96,32 @@ function RoadmapResult({ roadmap, active = false }) {
 }
 
 
-function EducationalResources({ occupationId }) {
+function EducationalResources({ occupationId, careerId }) {
   const [resources, setResources] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  const isOccupation = occupationId?.startsWith('occupation_') ?? false
+  const isDataAnalyst = careerId === 'career_data_analyst' && !isOccupation
+
   useEffect(() => {
-    if (!occupationId?.startsWith('occupation_')) {
+    if (!isOccupation && !isDataAnalyst) {
       setResources(null)
-      setError('')
       setLoading(false)
+      setError('')
       return
     }
 
     const controller = new AbortController()
-
     setResources(null)
     setLoading(true)
     setError('')
 
-    getOccupationResources(occupationId, {
-      signal: controller.signal,
-    })
+    const request = isOccupation
+      ? getOccupationResources(occupationId, { signal: controller.signal })
+      : getCareer(careerId, { signal: controller.signal })
+
+    request
       .then(data => {
         if (!controller.signal.aborted) setResources(data)
       })
@@ -120,22 +133,37 @@ function EducationalResources({ occupationId }) {
       })
 
     return () => controller.abort()
-  }, [occupationId])
+  }, [occupationId, careerId, isOccupation, isDataAnalyst])
 
-  if (!occupationId?.startsWith('occupation_')) return null
+  if (!isOccupation && !isDataAnalyst) return null
 
   return (
     <section className="roadmap-panel" aria-label="Educational resources">
       <h2>Educational Resources</h2>
+
       <p>
-        Explore possible training pathways for your selected occupation.
-        Discovered programs are not verified qualifications.
+        {isDataAnalyst
+          ? 'Explore learning resources associated with Data Analyst. Verification status does not guarantee admission, qualifications, or employment.'
+          : 'Explore possible training pathways for your selected occupation. Discovered programs are not verified qualifications.'}
       </p>
 
       {loading && <p role="status">Finding educational resources...</p>}
       {error && <p className="roadmap-error" role="alert">{error}</p>}
 
-      {resources && (
+      {isDataAnalyst && resources && (
+        <>
+          <ResourceSection
+            title="Miami Dade College Programs"
+            resources={resources.mdc_resources}
+          />
+          <ResourceSection
+            title="Additional Learning Resources"
+            resources={resources.external_resources}
+          />
+        </>
+      )}
+
+      {isOccupation && resources && (
         <>
           <section className="roadmap-section">
             <h3>MDC Programs — SOC Matches</h3>
@@ -164,9 +192,11 @@ function EducationalResources({ occupationId }) {
                   <li key={item.id}>
                     <strong>{item.title}</strong>
                     <p>Potential match — not individually verified</p>
-                    <a href={item.source_url} target="_blank" rel="noopener noreferrer">
-                      View MDC catalog
-                    </a>
+                    {item.source_url && (
+                      <a href={item.source_url} target="_blank" rel="noopener noreferrer">
+                        View MDC catalog
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -290,11 +320,11 @@ export default function RpgGame({ activeTargetCareer, careerPaths, onSelectCaree
               {mission.completed ? 'Completed' : `Complete mission (+${mission.xp_reward} XP)`}
             </button>
           </li>)}</ul>
-          <RoadmapResult roadmap={progressSession.progress.roadmap} active />
+          <RoadmapResult roadmap={progressSession.progress.roadmap} active  showEducationalResources={Boolean(resolveOccupationId(activeTargetCareer?.career_id) || activeTargetCareer?.career_id === 'career_data_analyst')} />
         </section> : <button className="career-target-button" type="button" disabled={!activeTargetCareer || loading} onClick={() => updateProgress()}>
           START TEMPORARY MISSIONS
         </button>}
-        {roadmap && !progressSession && <RoadmapResult roadmap={roadmap} />}
+        {roadmap && !progressSession && <RoadmapResult roadmap={roadmap}  showEducationalResources={Boolean(resolveOccupationId(activeTargetCareer?.career_id) || activeTargetCareer?.career_id === 'career_data_analyst')} />}
         {!roadmap && !progressSession && !error && !loading && (
           <section className="quest-placeholder">
             <h2>Roadmap guidance</h2>
@@ -305,6 +335,7 @@ export default function RpgGame({ activeTargetCareer, careerPaths, onSelectCaree
         <EducationalResources
           key={activeTargetCareer?.career_id || 'none'}
           occupationId={resolveOccupationId(activeTargetCareer?.career_id)}
+          careerId={activeTargetCareer?.career_id}
         />
         <div className="journey-secondary-actions">
           <button className="save-export-button" type="button" onClick={onExportSave}>EXPORT SAVED PROGRESS</button>
