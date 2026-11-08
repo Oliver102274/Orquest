@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException
 
+from backend.services.resource_discovery import ResourceDiscoveryService
 from backend.models import CardsResponse, CareerDetail, ErrorResponse, MatchRequest, MatchesResponse
 from backend.services.data import DataError, DataRepository
 from backend.services.matching import UnknownCardError, match_careers
@@ -21,6 +22,9 @@ from backend.services.job_catalog import JobCatalogRepository, CAREER_OCCUPATION
 from backend.services.progress import ProgressStore
 from backend.services.career_answers import catalog_answer
 from backend.job_models import ProgressRequest, CompletionRequest, ProgressResponse, CreatedProgressResponse
+
+
+resource_discovery = ResourceDiscoveryService()
 
 
 def create_app(data_directory: Path | None = None, origins: list[str] | None = None,
@@ -138,11 +142,66 @@ def create_app(data_directory: Path | None = None, origins: list[str] | None = N
         catalog, occupation = selected_occupation(occupation_id)
         return OccupationResponse(occupation=occupation, linked_career_ids=[key for key, value in CAREER_OCCUPATIONS.items() if value == occupation_id], metadata=job_catalog.metadata(catalog))
 
+
+
+    @application.get("/api/occupations/{occupation_id}/resources")
+    def occupation_resources(occupation_id: str):
+        catalog, occupation = selected_occupation(occupation_id)
+
+        exact = resource_discovery.discover_mdc_resources(
+            occupation.id
+        )
+
+        related = resource_discovery.discover_related_programs(
+            occupation.model_dump(mode="json")
+        )
+
+        return {
+            "occupation_id": occupation.id,
+            "occupation_title": occupation.title,
+            "total_resources": len(exact) + len(related),
+            "resources": [
+                resource.model_dump(mode="json")
+                for resource in exact
+            ],
+            "related_resources": related,
+            "external_search_options": (
+                resource_discovery.external_search_options(
+                    occupation.model_dump(mode="json")
+                )
+            ),
+            "discovery_status": (
+                "candidates_found"
+                if exact or related
+                else "no_matches"
+            ),
+            "match_methods": [
+                "exact_soc",
+                "keyword_candidate",
+            ],
+        }
+
     @application.post("/api/occupations/{occupation_id}/roadmap", response_model=RoadmapResponse, responses={**errors, 404: {"model": ErrorResponse}})
     def occupation_roadmap(occupation_id: str, request: StudentProfile):
         catalog, occupation = selected_occupation(occupation_id)
         target = job_catalog.guidance_career(catalog, occupation, repository)
-        return JobFirstCoordinator().roadmap(target, JobRequest(career_id=occupation.id, **request.model_dump()))
+
+        # Add official MDC catalog matches before generating the roadmap.
+        discovered = resource_discovery.discover_mdc_resources(occupation.id)
+        existing_ids = {
+            resource.id
+            for resource in target.mdc_resources + target.external_resources
+        }
+
+        for resource in discovered:
+            if resource.id not in existing_ids:
+                target.mdc_resources.append(resource)
+                existing_ids.add(resource.id)
+
+        return JobFirstCoordinator().roadmap(
+            target,
+            JobRequest(career_id=occupation.id, **request.model_dump()),
+        )
 
     @application.post("/api/progress", status_code=201, response_model=CreatedProgressResponse)
     def start_progress(request: ProgressRequest):

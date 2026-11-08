@@ -371,3 +371,46 @@ export async function getJobCatalog({ signal } = {}) {
 export async function completeMission(session, missionId, options = {}) {
   return completeProgressMission({ progressId: session.progress.id, accessToken: session.access_token, missionId }, options)
 }
+
+
+export async function getOccupationResources(occupationId, { signal } = {}) {
+  const body = await request(
+    `/api/occupations/${encodeURIComponent(occupationId)}/resources`,
+    { signal },
+  )
+
+  const isRelatedCandidate = (item) =>
+    typeof item?.id === 'string'
+    && typeof item?.title === 'string'
+    && typeof item?.organization === 'string'
+    && typeof item?.source_url === 'string'
+    && item.verification_status === 'unverified'
+    && item.match_type === 'keyword_candidate'
+    && typeof item.relevance_score === 'number'
+    && isStringList(item.matched_keywords)
+
+  const isExternalSearch = (item) =>
+    typeof item?.title === 'string'
+    && typeof item?.organization === 'string'
+    && item.type === 'external_search'
+    && typeof item?.url === 'string'
+    && typeof item?.search_term === 'string'
+
+  if (
+    body?.occupation_id !== occupationId
+    || typeof body?.occupation_title !== 'string'
+    || !Array.isArray(body?.resources)
+    || !body.resources.every(isResource)
+    || !Array.isArray(body?.related_resources)
+    || !body.related_resources.every(isRelatedCandidate)
+    || !Array.isArray(body?.external_search_options)
+    || !body.external_search_options.every(isExternalSearch)
+  ) {
+    throw new ApiError(
+      'The educational resources response does not match the expected format.',
+      { code: 'unexpected_response' },
+    )
+  }
+
+  return body
+}

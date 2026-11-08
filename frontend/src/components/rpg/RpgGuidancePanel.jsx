@@ -1,3 +1,5 @@
+import EducationalResources from './EducationalResources.jsx'
+import { resolveOccupationId } from '../../data/careerOccupationMap.js'
 import ResourceSection from './ResourceSection.jsx'
 
 // Roadmap guidance. In `preview` mode the roadmap is an unstarted suggestion set;
@@ -31,6 +33,9 @@ export default function RpgGuidancePanel({ roadmap, active = false }) {
 
           <ResourceSection title="MDC pathways to investigate" resources={roadmap.mdc_pathways} />
           <ResourceSection title="Alternative resources to investigate" resources={roadmap.alternative_resources} />
+          <EducationalResources careerId={roadmap.target_occupation.career_id}
+            occupationId={resolveOccupationId(roadmap.target_occupation.career_id)}
+            displayedResources={[...roadmap.mdc_pathways, ...roadmap.alternative_resources]} />
 
           {!active && missionSuggestions.length > 0 && (
             <section className="roadmap-section">
