@@ -22,6 +22,14 @@ class QuestionRequest(JobRequest):
     question: StudentText
 
 
+class ProgressRequest(StudentProfile):
+    target_id: Identifier
+
+
+class CompletionRequest(Model):
+    completed: Literal[True]
+
+
 class GuidanceMetadata(Model):
     status: Literal["ai_generated", "deterministic", "blocked"]
     provider: Literal["gemini", "openrouter", "deterministic", "none"]
@@ -59,3 +67,22 @@ class RoadmapResponse(Model):
     source_urls: list[str]
     evidence_gaps: list[str]
     metadata: GuidanceMetadata
+
+
+class ProgressMission(MissionSuggestion):
+    completed: bool
+    xp_reward: Literal[10]
+
+
+class ProgressResponse(Model):
+    id: str
+    roadmap: RoadmapResponse
+    missions: list[ProgressMission]
+    total_xp: int = Field(ge=0)
+    storage: Literal["temporary_memory"]
+    notice: str
+
+
+class CreatedProgressResponse(Model):
+    access_token: str
+    progress: ProgressResponse
