@@ -41,7 +41,8 @@ class JobFirstCoordinator:
         if self.settings.enabled:
             if self.settings.gemini_free_tier_confirmed and self.settings.gemini_model in FREE_GEMINI_MODELS:
                 providers.append(("gemini", self.gemini))
-            providers.append(("openrouter", self.openrouter))
+            if not self.settings.public_demo:
+                providers.append(("openrouter", self.openrouter))
         reason = "ai_disabled" if not self.settings.enabled else "ai_unavailable"
         for name, provider in providers:
             try:
@@ -53,6 +54,8 @@ class JobFirstCoordinator:
                 return None, GuidanceMetadata(status="blocked", provider="none", reason="invalid_response")
             except AIServiceError as exc:
                 reason = exc.code
+                if self.settings.public_demo and exc.code in {"invalid_request", "failed_precondition", "permission_denied"}:
+                    break  # Configuration/access failure: local guidance only, never another provider.
                 if exc.code in LOCAL_ONLY_FAILURES:
                     break
                 if exc.code not in RECOVERABLE:

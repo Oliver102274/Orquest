@@ -20,6 +20,7 @@ class AIServiceError(Exception):
 class AISettings(BaseModel):
     model_config = ConfigDict(frozen=True)
     enabled: bool = False
+    public_demo: bool = False
     max_requests: int = Field(default=0, ge=0, le=100)
     max_input_chars: int = Field(default=12000, ge=100, le=100000)
     max_output_tokens: int = Field(default=1024, ge=64, le=4096)
@@ -54,6 +55,7 @@ class AISettings(BaseModel):
                            and settings.gemini_model == 'gemini-3.1-flash-lite'
                            and 0 < settings.max_requests <= 5)
                 settings = settings.model_copy(update={
+                    'public_demo': True,
                     'enabled': allowed, 'max_requests': settings.max_requests if allowed else 0,
                     'max_input_chars': min(settings.max_input_chars, 6000),
                     'max_output_tokens': min(settings.max_output_tokens, 512),
