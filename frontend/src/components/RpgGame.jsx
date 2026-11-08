@@ -1,6 +1,132 @@
+import { useEffect, useRef, useState } from 'react'
 import ExperienceLayout from './ExperienceLayout.jsx'
+import SavedCareerPaths from './SavedCareerPaths.jsx'
+import { getCareerRoadmap } from '../services/api.js'
 
-export default function RpgGame({ selectedCareer, onBackToExplorer }) {
+function ResourceSection({ title, resources }) {
+  if (!resources.length) return null
+  return (
+    <section className="roadmap-section">
+      <h3>{title}</h3>
+      <ul>
+        {resources.map((resource) => (
+          <li key={resource.id}>
+            <strong>{resource.title}</strong>
+            <small>{resource.organization} · {resource.type} · {resource.verification_status}</small>
+            {resource.source_url && <a href={resource.source_url} target="_blank" rel="noreferrer">Open source</a>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+function RoadmapResult({ roadmap }) {
+  const blocked = roadmap.metadata.status === 'blocked'
+  const missionSuggestions = roadmap.suggested_missions
+  const sourceUrls = [...new Set(roadmap.source_urls)]
+
+  return (
+    <section className="roadmap-panel" aria-labelledby="roadmap-result-title">
+      <span className={`roadmap-status status-${roadmap.metadata.status}`}>
+        {roadmap.metadata.status === 'ai_generated' ? `AI-GENERATED DRAFT${roadmap.metadata.review_required ? ' / REVIEW REQUIRED' : ''}`
+          : roadmap.metadata.status === 'deterministic' ? 'DETERMINISTIC CATALOG GUIDANCE'
+            : 'ROADMAP UNAVAILABLE'}
+      </span>
+      <h2 id="roadmap-result-title">Roadmap for {roadmap.target_occupation.title}</h2>
+      {blocked ? (
+        <p className="roadmap-error" role="status">The backend could not safely provide roadmap suggestions. No suggested steps are shown.</p>
+      ) : (
+        <>
+          <p className="roadmap-review-note">These are roadmap suggestions, not active RPG missions. No progress or rewards are recorded.</p>
+
+          {roadmap.relevant_skills_and_qualifications.length > 0 && (
+            <section className="roadmap-section">
+              <h3>Relevant skills and qualifications</h3>
+              <ul>{roadmap.relevant_skills_and_qualifications.map((item, index) => <li key={`${item}-${index}`}>{item}</li>)}</ul>
+            </section>
+          )}
+
+          <ResourceSection title="MDC pathways to investigate" resources={roadmap.mdc_pathways} />
+          <ResourceSection title="Alternative resources to investigate" resources={roadmap.alternative_resources} />
+
+          {missionSuggestions.length > 0 && (
+            <section className="roadmap-section">
+              <h3>Suggested roadmap steps</h3>
+              <ul>
+                {missionSuggestions.map((step) => (
+                  <li key={step.id}>
+                    <strong>{step.title}</strong>
+                    <p>{step.instruction}</p>
+                    {step.resource_ids.length > 0 && <small>Related resource IDs: {step.resource_ids.join(', ')}</small>}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          {roadmap.evidence_gaps.length > 0 && (
+            <section className="roadmap-section">
+              <h3>Evidence gaps</h3>
+              <ul>{roadmap.evidence_gaps.map((gap, index) => <li key={`${gap}-${index}`}>{gap}</li>)}</ul>
+            </section>
+          )}
+
+          {sourceUrls.length > 0 && (
+            <section className="roadmap-section">
+              <h3>Sources</h3>
+              <ul>{sourceUrls.map((url) => <li key={url}><a href={url} target="_blank" rel="noreferrer">{url}</a></li>)}</ul>
+            </section>
+          )}
+        </>
+      )}
+    </section>
+  )
+}
+
+export default function RpgGame({ activeTargetCareer, careerPaths, onSelectCareerPath, swipePersonalizationConsent, quizAnswers, quizPersonalizationConsent, onExportSave, onBackToExplorer }) {
+  const [roadmap, setRoadmap] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const requestController = useRef(null)
+
+  useEffect(() => () => requestController.current?.abort(), [])
+
+  useEffect(() => {
+    requestController.current?.abort()
+    setLoading(false)
+    setRoadmap(null)
+    setError('')
+  }, [activeTargetCareer?.career_id])
+
+  async function requestRoadmap() {
+    if (!activeTargetCareer?.career_id || loading) return
+
+    requestController.current?.abort()
+    const controller = new AbortController()
+    requestController.current = controller
+    setLoading(true)
+    setError('')
+    setRoadmap(null)
+
+    const payload = { career_id: activeTargetCareer.career_id }
+    const consentedTags = swipePersonalizationConsent && Array.isArray(activeTargetCareer.matched_interest_tags)
+      ? [...new Set(activeTargetCareer.matched_interest_tags)]
+      : []
+    if (consentedTags.length) payload.interest_tags = consentedTags
+    payload.questionnaire_answers = quizAnswers
+    payload.questionnaire_personalization_consent = quizPersonalizationConsent
+
+    try {
+      const response = await getCareerRoadmap(payload, { signal: controller.signal })
+      if (!controller.signal.aborted) setRoadmap(response)
+    } catch (requestError) {
+      if (requestError.name !== 'AbortError' && !controller.signal.aborted) setError(requestError.message)
+    } finally {
+      if (!controller.signal.aborted) setLoading(false)
+    }
+  }
+
   return (
     <ExperienceLayout className="rpg-route" label="Orquest RPG game">
       <article className="experience-card rpg-card">
@@ -8,17 +134,32 @@ export default function RpgGame({ selectedCareer, onBackToExplorer }) {
         <h1>Your journey begins.</h1>
         <p className="rpg-welcome">Welcome to the first step of your Orquest adventure.</p>
         <div className="journey-path-card">
-          <span>YOUR SELECTED CAREER PATH</span>
-          <strong>{selectedCareer?.title || 'No path selected yet'}</strong>
-          {!selectedCareer && <small>You can choose a path from the Bubble Explorer at any time.</small>}
+          <span>ACTIVE RPG TARGET</span>
+          <strong>{activeTargetCareer?.title || 'No target selected yet'}</strong>
+          {!activeTargetCareer && <small>Choose an occupation as your goal from the Bubble Explorer before requesting a roadmap.</small>}
         </div>
-        <section className="quest-placeholder">
-          <div><span>QUEST LOG</span><b>01</b></div>
-          <h2>First steps</h2>
-          <p>Explore your career map and learn more about a path that interests you.</p>
-          <small>Quest progress and rewards are not active yet.</small>
-        </section>
-        <button className="pixel-quiet-button experience-back-button" type="button" onClick={onBackToExplorer}>← Return to Bubble Explorer</button>
+        <SavedCareerPaths
+          careerPaths={careerPaths}
+          activeCareerId={activeTargetCareer?.career_id}
+          onSelectCareerPath={onSelectCareerPath}
+        />
+
+        <button className="roadmap-request-button" type="button" disabled={!activeTargetCareer || loading} onClick={requestRoadmap}>
+          <span>{loading ? 'REQUESTING ROADMAP…' : roadmap ? 'REQUEST UPDATED ROADMAP' : 'REQUEST CAREER ROADMAP'}</span><span aria-hidden="true">→</span>
+        </button>
+        {error && <p className="roadmap-error" role="alert">{error}</p>}
+        {roadmap && <RoadmapResult roadmap={roadmap} />}
+        {!roadmap && !error && !loading && (
+          <section className="quest-placeholder">
+            <h2>Roadmap guidance</h2>
+            <p>Request guidance for your active target to review supplied pathways, resources, and suggested next steps.</p>
+            <small>Suggestions are not active missions; progress and rewards are not tracked.</small>
+          </section>
+        )}
+        <div className="journey-secondary-actions">
+          <button className="save-export-button" type="button" onClick={onExportSave}>EXPORT SAVED PROGRESS</button>
+          <button className="pixel-quiet-button experience-back-button" type="button" onClick={onBackToExplorer}>← Return to Bubble Explorer</button>
+        </div>
       </article>
     </ExperienceLayout>
   )

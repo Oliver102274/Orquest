@@ -65,6 +65,18 @@ button:focus-visible, input:focus-visible { outline: 3px solid #d5f28f; outline-
 .demo-credentials { display: flex; align-items: center; gap: 8px; margin-top: 15px; color: #5b5f63; font-size: 9px; }
 .demo-credentials i { width: 4px; height: 4px; background: #7e8284; }
 .demo-badge { border: 2px solid #747977; background: #c6d9ad; color: #465342; font-size: 8px; font-weight: 900; padding: 4px 5px; }
+.login-save-controls { display: grid; gap: 8px; margin-top: 14px; }
+.save-file-input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); clip-path: inset(50%); white-space: nowrap; }
+.login-import-button, .save-export-button { border: 2px solid #53575a; background: linear-gradient(140deg, #c4c8c2, #aaafae); box-shadow: 3px 3px 0 #676a6c; color: #3e4447; font-size: 8px; font-weight: 900; letter-spacing: .07em; padding: 8px 10px; }
+.login-import-button { width: 100%; }
+.login-import-button:hover, .save-export-button:hover { filter: brightness(1.05); transform: translate(1px, 1px); }
+.login-save-note { margin: 0; color: #666b6f; font-family: 'Segoe UI', Arial, sans-serif; font-size: 9px; line-height: 1.4; }
+.save-import-preview { display: grid; gap: 7px; border: 2px solid #687b6d; background: #c6cec2; color: #424a44; font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; line-height: 1.4; padding: 10px; }
+.save-import-preview > strong { color: #36453a; font-family: 'Courier New', Consolas, monospace; font-size: 9px; text-transform: uppercase; }
+.save-import-preview ul { display: grid; gap: 3px; margin: 0; padding-left: 17px; }
+.save-import-preview p { margin: 0; }
+.save-import-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.save-import-actions button { min-height: 34px; font-size: 8px; padding: 6px 8px; }
 .login-footnote { margin: 17px 0 0; color: #e0e0d9; font-size: 8px; font-weight: 900; letter-spacing: .12em; text-shadow: 2px 2px 0 #44464a; }
 .login-footnote span { padding: 0 4px; }
 
@@ -129,6 +141,8 @@ button:focus-visible, input:focus-visible { outline: 3px solid #d5f28f; outline-
 /* Bubble Explorer: backend careers on a single-layer dotted pixel map. */
 .bubble-screen { display: flex; min-height: 100vh; flex-direction: column; overflow: hidden; background: #5a5c61; color: #e4e4df; }
 .map-header { position: relative; z-index: 3; display: grid; min-height: 76px; grid-template-columns: minmax(290px, 1fr) minmax(280px, 1.15fr) auto auto; align-items: center; gap: 20px; border-bottom: 3px solid #303237; background: #626469; padding: 0 23px; box-shadow: 0 3px 0 rgba(29, 31, 36, .4); }
+.map-header-actions { display: flex; align-items: center; justify-self: end; gap: 9px; }
+.save-export-compact { white-space: nowrap; font-size: 7px; padding: 8px 9px; }
 .map-brand { display: flex; min-width: 0; align-items: center; gap: 22px; }
 .map-header-title { display: flex; flex-direction: column; gap: 4px; color: #d3d4cf; }
 .map-header-title span { color: #b2ca91; font-size: 8px; font-weight: 900; letter-spacing: .15em; }
@@ -189,6 +203,10 @@ button:focus-visible, input:focus-visible { outline: 3px solid #d5f28f; outline-
 .inline-retry { border: 2px solid #44474d; background: #cbd0b4; color: #303239; font-size: 8px; font-weight: 900; padding: 5px 7px; }
 .summary-tags { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0; }
 .summary-tags span { border: 1px solid #797d7c; background: color-mix(in srgb, var(--bubble-color) 24%, #d2d3cf); color: #3c4045; font-size: 8px; text-transform: capitalize; padding: 3px 6px; }
+.career-target-button { display: block; width: 100%; margin: 8px 0; border: 2px solid #46544a; background: linear-gradient(120deg, #b6c9a8, #9dbb9b); box-shadow: 2px 2px 0 #747a76; color: #354139; font-size: 8px; font-weight: 900; letter-spacing: .06em; padding: 7px 9px; }
+.career-target-button:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.04); }
+.career-target-button:disabled { cursor: default; opacity: .72; }
+.career-target-button.is-active { border-color: #71826f; background: #c4cbbd; box-shadow: inset 2px 2px 0 rgba(70, 80, 72, .12); }
 .career-question-placeholder { display: flex; height: 36px; align-items: center; gap: 9px; border: 2px solid #727676; background: #d0d2cf; color: #616669; padding: 0 9px; }
 .career-question-placeholder > span { display: grid; width: 20px; height: 20px; flex: none; place-items: center; border: 2px solid #727676; background: #bbc0b9; color: #50565b; font-size: 12px; font-weight: 900; }
 .career-question-placeholder input { width: 100%; min-width: 0; border: 0; background: transparent; color: #30343a; font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; padding: 0; }
@@ -203,6 +221,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid #d5f28f; outline-
 .guide-title button { width: 20px; height: 20px; font-size: 14px; }
 .guide-selection { display: block; margin-top: 8px; color: #353940; font-size: 12px; font-weight: 900; }
 .guide-family { display: block; margin-top: 3px; color: #6d7273; font-size: 7px; }
+.guide-active-target { display: block; margin-top: 6px; border-top: 1px solid #a1a4a1; color: #5c685f; font-size: 6px; font-weight: 900; line-height: 1.4; padding-top: 5px; }
 .map-guide p { margin: 8px 0; color: #555a5e; font-family: 'Segoe UI', Arial, sans-serif; font-size: 9px; line-height: 1.45; }
 .map-guide p b { color: #35393f; }
 .guide-category-note { display: block; color: #666a6c; font-family: 'Segoe UI', Arial, sans-serif; font-size: 8px; line-height: 1.3; }
@@ -246,9 +265,18 @@ button:focus-visible, input:focus-visible { outline: 3px solid #d5f28f; outline-
 .career-chat-connection { border: 2px solid #777b79; background: #c4c7c2; color: #454a4c; font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; line-height: 1.5; padding: 11px; }
 .career-chat-connection strong { color: #363b40; }
 .career-chat-connection p { margin: 5px 0 0; }
-.career-chat-unsent-draft { margin-top: 12px; border-left: 4px solid #8da99a; background: #d0d2ce; padding: 9px 11px; }
-.career-chat-unsent-draft span { color: #777d7c; font-size: 7px; font-weight: 900; letter-spacing: .1em; }
-.career-chat-unsent-draft p { margin: 6px 0 0; color: #41464b; font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; line-height: 1.45; white-space: pre-wrap; }
+.career-chat-exchange { display: grid; gap: 8px; margin-top: 12px; }
+.career-chat-user-message, .career-chat-answer { border-left: 4px solid #8da99a; background: #d0d2ce; padding: 9px 11px; }
+.career-chat-user-message { border-left-color: #8293b1; }
+.career-chat-user-message span, .career-chat-status { color: #777d7c; font-size: 7px; font-weight: 900; letter-spacing: .1em; }
+.career-chat-user-message p, .career-chat-answer > p { margin: 6px 0 0; color: #41464b; font-family: 'Segoe UI', Arial, sans-serif; font-size: 12px; line-height: 1.45; white-space: pre-wrap; }
+.career-chat-status.status-ai_generated { color: #655d88; }
+.career-chat-status.status-deterministic { color: #476958; }
+.career-chat-status.status-blocked { color: #8b484d; }
+.career-chat-sources { display: grid; gap: 5px; margin: 8px 0 0; padding-left: 17px; }
+.career-chat-sources a { color: #426d74; overflow-wrap: anywhere; font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; }
+.career-chat-loading, .career-chat-draft-note { margin: 9px 0 0; color: #5e6862; font-size: 8px; font-weight: 900; }
+.career-chat-error { margin: 9px 0 0; border-left: 4px solid #a2434e; background: #ead6d6; color: #842c39; font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; line-height: 1.45; padding: 8px; }
 .career-chat-consent { display: flex; align-items: flex-start; gap: 9px; border-top: 2px solid #999d9a; color: #4e5456; font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; line-height: 1.4; padding: 11px 14px; }
 .career-chat-consent input { accent-color: #8fbd8e; }
 .career-chat-compose { display: flex; align-items: stretch; gap: 8px; border-top: 2px solid #999d9a; padding: 11px 14px 7px; }
@@ -296,6 +324,15 @@ button:focus-visible, input:focus-visible { outline: 3px solid #d5f28f; outline-
 .journey-path-card span { color: #737879; font-size: 7px; font-weight: 900; letter-spacing: .11em; }
 .journey-path-card strong { color: #373c41; font-size: 14px; }
 .journey-path-card small { color: #707577; font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; line-height: 1.4; }
+.saved-career-paths { display: grid; gap: 9px; margin: 0 auto 15px; border-top: 2px solid #999d9a; padding-top: 10px; text-align: left; }
+.saved-career-paths h2 { margin: 0 0 4px; color: #42484a; font-size: 10px; text-transform: uppercase; }
+.saved-career-paths p { margin: 0; color: #686f70; font-family: 'Segoe UI', Arial, sans-serif; font-size: 9px; line-height: 1.4; }
+.saved-career-path-list { display: grid; gap: 6px; }
+.saved-career-path { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 10px; border: 2px solid #69716b; background: #c7cbc5; color: #454c47; text-align: left; padding: 7px 9px; }
+.saved-career-path span { font-size: 9px; font-weight: 900; }
+.saved-career-path small { color: #667268; font-size: 7px; font-weight: 900; text-align: right; }
+.saved-career-path.is-active { border-color: #779277; background: #b8c9b7; }
+.saved-career-path:disabled { cursor: default; }
 .journey-start-button { position: relative; display: flex; width: 100%; min-height: 128px; align-items: center; justify-content: center; flex-direction: column; gap: 7px; border: 4px solid #34423a; background: linear-gradient(140deg, #b1ceaa 0%, #91bd96 50%, #78a987 100%); box-shadow: 5px 6px 0 #555b5c, inset 3px 3px 0 rgba(255, 255, 255, .4), inset -4px -5px 0 rgba(39, 58, 48, .16); color: #283a31; padding: 16px 42px; transition: transform .12s steps(2, end), filter .12s steps(2, end); }
 .journey-start-button:hover { transform: translateY(-2px); filter: brightness(1.04); }
 .journey-start-button span { font-size: 8px; font-weight: 900; letter-spacing: .16em; }
@@ -308,7 +345,27 @@ button:focus-visible, input:focus-visible { outline: 3px solid #d5f28f; outline-
 .quest-placeholder h2 { margin: 10px 0 5px; color: #363a40; font-size: 15px; }
 .quest-placeholder p { margin: 0 0 9px; color: #555b5e; font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; line-height: 1.45; }
 .quest-placeholder small { color: #777d7c; font-size: 7px; font-weight: 900; letter-spacing: .04em; }
+.roadmap-panel { margin: 17px 0; border: 3px solid #34373d; background: linear-gradient(145deg, #c2c4c1, #b2b5b4); box-shadow: 4px 5px 0 #767a7b; text-align: left; padding: 13px 15px; }
+.roadmap-panel > h2 { margin: 10px 0 6px; color: #363a40; font-size: 15px; }
+.roadmap-status { display: inline-block; border: 2px solid #687b6d; background: #c8d2c3; color: #405446; font-size: 7px; font-weight: 900; letter-spacing: .08em; padding: 5px 7px; }
+.roadmap-status.status-ai_generated { border-color: #70688c; background: #d2cde0; color: #4d4665; }
+.roadmap-status.status-blocked { border-color: #86545a; background: #e4cdce; color: #743d44; }
+.roadmap-review-note, .roadmap-evidence-note { color: #555b5e; font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; line-height: 1.45; }
+.roadmap-review-note { margin: 8px 0; }
+.roadmap-section { border-top: 2px solid #9da09d; margin-top: 10px; padding-top: 9px; }
+.roadmap-section h3 { margin: 0 0 6px; color: #353940; font-size: 9px; letter-spacing: .04em; text-transform: uppercase; }
+.roadmap-section ul { display: grid; gap: 7px; margin: 0; padding-left: 18px; }
+.roadmap-section li, .roadmap-section p { color: #4d5257; font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; line-height: 1.45; }
+.roadmap-section li strong, .roadmap-section li small, .roadmap-section li a { display: block; }
+.roadmap-section li small { color: #707577; font-size: 9px; }
+.roadmap-section li a { color: #426d74; font-size: 9px; overflow-wrap: anywhere; }
+.roadmap-request-button { display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 10px; border: 3px solid #34423a; background: linear-gradient(140deg, #b1ceaa, #8eb493); box-shadow: 4px 5px 0 #555b5c; color: #283a31; font-size: 9px; font-weight: 900; letter-spacing: .05em; padding: 10px 12px; }
+.roadmap-request-button:disabled { cursor: default; filter: grayscale(.6); opacity: .65; }
+.roadmap-error { margin: 10px 0; border-left: 4px solid #a2434e; background: #ead6d6; color: #842c39; font-family: 'Segoe UI', Arial, sans-serif; font-size: 11px; line-height: 1.45; padding: 9px; }
 .rpg-card > .experience-back-button { margin-top: 4px; }
+.journey-secondary-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 12px; }
+.journey-secondary-actions .save-export-button { font-size: 7px; padding: 7px 8px; }
+.journey-secondary-actions .experience-back-button { margin: 0; }
 
 @keyframes pixel-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes pixel-expand { from { opacity: .3; transform: scale(.88); } to { opacity: 1; transform: scale(1); } }
@@ -319,6 +376,7 @@ button:focus-visible, input:focus-visible { outline: 3px solid #d5f28f; outline-
   .map-brand { gap: 13px; }
   .map-header .orquest-logo.logo-compact { width: 150px; }
   .map-header-status { display: none; }
+  .map-header-actions { grid-column: 3; }
   .map-filterbar { gap: 8px; }
   .filter-title { min-width: 100px; }
   .map-filter-list { gap: 4px; }
@@ -359,7 +417,9 @@ button:focus-visible, input:focus-visible { outline: 3px solid #d5f28f; outline-
   .map-title-row { gap: 5px; }
   .rpg-entry-button { font-size: 6px; padding: 5px; }
   .map-search { grid-column: 1 / -1; grid-row: 2; height: 34px; }
-  .map-header .pixel-quiet-button { grid-column: 2; grid-row: 1; font-size: 7px; padding: 7px 5px; }
+  .map-header-actions { grid-column: 2; grid-row: 1; gap: 4px; }
+  .map-header-actions .pixel-quiet-button { font-size: 7px; padding: 7px 5px; }
+  .map-header-actions .save-export-compact { font-size: 6px; padding: 7px 5px; }
   .map-frame { min-height: 690px; margin: 8px 7px 7px; border-width: 3px; }
   .map-filterbar { top: 0; min-height: 102px; align-items: flex-start; flex-direction: column; gap: 5px; padding: 7px; }
   .filter-title { min-width: 0; flex-direction: row; align-items: baseline; gap: 8px; }
@@ -403,6 +463,9 @@ button:focus-visible, input:focus-visible { outline: 3px solid #d5f28f; outline-
   .quiz-controls .pixel-quiet-button, .quiz-controls .pixel-button, .quiz-skip-question { font-size: 7px; }
   .quiz-footer-controls button { font-size: 7px; }
   .journey-start-button { min-height: 112px; }
+  .journey-secondary-actions { align-items: flex-start; flex-direction: column; gap: 7px; }
+  .saved-career-path { align-items: flex-start; flex-direction: column; gap: 4px; }
+  .saved-career-path small { text-align: left; }
   .map-footer { font-size: 6px; padding-right: 9px; padding-left: 9px; }
 }
 

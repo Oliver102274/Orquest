@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import OrquestLogo from './OrquestLogo.jsx'
 import CareerChatOverlay from './CareerChatOverlay.jsx'
-import { getCareer, getCareerMatches } from '../services/api.js'
+import { getCareer, getCareerMatches, submitCareerQuestion } from '../services/api.js'
 
 const TAG_COLORS = ['#91c6a0', '#8fb7cf', '#b99bd3', '#d39bb8', '#d6b887', '#94c2c5', '#b4c68c', '#a3a6d5']
 
@@ -115,7 +115,11 @@ export default function BubbleExplorer({
   responses,
   onExit,
   onEnterRpg,
-  onCareerSelection,
+  onCareerExploration,
+  exploredCareerIds = [],
+  activeTargetCareer,
+  onSetActiveTargetCareer,
+  onExportSave,
   careerChatPersonalizationConsent,
   onCareerChatPersonalizationConsentChange,
 }) {
@@ -134,7 +138,12 @@ export default function BubbleExplorer({
   const [careerChatHasOpened, setCareerChatHasOpened] = useState(false)
   const [careerChatExpanded, setCareerChatExpanded] = useState(false)
   const [careerChatDraft, setCareerChatDraft] = useState('')
+  const [careerChatCareer, setCareerChatCareer] = useState(null)
+  const [careerChatEntries, setCareerChatEntries] = useState([])
+  const [careerChatLoading, setCareerChatLoading] = useState(false)
+  const [careerChatError, setCareerChatError] = useState('')
   const clickTimer = useRef(null)
+  const careerChatController = useRef(null)
 
   const responsesJson = JSON.stringify(responses)
   useEffect(() => {
@@ -187,6 +196,7 @@ export default function BubbleExplorer({
 
   useEffect(() => () => {
     if (clickTimer.current) window.clearTimeout(clickTimer.current)
+    careerChatController.current?.abort()
   }, [])
 
   const tags = useMemo(() => [...new Set(matches.flatMap(matchTags))], [matches])
@@ -213,7 +223,7 @@ export default function BubbleExplorer({
   function selectCareer(match) {
     setSelectedId(match.career_id)
     setDetailOpen(false)
-    onCareerSelection?.(match)
+    onCareerExploration?.(match)
   }
 
   function handleCareerClick(match) {
@@ -225,17 +235,52 @@ export default function BubbleExplorer({
     if (clickTimer.current) window.clearTimeout(clickTimer.current)
     setSelectedId(match.career_id)
     setDetailOpen(true)
-    onCareerSelection?.(match)
+    onCareerExploration?.(match)
   }
 
   function retryCareerDetails() {
     setRetryDetails((value) => value + 1)
   }
 
-  function openCareerChat(question) {
+  function openCareerChat(question, career) {
     setCareerChatDraft(question)
+    setCareerChatCareer(career)
     setCareerChatHasOpened(true)
     setCareerChatExpanded(true)
+  }
+
+  async function sendCareerQuestion(question) {
+    const trimmedQuestion = question.trim()
+    if (!trimmedQuestion || !careerChatCareer?.career_id || careerChatLoading) return
+
+    careerChatController.current?.abort()
+    const controller = new AbortController()
+    careerChatController.current = controller
+    setCareerChatError('')
+    setCareerChatLoading(true)
+    try {
+      // Each request contains only the explicitly submitted question and the career being discussed.
+      // The API accepts neither quiz answers nor conversation history.
+      const response = await submitCareerQuestion({
+        career_id: careerChatCareer.career_id,
+        question: trimmedQuestion,
+      }, { signal: controller.signal })
+      if (controller.signal.aborted) return
+      const blocked = response.metadata.status === 'blocked'
+      setCareerChatEntries((current) => [...current, {
+        career_id: careerChatCareer.career_id,
+        question: trimmedQuestion,
+        answer: blocked ? '' : response.answer,
+        source_urls: blocked ? [] : response.source_urls,
+        resource_ids: blocked ? [] : response.resource_ids,
+        metadata: response.metadata,
+      }])
+      setCareerChatDraft('')
+    } catch (error) {
+      if (error.name !== 'AbortError' && !controller.signal.aborted) setCareerChatError(error.message)
+    } finally {
+      if (!controller.signal.aborted) setCareerChatLoading(false)
+    }
   }
 
   function toggleCareerChat() {
@@ -293,7 +338,10 @@ export default function BubbleExplorer({
           {query && <button type="button" aria-label="Clear search" onClick={() => setQuery('')}>×</button>}
         </label>
         <div className="map-header-status"><i /> {matchStatus === 'loading' ? 'LOADING MATCHES' : matchStatus === 'error' ? 'API UNAVAILABLE' : `${matches.length} BACKEND MATCHES`}</div>
-        <button className="pixel-quiet-button" type="button" onClick={onExit}>RESTART <span aria-hidden="true">↻</span></button>
+        <div className="map-header-actions">
+          <button className="save-export-button save-export-compact" type="button" aria-label="Export saved progress" onClick={onExportSave}>SAVE</button>
+          <button className="pixel-quiet-button" type="button" onClick={onExit}>RESTART <span aria-hidden="true">↻</span></button>
+        </div>
       </header>
 
       <main className="map-frame" inert={detailOpen || careerChatExpanded} aria-hidden={detailOpen || careerChatExpanded}>
@@ -329,6 +377,8 @@ export default function BubbleExplorer({
             const familyVisible = !tag || enabledTags.has(tag)
             const isMatch = matchesSearch(match, careerDetails[match.career_id], normalizedQuery)
             const isSelected = selectedId === match.career_id
+            const wasExplored = exploredCareerIds.includes(match.career_id)
+            const isActiveTarget = activeTargetCareer?.career_id === match.career_id
             const color = colorForTag(tag, tagColors)
             return (
               <button
@@ -340,7 +390,7 @@ export default function BubbleExplorer({
                 onDoubleClick={() => handleCareerDoubleClick(match)}
                 aria-label={match.title}
                 aria-pressed={isSelected}
-                title="Click for summary · double-click for details"
+                title={`${wasExplored ? 'Explored. ' : ''}${isActiveTarget ? 'Active RPG target. ' : ''}Click for summary · double-click for details`}
               >
                 <span className="career-orb" aria-hidden="true"><i /></span>
                 <span className="career-node-label">{match.title}</span>
@@ -373,7 +423,7 @@ export default function BubbleExplorer({
             }} title="Double-click this summary to open full career details">
               <div className="summary-header">
                 <div><span className="summary-kicker">CAREER SUMMARY / DOUBLE-CLICK TO EXPAND</span><h2>{selectedMatch.title}</h2></div>
-                <button type="button" aria-label="Close career summary" onClick={() => { setSelectedId(''); onCareerSelection?.(null) }}>×</button>
+                <button type="button" aria-label="Close career summary" onClick={() => setSelectedId('')}>×</button>
               </div>
               {careerDetails[selectedId] ? (
                 <p className="summary-copy">{selectedDetail.summary || 'Career summary is unavailable in the backend record.'}</p>
@@ -386,7 +436,15 @@ export default function BubbleExplorer({
               <div className="summary-tags">
                 {matchTags(selectedMatch).map((tag) => <span key={tag}>{formatTag(tag)}</span>)}
               </div>
-              <QuestionPlaceholder onOpenChat={openCareerChat} />
+              <button
+                className={`career-target-button ${activeTargetCareer?.career_id === selectedMatch.career_id ? 'is-active' : ''}`}
+                type="button"
+                disabled={activeTargetCareer?.career_id === selectedMatch.career_id}
+                onClick={() => onSetActiveTargetCareer?.(selectedMatch)}
+              >
+                {activeTargetCareer?.career_id === selectedMatch.career_id ? 'ACTIVE RPG GOAL' : 'CHOOSE THIS AS MY GOAL'}
+              </button>
+              <QuestionPlaceholder onOpenChat={(question) => openCareerChat(question, selectedMatch)} />
             </aside>
           )}
 
@@ -397,6 +455,7 @@ export default function BubbleExplorer({
               </div>
               <strong className="guide-selection">{selectedMatch?.title || 'Career map'}</strong>
               <span className="guide-family">{selectedMatch ? `Match tags / ${matchTags(selectedMatch).map(formatTag).join(', ') || 'none supplied'}` : 'Backend match results'}</span>
+              <span className="guide-active-target">ACTIVE RPG GOAL / {activeTargetCareer?.title || 'NONE SELECTED'}</span>
               <p><b>Click a bubble</b> for its summary. Double-click a bubble or summary for details. Search and mute returned interest-tag families.</p>
               {selectedMatch && <small className="guide-category-note">Career category is not supplied by the current API.</small>}
               <div className="guide-footer"><span>LIVE BACKEND DATA</span><span>◈ {selectedMatch ? `${selectedMatch.interest_score}%` : `${matches.length} MATCHES`}</span></div>
@@ -416,10 +475,18 @@ export default function BubbleExplorer({
             <header className="career-detail-header">
               <button type="button" className="detail-back" aria-label="Back to summary" onClick={() => setDetailOpen(false)}>←</button>
               <div><span>CAREER FILE / BACKEND DETAIL</span><h2 id="career-detail-title">{selectedMatch.title}</h2></div>
-              <button type="button" className="detail-close" aria-label="Close career details" onClick={() => { setDetailOpen(false); setSelectedId(''); onCareerSelection?.(null) }}>×</button>
+              <button type="button" className="detail-close" aria-label="Close career details" onClick={() => { setDetailOpen(false); setSelectedId('') }}>×</button>
             </header>
             <div className="career-detail-scroll">
               <p className="detail-tags">Matched interest tags: {matchTags(selectedMatch).map(formatTag).join(', ') || 'not supplied'}</p>
+              <button
+                className={`career-target-button ${activeTargetCareer?.career_id === selectedMatch.career_id ? 'is-active' : ''}`}
+                type="button"
+                disabled={activeTargetCareer?.career_id === selectedMatch.career_id}
+                onClick={() => onSetActiveTargetCareer?.(selectedMatch)}
+              >
+                {activeTargetCareer?.career_id === selectedMatch.career_id ? 'ACTIVE RPG GOAL' : 'CHOOSE THIS AS MY GOAL'}
+              </button>
               {selectedDetail ? (
                 <>
                   <section className="detail-section"><h3>Career description</h3><p>{selectedDetail.summary || 'No career description was supplied.'}</p></section>
@@ -442,7 +509,7 @@ export default function BubbleExplorer({
                 <div className="detail-load-error" role="alert"><p>Career details are unavailable: {detailErrors[selectedId]}</p><button type="button" className="pixel-button" onClick={retryCareerDetails}>RETRY DETAILS</button></div>
               ) : <p role="status">LOADING CAREER DETAILS…</p>}
             </div>
-            <QuestionPlaceholder onOpenChat={openCareerChat} />
+            <QuestionPlaceholder onOpenChat={(question) => openCareerChat(question, selectedMatch)} />
           </section>
         </div>
       )}
@@ -453,7 +520,12 @@ export default function BubbleExplorer({
         draft={careerChatDraft}
         onDraftChange={setCareerChatDraft}
         onToggle={toggleCareerChat}
-        careerTitle={selectedMatch?.title || 'this career'}
+        careerTitle={careerChatCareer?.title || selectedMatch?.title || 'this career'}
+        chatEntries={careerChatEntries.filter((entry) => entry.career_id === careerChatCareer?.career_id)}
+        loading={careerChatLoading}
+        error={careerChatError}
+        canSend={Boolean(careerChatCareer?.career_id)}
+        onSend={sendCareerQuestion}
         personalizationConsent={careerChatPersonalizationConsent}
         onPersonalizationConsentChange={onCareerChatPersonalizationConsentChange}
       />

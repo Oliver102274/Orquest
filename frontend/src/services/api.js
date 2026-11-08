@@ -52,6 +52,72 @@ function isStringList(value) {
   return Array.isArray(value) && value.every((item) => typeof item === 'string')
 }
 
+const GUIDANCE_STATUSES = new Set(['ai_generated', 'deterministic', 'blocked'])
+const GUIDANCE_PROVIDERS = new Set(['gemini', 'openrouter', 'deterministic', 'none'])
+const RESOURCE_VERIFICATION_STATES = new Set(['unverified', 'verified', 'stale'])
+const MAX_ROADMAP_CONTEXT_LENGTH = 1_000
+
+const QUESTIONNAIRE_ROADMAP_CONTEXT = [
+  { index: 0, field: 'goals', label: 'Career or future goal:' },
+  { index: 1, field: 'preferences', label: 'Interests, hobbies, and subjects:' },
+  // The motivation prompt has no corresponding backend field and is intentionally omitted.
+  { index: 3, field: 'preferences', label: 'Preferred challenges and activities:' },
+  { index: 4, field: 'goals', label: 'Ideal future:' },
+]
+
+function addConsentedQuestionnaireContext(roadmapPayload, answers, hasConsent) {
+  if (!hasConsent || !Array.isArray(answers)) return
+
+  for (const { index, field, label } of QUESTIONNAIRE_ROADMAP_CONTEXT) {
+    const answer = typeof answers[index] === 'string' ? answers[index].trim() : ''
+    if (!answer) continue
+
+    const value = `${label} ${answer}`
+    // Count Unicode code points, matching the backend's character-length validation.
+    if ([...value].length > MAX_ROADMAP_CONTEXT_LENGTH) {
+      throw new ApiError(
+        `Your response for “${label.replace(/:$/, '')}” exceeds the backend's 1,000-character limit after its context label. Shorten it before requesting a roadmap.`,
+        { code: 'questionnaire_answer_too_long' },
+      )
+    }
+
+    roadmapPayload[field] ||= []
+    roadmapPayload[field].push(value)
+  }
+}
+
+function isTargetOccupation(value) {
+  return typeof value?.career_id === 'string' && typeof value?.title === 'string'
+}
+
+function isGuidanceMetadata(value) {
+  return GUIDANCE_STATUSES.has(value?.status)
+    && GUIDANCE_PROVIDERS.has(value?.provider)
+    && (value?.reason == null || typeof value.reason === 'string')
+    && typeof value?.review_required === 'boolean'
+}
+
+function isResource(value) {
+  return typeof value?.id === 'string'
+    && typeof value?.title === 'string'
+    && typeof value?.organization === 'string'
+    && typeof value?.type === 'string'
+    && (value.source_url == null || typeof value.source_url === 'string')
+    && (value.verified_at == null || typeof value.verified_at === 'string')
+    && RESOURCE_VERIFICATION_STATES.has(value.verification_status)
+}
+
+function isMissionSuggestion(value) {
+  return typeof value?.id === 'string'
+    && typeof value?.title === 'string'
+    && typeof value?.instruction === 'string'
+    && isStringList(value?.resource_ids)
+}
+
+function unexpectedGuidanceResponse(message) {
+  throw new ApiError(message, { code: 'unexpected_response' })
+}
+
 export async function getSwipeCards({ signal } = {}) {
   const body = await request('/api/cards', { signal })
   if (!Array.isArray(body?.cards) || !body.cards.every((card) =>
@@ -98,6 +164,55 @@ export async function getCareer(careerId, { signal } = {}) {
     throw new ApiError('The backend career response does not match the expected format.', {
       code: 'unexpected_response',
     })
+  }
+  return body
+}
+
+export async function submitCareerQuestion(payload, { signal } = {}) {
+  const questionPayload = {
+    career_id: payload?.career_id,
+    question: payload?.question,
+  }
+  const body = await request('/api/career-questions', {
+    method: 'POST',
+    signal,
+    body: JSON.stringify(questionPayload),
+  })
+  if (!isTargetOccupation(body?.target_occupation)
+    || body.target_occupation.career_id !== questionPayload.career_id
+    || typeof body?.answer !== 'string'
+    || !isStringList(body?.source_urls)
+    || !isStringList(body?.resource_ids)
+    || !isGuidanceMetadata(body?.metadata)) {
+    unexpectedGuidanceResponse('The backend career-question response does not match the expected format.')
+  }
+  return body
+}
+
+export async function getCareerRoadmap(payload, { signal } = {}) {
+  const roadmapPayload = { career_id: payload?.career_id }
+  if (Array.isArray(payload?.interest_tags)) roadmapPayload.interest_tags = payload.interest_tags
+  addConsentedQuestionnaireContext(
+    roadmapPayload,
+    payload?.questionnaire_answers,
+    payload?.questionnaire_personalization_consent === true,
+  )
+  const body = await request('/api/roadmaps', {
+    method: 'POST',
+    signal,
+    body: JSON.stringify(roadmapPayload),
+  })
+  if (!isTargetOccupation(body?.target_occupation)
+    || body.target_occupation.career_id !== roadmapPayload.career_id
+    || !isStringList(body?.relevant_skills_and_qualifications)
+    || !Array.isArray(body?.mdc_pathways) || !body.mdc_pathways.every(isResource)
+    || !Array.isArray(body?.alternative_resources) || !body.alternative_resources.every(isResource)
+    || !Array.isArray(body?.career_milestones) || !body.career_milestones.every(isMissionSuggestion)
+    || !Array.isArray(body?.suggested_missions) || !body.suggested_missions.every(isMissionSuggestion)
+    || !isStringList(body?.source_urls)
+    || !isStringList(body?.evidence_gaps)
+    || !isGuidanceMetadata(body?.metadata)) {
+    unexpectedGuidanceResponse('The backend roadmap response does not match the expected format.')
   }
   return body
 }

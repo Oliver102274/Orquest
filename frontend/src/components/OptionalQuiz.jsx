@@ -38,7 +38,7 @@ export default function OptionalQuiz({ answers, onAnswersChange, onComplete, onS
 
         <section className="quiz-personalization-notice" aria-labelledby="quiz-personalization-title">
           <strong id="quiz-personalization-title">Personalization Notice</strong>
-          <p>By filling out this optional quiz, you agree that your answers may be analyzed by AI to create a personalized RPG experience tailored to your interests, goals, and preferences. Skipping the quiz does not grant this consent.</p>
+          <p>Completing this optional quiz records your consent to use your answers for RPG roadmap personalization. Only answers you provide are sent with a short question label when you request a roadmap. Blank answers are omitted; the motivation answer is not sent. Skipping the whole quiz means no questionnaire answers are sent.</p>
         </section>
 
         <div className="quiz-progress" aria-hidden="true">

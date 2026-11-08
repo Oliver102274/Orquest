@@ -1,11 +1,15 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import OrquestLogo from './OrquestLogo.jsx'
 import { authenticate } from '../logic/authentication.js'
+import { parseSaveFile, saveFileSummary } from '../logic/saveFile.js'
 
-export default function LoginScreen({ onLogin }) {
+export default function LoginScreen({ onLogin, onImportSave }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [importError, setImportError] = useState('')
+  const [pendingImport, setPendingImport] = useState(null)
+  const saveInput = useRef(null)
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -18,6 +22,29 @@ export default function LoginScreen({ onLogin }) {
     setError('')
     onLogin()
   }
+
+  async function handleSaveFileChange(event) {
+    const file = event.target.files?.[0]
+    if (!file) return
+    setPendingImport(null)
+    setImportError('')
+    try {
+      const parsed = parseSaveFile(await file.text())
+      setPendingImport(parsed)
+    } catch (fileError) {
+      setImportError(fileError.message || 'The save file could not be read.')
+    } finally {
+      event.target.value = ''
+    }
+  }
+
+  function confirmImport() {
+    if (!pendingImport) return
+    onImportSave(pendingImport)
+    setPendingImport(null)
+  }
+
+  const importSummary = pendingImport ? saveFileSummary(pendingImport) : null
 
   return (
     <section className="login-scene">
@@ -66,9 +93,43 @@ export default function LoginScreen({ onLogin }) {
             {error && <p className="form-error" role="alert">{error}</p>}
 
             <button className="pixel-button login-submit" type="submit">
-              <span>Enter the hall</span><span aria-hidden="true">▶</span>
+              <span>Start Fresh / Enter the hall</span><span aria-hidden="true">▶</span>
             </button>
           </form>
+
+          <div className="login-save-controls">
+            <input
+              ref={saveInput}
+              className="save-file-input"
+              type="file"
+              accept="application/json,.json"
+              aria-label="Choose saved progress JSON file"
+              onChange={handleSaveFileChange}
+            />
+            <button className="login-import-button" type="button" onClick={() => saveInput.current?.click()}>
+              IMPORT SAVED PROGRESS
+            </button>
+            <p className="login-save-note">Start Fresh is the default. Save files hold supported progress only; credentials and chat history are never included. Nothing is synced to an account.</p>
+            {importError && <p className="form-error" role="alert">{importError}</p>}
+            {pendingImport && importSummary && (
+              <section className="save-import-preview" aria-labelledby="save-import-title">
+                <strong id="save-import-title">Saved progress ready to import</strong>
+                <ul>
+                  <li>{importSummary.swipeCount} swipe responses</li>
+                  <li>{importSummary.careerPathCount} saved career paths</li>
+                  <li>Active path: {importSummary.activeCareerTitle || 'none'}</li>
+                  <li>{importSummary.questionnaireConsent
+                    ? `${importSummary.questionnaireAnswerCount} non-empty questionnaire answers saved with consent`
+                    : 'No questionnaire answers included'}</li>
+                </ul>
+                <p>Confirm to replace the current demo session with this save.</p>
+                <div className="save-import-actions">
+                  <button className="pixel-button" type="button" onClick={confirmImport}>CONFIRM IMPORT</button>
+                  <button className="pixel-quiet-button" type="button" onClick={() => setPendingImport(null)}>CANCEL</button>
+                </div>
+              </section>
+            )}
+          </div>
 
           <div className="demo-credentials">
             <span className="demo-badge">DEMO</span>
@@ -77,7 +138,7 @@ export default function LoginScreen({ onLogin }) {
             <span>MDC2026</span>
           </div>
         </div>
-        <p className="login-footnote">LOCAL PREVIEW <span>·</span> NO ACCOUNT OR BACKEND CONNECTION</p>
+        <p className="login-footnote">LOCAL DEMO LOGIN <span>·</span> NO ACCOUNT SYNC</p>
       </div>
     </section>
   )
