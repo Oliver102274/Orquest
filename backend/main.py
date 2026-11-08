@@ -83,6 +83,9 @@ def create_app(data_directory: Path | None = None, origins: list[str] | None = N
     @application.get("/api/careers/{career_id}", response_model=CareerDetail,
                      responses={**errors, 404: {"model": ErrorResponse}})
     def career(career_id: str):
+        if career_id.startswith("occupation_"):
+            catalog, occupation = selected_occupation(career_id)
+            return job_catalog.guidance_career(catalog, occupation, repository)
         for record in repository.careers():
             if record.career_id == career_id:
                 return CareerDetail.model_validate(record.model_dump(exclude={"interest_tags"}))
