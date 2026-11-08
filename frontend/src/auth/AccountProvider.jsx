@@ -45,7 +45,8 @@ export default function AccountProvider({ children, config = authConfiguration()
   const [returnedState, setReturnedState] = useState(null)
   if (!config.enabled) return children
   if (!/^[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+$/.test(config.domain) || !config.clientId || config.audience !== 'https://api.orquest.app') {
-    return <><p role="alert">Account login is not configured. Guest access remains available.</p>{children}</>
+    return <AccountContext.Provider value={{ enabled: true, configured: false, authenticated: false, identity: 'guest',
+      error: 'Account login is not configured. Check frontend/.env.local and restart Vite. Guest access remains available.' }}>{children}</AccountContext.Provider>
   }
   return <Auth0Provider domain={config.domain} clientId={config.clientId} cacheLocation="memory" useRefreshTokens={false}
     authorizationParams={{ redirect_uri: window.location.origin, audience: config.audience, scope: 'openid profile' }}
@@ -64,9 +65,9 @@ export function AccountControls({ navigation, onGuest, storage }) {
       <p>{storage === 'persistent_postgres' ? 'Account progress storage is available.' : 'Progress is temporary unless account storage is confirmed.'}</p>
       <button type="button" className="pixel-quiet-button" onClick={account.logout}>Log out</button>
     </> : <>
-      <button type="button" className="pixel-quiet-button" onClick={() => account.login(navigation)}>Log in</button>
-      <button type="button" className="pixel-quiet-button" onClick={() => account.login(navigation, true)}>Sign up</button>
-      <button type="button" className="pixel-quiet-button" onClick={() => { account.guest(); onGuest() }}>Continue as Guest</button>
+      <button type="button" className="pixel-quiet-button" disabled={account.configured === false} onClick={() => account.login(navigation)}>Log in</button>
+      <button type="button" className="pixel-quiet-button" disabled={account.configured === false} onClick={() => account.login(navigation, true)}>Sign up</button>
+      <button type="button" className="pixel-quiet-button" onClick={() => { account.guest?.(); onGuest() }}>Continue as Guest</button>
     </>}
   </section>
 }

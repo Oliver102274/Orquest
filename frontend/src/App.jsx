@@ -162,7 +162,7 @@ function OrquestGame() {
 
   return (
     <main className="app-shell">
-      <AccountControls navigation={{ screen, experienceScreen, target_id: activeTargetCareer?.career_id }} onGuest={() => setScreen('swipe')} storage={accountStatus?.storage} />
+      {(screen !== 'login' || account.authenticated) && <AccountControls navigation={{ screen, experienceScreen, target_id: activeTargetCareer?.career_id }} onGuest={() => setScreen('swipe')} storage={accountStatus?.storage} />}
       {accountError && <p className="account-error" role="alert">{accountError}</p>}
       {screen === 'login' && <LoginScreen onLogin={() => setScreen('swipe')} onImportSave={importSavedProgress} />}
       {screen === 'swipe' && (

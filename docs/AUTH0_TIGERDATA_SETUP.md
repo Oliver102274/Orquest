@@ -23,6 +23,29 @@ Default behavior stays guest-only. Nothing here creates a cloud service, applies
 
 ## Configuration
 
+### Missing local login controls
+
+Run Vite from this feature worktree's `frontend` directory. It reads `frontend/.env.local`, not the root `.env`, `.env.example`, or another worktree's settings. Copy the public `frontend/.env.example` template only if `.env.local` does not already exist, fill in the Orquest SPA values, and set `VITE_AUTH0_ENABLED=true`. Restart Vite and reload the page. Do not copy an entire backend environment file into the frontend.
+
+With valid enabled configuration, the initial retro card offers **Log In / Sign Up**, **Continue as Guest**, and **Import Saved Progress**. Login does not require entering guest mode first. Incomplete enabled configuration shows a disabled login button and a safe configuration message. When disabled, the original guest-only screen remains. After login the account bar shows identity/logout, and the landing button becomes **Continue to Orquest**. Memory mode is explicitly temporary; importing a save does not import missions, XP, or guest access tokens into an account.
+
+Backend startup is separate: `backend.run_local` reads this worktree's ignored root `.env`. For this local login check set `AUTH0_ENABLED=true`, the same tenant domain and exact API audience, `PERSISTENCE_BACKEND=memory`, `ORQUESTRA_AI_ENABLED=false`, and `AI_MAX_REQUESTS_PER_PROVIDER=0`. No database URL is needed. Stop the existing local servers with Ctrl+C in their own terminals before restarting:
+
+```powershell
+cd "C:\Users\olive\OneDrive\Desktop\Hackathon Projects\SharkByte Hackathon\.integration\auth0-tigerdata"
+$env:PERSISTENCE_BACKEND='memory'
+conda run --no-capture-output -n orquestra python -m backend.run_local
+```
+
+In a second terminal:
+
+```powershell
+cd "C:\Users\olive\OneDrive\Desktop\Hackathon Projects\SharkByte Hackathon\.integration\auth0-tigerdata\frontend"
+npm run dev -- --port 5174 --strictPort
+```
+
+Use `http://localhost:5174` and register that exact origin for Auth0 callback/logout/web origins. The development API defaults to `http://localhost:8000`; the backend binds loopback port 8000. A request without a token to `/api/me` should return 401 once account configuration is loaded; 503 means login/storage configuration is unavailable. Do not log JWTs or use ID tokens for that endpoint. The local Client ID must be checked against the Orquest **SPA** in Auth0 Dashboard; the SDK cannot determine application type from a client ID offline.
+
 Public frontend variables are read **at build time**. For local Vite, put these in an ignored `frontend/.env.local`, using your own public values:
 
 ```dotenv

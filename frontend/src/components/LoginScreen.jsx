@@ -1,15 +1,17 @@
 import { useRef, useState } from 'react'
 import OrquestLogo from './OrquestLogo.jsx'
 import { parseSaveFile, saveFileSummary } from '../logic/saveFile.js'
+import { useAccount } from '../auth/AccountProvider.jsx'
 
 export default function LoginScreen({ onLogin, onImportSave }) {
+  const account = useAccount()
   const [importError, setImportError] = useState('')
   const [pendingImport, setPendingImport] = useState(null)
   const saveInput = useRef(null)
 
   function handleSubmit(event) {
     event.preventDefault()
-
+    if (!account.authenticated) account.guest?.()
     onLogin()
   }
 
@@ -54,11 +56,21 @@ export default function LoginScreen({ onLogin, onImportSave }) {
           <div className="pixel-card-ribbon"><span>PUBLIC DEMO</span><span className="ribbon-light" /></div>
           <p className="pixel-kicker">DEMO BUILD / 001</p>
           <h1>Take your place.</h1>
-          <p className="login-intro">Your next path starts with one small choice. No account or password is needed. Please do not enter personal or sensitive information.</p>
+          <p className="login-intro">{account.enabled
+            ? 'Sign in securely with Auth0, or explore without an account. Account progress is temporary while database storage is disabled.'
+            : 'Your next path starts with one small choice. No account or password is needed. Please do not enter personal or sensitive information.'}</p>
+
+          {account.enabled && !account.authenticated && <div className="login-form">
+            <button className="pixel-button login-submit" type="button" disabled={account.configured === false}
+              onClick={() => account.login({ screen: 'login' })}>
+              <span>Log In / Sign Up</span><span aria-hidden="true">▶</span>
+            </button>
+            {account.error && <p className="form-error" role="alert">{account.error}</p>}
+          </div>}
 
           <form className="login-form" onSubmit={handleSubmit} noValidate autoComplete="off">
             <button className="pixel-button login-submit" type="submit">
-              <span>Continue as Guest / Start Fresh / Enter the hall</span><span aria-hidden="true">▶</span>
+              <span>{account.authenticated ? 'Continue to Orquest' : 'Continue as Guest / Start Fresh / Enter the hall'}</span><span aria-hidden="true">▶</span>
             </button>
           </form>
 

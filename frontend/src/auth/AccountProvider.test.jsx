@@ -42,12 +42,44 @@ it('defaults to guest and does not mount Auth0', () => {
   expect(screen.getByRole('button', { name: /Continue as Guest.*Enter the hall/i })).toBeTruthy()
   expect(sdk.props).toBeNull()
   expect(fetch).not.toHaveBeenCalled()
+  expect(screen.queryByRole('button', { name: /Log In \/ Sign Up/i })).toBeNull()
 })
 
 it('invalid configuration preserves guests without contacting Auth0', () => {
   render(<AccountProvider config={{ ...config, audience: '' }}><App /></AccountProvider>)
   expect(screen.getByRole('alert').textContent).toMatch(/not configured/)
   expect(sdk.props).toBeNull()
+  expect(screen.getByRole('button', { name: 'Log In / Sign Up' }).disabled).toBe(true)
+})
+
+it('offers Universal Login inside the initial retro card before guest entry', async () => {
+  render(<AccountProvider config={config}><App /></AccountProvider>)
+  const login = screen.getByRole('button', { name: 'Log In / Sign Up' })
+  expect(login.closest('.pixel-login-card')).toBeTruthy()
+  expect(login.disabled).toBe(false)
+  expect(screen.getByRole('button', { name: /Continue as Guest.*Enter the hall/i })).toBeTruthy()
+  expect(screen.getByRole('button', { name: 'IMPORT SAVED PROGRESS' })).toBeTruthy()
+  expect(fetch).not.toHaveBeenCalled()
+  fireEvent.click(login)
+  await waitFor(() => expect(sdk.auth.loginWithRedirect).toHaveBeenCalledWith({ appState: { navigation: { screen: 'login' } }, authorizationParams: {} }))
+  expect(sdk.props.clientId).toBe(config.clientId)
+  expect(sdk.props.authorizationParams.audience).toBe('https://api.orquest.app')
+})
+
+it('shows authenticated landing state and clears it on logout in memory mode', async () => {
+  sdk.auth.isAuthenticated = true
+  sdk.auth.user = { sub: 'test-user', name: 'Test student' }
+  fetch.mockImplementation(async url => response(url.endsWith('/api/me')
+    ? { sub: 'test-user', storage: 'temporary_memory' } : { selected_target: null, progress: [] }))
+  render(<AccountProvider config={config}><App /></AccountProvider>)
+  await screen.findByText('Signed in: Test student')
+  expect(screen.getByRole('button', { name: 'Continue to Orquest' })).toBeTruthy()
+  expect(screen.queryByRole('button', { name: 'Log In / Sign Up' })).toBeNull()
+  expect(screen.queryByText('Account progress storage is available.')).toBeNull()
+  fireEvent.click(screen.getByRole('button', { name: 'Log out' }))
+  await waitFor(() => expect(sdk.auth.logout).toHaveBeenCalledWith({ logoutParams: { returnTo: window.location.origin } }))
+  expect(screen.queryByText('Signed in: Test student')).toBeNull()
+  expect(screen.getByRole('button', { name: 'Log In / Sign Up' })).toBeTruthy()
 })
 
 it('uses memory access tokens, API audience, and returns navigation through SDK appState', async () => {
