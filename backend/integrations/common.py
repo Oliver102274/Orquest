@@ -34,6 +34,8 @@ class AISettings(BaseModel):
     gemini_model: str = ""
     swarms_model: str = ""
     prune_model: str = ""
+    swarms_enabled: bool = False
+    prune_enabled: bool = False
 
     @classmethod
     def from_env(cls):
@@ -45,6 +47,7 @@ class AISettings(BaseModel):
             "gemini_model": "GEMINI_MODEL", "swarms_model": "SWARMS_MODEL", "prune_model": "PRUNE_MODEL",
             "openrouter_key": "OPENROUTER_API_KEY", "openrouter_model": "OPENROUTER_MODEL",
             "gemini_free_tier_confirmed": "GEMINI_FREE_TIER_CONFIRMED",
+            "swarms_enabled": "SWARMS_ENABLED", "prune_enabled": "PRUNE_ENABLED",
         }
         try:
             settings = cls(**{field: os.environ[name] for field, name in names.items() if os.environ.get(name)})
@@ -76,6 +79,8 @@ class RequestBudget:
 
     def reserve(self, provider: str, settings: AISettings, payload: dict):
         if not settings.enabled:
+            raise AIServiceError("disabled", provider)
+        if provider in {"swarms", "prune"} and (settings.public_demo or not getattr(settings, provider + "_enabled")):
             raise AIServiceError("disabled", provider)
         if not getattr(settings, f"{provider}_key").get_secret_value().strip():
             raise AIServiceError("missing_key", provider)
@@ -122,6 +127,12 @@ def post_json(provider: str, url: str, key: str, payload: dict, settings: AISett
                           trust_env=False, transport=transport) as client:
             response = client.post(url, headers=headers, json=payload)
         if not 200 <= response.status_code < 300:
+            if provider == "prune" and response.headers.get("X-Prune-Shield-Code"):
+                # Only documented enums escape the transport, never provider text.
+                code = response.headers["X-Prune-Shield-Code"]
+                allowed = {"spend_cap", "token_budget", "customer_budget", "anomaly_spike",
+                           "rate_limit", "shield_unavailable"}
+                raise AIServiceError("shield_" + code if code in allowed else "shield_blocked", provider)
             if provider == "openrouter":
                 try:
                     blocked = refusal_error(response.json())
