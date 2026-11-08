@@ -25,7 +25,26 @@
           "verification_status": "unverified"
         }
       ],
-      "mdc_resources": [],
+      "mdc_resources": [
+        {
+          "id": "resource_mdc_business_application_programming_as",
+          "title": "Computer Programming and Analysis - Business Application Programming — Associate in Science: 60 credits, approximately 2 years; C++, Java, object-oriented programming, databases, and systems analysis",
+          "organization": "Miami Dade College",
+          "type": "program",
+          "source_url": "https://www.mdc.edu/businessapplications/",
+          "verified_at": "2026-11-07T00:00:00Z",
+          "verification_status": "verified"
+        },
+        {
+          "id": "resource_mdc_mobile_applications_as",
+          "title": "Computer Programming and Analysis - Mobile Applications Development — Associate in Science: 60 credits, approximately 2 years; Apple and Android application development",
+          "organization": "Miami Dade College",
+          "type": "program",
+          "source_url": "https://www.mdc.edu/academics/programs/csg/AS_ComputerProgramming%26Analysis-MobileApplicationsDevelopment_csg.pdf",
+          "verified_at": "2026-11-08T00:00:00Z",
+          "verification_status": "verified"
+        }
+      ],
       "external_resources": []
     },
     {
@@ -81,7 +100,26 @@
           "verification_status": "unverified"
         }
       ],
-      "mdc_resources": [],
+      "mdc_resources": [
+        {
+          "id": "resource_mdc_business_intelligence_as",
+          "title": "Business Intelligence Specialist — Associate in Science: 60 credits, approximately 2 years; SQL, data mining, reporting, and data visualization",
+          "organization": "Miami Dade College",
+          "type": "program",
+          "source_url": "https://www.mdc.edu/businessintelligence/",
+          "verified_at": "2026-11-07T00:00:00Z",
+          "verification_status": "verified"
+        },
+        {
+          "id": "resource_mdc_data_analytics_bs",
+          "title": "Data Analytics — Bachelor of Science: statistics, SQL, programming, data visualization, and machine learning; admission requirements apply",
+          "organization": "Miami Dade College",
+          "type": "program",
+          "source_url": "https://www.mdc.edu/dataanalytics/",
+          "verified_at": "2026-11-07T00:00:00Z",
+          "verification_status": "verified"
+        }
+      ],
       "external_resources": []
     }
   ]

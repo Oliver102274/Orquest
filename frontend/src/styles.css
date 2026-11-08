@@ -367,6 +367,53 @@ button:focus-visible, input:focus-visible { outline: 3px solid #d5f28f; outline-
 .journey-secondary-actions .save-export-button { font-size: 7px; padding: 7px 8px; }
 .journey-secondary-actions .experience-back-button { margin: 0; }
 
+/* RPG progress (Task 3): mission path scoreboard, mission board, completion states. */
+.rpg-start-button { margin-bottom: 12px; }
+.rpg-start-button:disabled { cursor: default; filter: grayscale(.55); opacity: .7; }
+.rpg-progress { margin: 0 auto 16px; border: 3px solid #34373d; background: linear-gradient(145deg, #cfd2cb, #bdc1bb); box-shadow: 4px 5px 0 #767a7b; text-align: left; padding: 12px 14px; }
+.rpg-progress-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.rpg-progress-kicker { color: #5c6b60; font-size: 7px; font-weight: 900; letter-spacing: .13em; }
+.rpg-refresh-button { border: 2px solid #5d6660; background: #c3c8c1; color: #46504a; font-size: 7px; font-weight: 900; letter-spacing: .08em; padding: 4px 7px; }
+.rpg-refresh-button:disabled { cursor: default; opacity: .55; }
+.rpg-progress-target { display: block; margin: 7px 0 9px; color: #33383e; font-size: 14px; }
+.rpg-xp-row { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.rpg-xp-total { color: #3c4a41; font-size: 9px; font-weight: 900; letter-spacing: .06em; }
+.rpg-xp-total b { font-size: 20px; letter-spacing: -.04em; }
+.rpg-mission-count { color: #656d67; font-size: 8px; font-weight: 900; letter-spacing: .06em; }
+.rpg-xp-bar { height: 10px; border: 2px solid #474a50; background: #a1a4a3; box-shadow: inset 1px 1px 0 rgba(37, 39, 43, .22); margin: 6px 0 0; }
+.rpg-xp-bar span { display: block; height: 100%; background: linear-gradient(90deg, #83ad8b, #a5c69c); transition: width .18s steps(6, end); }
+.rpg-complete-banner { margin: 8px 0 0; border-left: 4px solid #7d9a7f; background: #d3ddd0; color: #37503d; font-size: 8px; font-weight: 900; letter-spacing: .05em; padding: 7px 8px; }
+.rpg-progress-notice { margin: 8px 0 0; color: #6a7071; font-family: 'Segoe UI', Arial, sans-serif; font-size: 9px; line-height: 1.4; }
+.rpg-missions { margin: 0 0 16px; text-align: left; }
+.rpg-missions > h2 { margin: 0 0 8px; color: #3d4440; font-size: 9px; letter-spacing: .07em; }
+.rpg-mission-board { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.rpg-mission { border: 3px solid #3c4046; background: linear-gradient(145deg, #c6c8c4, #b6b9b5); box-shadow: 3px 4px 0 #767a7b; padding: 10px 11px; animation: pixel-enter .16s steps(3, end); }
+.rpg-mission.is-next { border-color: #55705c; background: linear-gradient(145deg, #cdd8c7, #b9c9b6); }
+.rpg-mission.is-complete { border-color: #6d7370; background: linear-gradient(145deg, #bbbdba, #abaeab); }
+.rpg-mission-head { display: flex; align-items: center; gap: 9px; }
+.rpg-mission-number { display: grid; width: 27px; height: 27px; flex: none; place-items: center; border: 2px solid #555b58; background: #cfd1ca; color: #4a5450; font-size: 8px; font-weight: 900; }
+.rpg-mission-heading { display: grid; flex: 1; gap: 2px; min-width: 0; }
+.rpg-mission-title { color: #33373d; font-size: 12px; line-height: 1.3; }
+.rpg-mission-reward { color: #56705c; font-size: 8px; font-weight: 900; letter-spacing: .06em; }
+.rpg-mission-stamp, .rpg-mission-next-tag { flex: none; border: 2px solid #6e7f70; background: #d0dad0; color: #3f5a45; font-size: 7px; font-weight: 900; letter-spacing: .08em; padding: 3px 5px; }
+.rpg-mission-stamp { border-color: #7b837e; background: #d5d7d2; color: #59605b; transform: rotate(-4deg); }
+.rpg-mission-instruction { margin: 8px 0 0; color: #4d5257; font-family: 'Segoe UI', Arial, sans-serif; font-size: 10px; line-height: 1.5; }
+.rpg-mission-resources { display: grid; gap: 6px; margin: 9px 0 0; padding-left: 17px; }
+.rpg-mission-resources li { color: #4d5257; font-family: 'Segoe UI', Arial, sans-serif; font-size: 9px; line-height: 1.4; }
+.rpg-mission-resources strong, .rpg-mission-resources small, .rpg-mission-resources a { display: block; }
+.rpg-mission-resources small { color: #707577; }
+.rpg-mission-resources a { color: #426d74; overflow-wrap: anywhere; }
+.rpg-complete-button { display: block; width: 100%; margin-top: 10px; border: 2px solid #34423a; background: linear-gradient(140deg, #b1ceaa, #8eb493); box-shadow: 3px 3px 0 #6c7470; color: #283a31; font-size: 8px; font-weight: 900; letter-spacing: .05em; padding: 8px 10px; }
+.rpg-complete-button:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.04); }
+.rpg-complete-button:disabled { cursor: default; filter: grayscale(.5); opacity: .7; }
+
+@media (max-width: 700px) {
+  .rpg-progress { padding: 10px 11px; }
+  .rpg-mission { padding: 9px 10px; }
+  .rpg-mission-title { font-size: 11px; }
+  .rpg-xp-total b { font-size: 17px; }
+}
+
 @keyframes pixel-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes pixel-expand { from { opacity: .3; transform: scale(.88); } to { opacity: 1; transform: scale(1); } }
 @keyframes card-in { from { opacity: .6; } to { opacity: 1; } }
@@ -480,3 +527,37 @@ button:focus-visible, input:focus-visible { outline: 3px solid #d5f28f; outline-
   .map-guide { width: 158px; }
   .career-chat-dock { right: 8px; bottom: 8px; }
 }
+/* Catalog uses the existing field-map and detail-panel visual language. */
+.catalog-picker { padding: 12px; max-width: 100%; }
+.catalog-picker label { display: inline-flex; flex-direction: column; gap: 6px; margin: 8px; max-width: 90%; }
+.catalog-picker select { max-width: 100%; padding: 8px; background: #162a30; color: #eef5ed; }
+/* Career Discovery keeps the retro survey frame while supporting bank-driven answers. */
+.discovery-frame { overflow: hidden; }
+.discovery-heading { min-height: 150px; }
+.discovery-question-body { display: grid; gap: 18px; padding: 22px; }
+.discovery-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 245px), 1fr)); gap: 10px; }
+.discovery-option { display: flex; min-height: 54px; align-items: center; gap: 11px; border: 3px solid #66696b; background: linear-gradient(135deg, #d0d1ce, #b8bab8); box-shadow: 3px 3px 0 #777a7c; color: #34373b; cursor: pointer; font-family: 'Segoe UI', Arial, sans-serif; font-size: 13px; line-height: 1.35; padding: 11px 13px; }
+.discovery-option:has(input:checked) { border-color: #485a49; background: linear-gradient(135deg, #bad2ab, #a4c499); box-shadow: 3px 3px 0 #4d594f; }
+.discovery-option input { width: 17px; height: 17px; flex: none; accent-color: #648663; margin: 0; }
+.discovery-text-answer { display: grid; gap: 7px; }
+.discovery-text-answer textarea { width: 100%; resize: vertical; border: 3px solid #66696b; border-radius: 0; background: linear-gradient(135deg, #d0d1ce, #b8bab8); color: #30343a; font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 1.5; padding: 12px; }
+.discovery-text-answer small { justify-self: end; color: #686b6d; font-size: 9px; }
+.discovery-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; }
+.discovery-actions .pixel-quiet-button { justify-self: initial; }
+.discovery-error { margin: 0; }
+.discovery-complete { min-height: 390px; }
+.discovery-complete strong { font-size: 19px; letter-spacing: .04em; }
+@media (max-width: 600px) {
+  .discovery-heading { min-height: 120px; }
+  .discovery-question-body { padding: 14px; }
+  .discovery-actions { justify-content: stretch; }
+  .discovery-actions > button { flex: 1; justify-content: center; }
+}
+.discovery-option:has(input:disabled) { cursor: not-allowed; opacity: .55; }
+.discovery-complete h1 { margin: 0; font-size: clamp(19px, 3vw, 27px); line-height: 1.2; }
+.session-note, .session-active-label { justify-self: end; color: #e0e1dc; font-size: 8px; font-weight: 900; letter-spacing: .1em; }
+.session-active-label { align-self: center; }
+.discovery-swipe-board { padding: 0; }
+.discovery-swipe-hint { justify-content: flex-end; padding: 4px 0 0; }
+.discovery-undisclosed { position: relative; z-index: 3; align-self: flex-start; border: 2px solid #737677; background: rgba(245, 245, 237, .4); color: #54595b; font-size: 8px; font-weight: 900; letter-spacing: .06em; padding: 7px 9px; }
+.discovery-undisclosed:hover { background: rgba(245, 245, 237, .7); }

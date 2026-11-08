@@ -1,12 +1,8 @@
 import { useRef, useState } from 'react'
 import OrquestLogo from './OrquestLogo.jsx'
-import { authenticate } from '../logic/authentication.js'
 import { parseSaveFile, saveFileSummary } from '../logic/saveFile.js'
 
 export default function LoginScreen({ onLogin, onImportSave }) {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
   const [importError, setImportError] = useState('')
   const [pendingImport, setPendingImport] = useState(null)
   const saveInput = useRef(null)
@@ -14,12 +10,6 @@ export default function LoginScreen({ onLogin, onImportSave }) {
   function handleSubmit(event) {
     event.preventDefault()
 
-    if (!authenticate(username, password)) {
-      setError('Invalid Username or Password. Please Try Again!')
-      return
-    }
-
-    setError('')
     onLogin()
   }
 
@@ -61,37 +51,12 @@ export default function LoginScreen({ onLogin, onImportSave }) {
       <div className="login-stage">
         <div className="login-logo"><OrquestLogo /></div>
         <div className="pixel-login-card">
-          <div className="pixel-card-ribbon"><span>PLAYER ACCESS</span><span className="ribbon-light" /></div>
+          <div className="pixel-card-ribbon"><span>PUBLIC DEMO</span><span className="ribbon-light" /></div>
           <p className="pixel-kicker">DEMO BUILD / 001</p>
           <h1>Take your place.</h1>
-          <p className="login-intro">Your next path starts with one small choice.</p>
+          <p className="login-intro">Your next path starts with one small choice. No account or password is needed. Please do not enter personal or sensitive information.</p>
 
           <form className="login-form" onSubmit={handleSubmit} noValidate autoComplete="off">
-            <label htmlFor="username">Username</label>
-            <input
-              id="username"
-              name="demo-username"
-              type="text"
-              inputMode="email"
-              autoComplete="off"
-              placeholder="you@example.com"
-              value={username}
-              onChange={(event) => { setUsername(event.target.value); setError('') }}
-            />
-
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              name="demo-password"
-              type="password"
-              autoComplete="off"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(event) => { setPassword(event.target.value); setError('') }}
-            />
-
-            {error && <p className="form-error" role="alert">{error}</p>}
-
             <button className="pixel-button login-submit" type="submit">
               <span>Start Fresh / Enter the hall</span><span aria-hidden="true">▶</span>
             </button>
@@ -133,12 +98,10 @@ export default function LoginScreen({ onLogin, onImportSave }) {
 
           <div className="demo-credentials">
             <span className="demo-badge">DEMO</span>
-            <span>student@mdc.edu</span>
-            <i />
-            <span>MDC2026</span>
+            <span>Guest access · Temporary missions and XP</span>
           </div>
         </div>
-        <p className="login-footnote">LOCAL DEMO LOGIN <span>·</span> NO ACCOUNT SYNC</p>
+        <p className="login-footnote">PUBLIC DEMO <span>·</span> NO ACCOUNT SYNC</p>
       </div>
     </section>
   )

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import './CareerChatOverlay.css'
 
 export default function CareerChatOverlay({
   hasOpened,
@@ -14,8 +15,11 @@ export default function CareerChatOverlay({
   onSend,
   personalizationConsent,
   onPersonalizationConsentChange,
+  includePreviousMessages = false,
+  onIncludePreviousMessagesChange,
 }) {
   const draftInput = useRef(null)
+  const composeForm = useRef(null)
 
   useEffect(() => {
     if (expanded) draftInput.current?.focus()
@@ -29,6 +33,20 @@ export default function CareerChatOverlay({
         <span>CAREER CHAT</span><b className="career-chat-arrow" aria-hidden="true">⌄</b>
       </button>
     )
+  }
+
+  function submitQuestion(event) {
+    event?.preventDefault()
+    const trimmed = draft.trim()
+    if (!trimmed || loading || !canSend) return
+    onSend?.(trimmed)
+  }
+
+  function handleComposerKeyDown(event) {
+    if (event.key !== 'Enter' || event.shiftKey) return
+    if (event.nativeEvent?.isComposing || event.isComposing || event.keyCode === 229) return
+    event.preventDefault()
+    composeForm.current?.requestSubmit()
   }
 
   return (
@@ -45,25 +63,21 @@ export default function CareerChatOverlay({
         </header>
 
         <div className="career-chat-history" aria-live="polite">
-          <div className="career-chat-connection" role="note">
-            <strong>Questions are sent only when you press Send.</strong>
-            <p>Each request includes this career and this question only. The backend does not accept conversation history.</p>
-          </div>
           {chatEntries.map((entry, index) => (
             <article className="career-chat-exchange" key={`${entry.career_id}-${index}`}>
               <div className="career-chat-user-message"><span>YOUR QUESTION</span><p>{entry.question}</p></div>
               <div className="career-chat-answer">
-                <span className={`career-chat-status status-${entry.metadata.status}`}>
-                  {entry.metadata.status === 'ai_generated' ? `AI-GENERATED DRAFT${entry.metadata.review_required ? ' / REVIEW REQUIRED' : ''}`
-                    : entry.metadata.status === 'deterministic' ? 'CATALOG GUIDANCE'
+                <span className={`career-chat-status status-${entry.metadata?.status || 'blocked'}`}>
+                  {entry.metadata?.status === 'ai_generated' ? `AI-GENERATED DRAFT${entry.metadata.review_required ? ' / REVIEW REQUIRED' : ''}`
+                    : entry.metadata?.status === 'deterministic' ? 'CATALOG GUIDANCE'
                       : 'UNAVAILABLE'}
                 </span>
-                {entry.metadata.status === 'blocked' ? (
+                {entry.metadata?.status === 'blocked' ? (
                   <p role="status">A response is unavailable for this question.</p>
                 ) : (
                   <>
                     <p>{entry.answer}</p>
-                    {entry.source_urls.length > 0 && (
+                    {entry.source_urls?.length > 0 && (
                       <ul className="career-chat-sources">
                         {entry.source_urls.map((url) => <li key={url}><a href={url} target="_blank" rel="noreferrer">{url}</a></li>)}
                       </ul>
@@ -75,30 +89,44 @@ export default function CareerChatOverlay({
           ))}
           {loading && <p className="career-chat-loading" role="status">SENDING QUESTION…</p>}
           {error && <p className="career-chat-error" role="alert">{error} Your draft is still here; press Send to retry.</p>}
-          {draft && <p className="career-chat-draft-note">Draft ready. It has not been sent.</p>}
         </div>
 
-        <label className="career-chat-consent">
-          <input
-            type="checkbox"
-            checked={Boolean(personalizationConsent)}
-            onChange={(event) => onPersonalizationConsentChange?.(event.target.checked)}
-          />
-          <span>Allow AI to analyze my career chat conversations to personalize my RPG experience.</span>
-        </label>
+        <div className="career-chat-personalization">
+          <label className="career-chat-consent">
+            <input
+              type="checkbox"
+              checked={Boolean(personalizationConsent)}
+              onChange={(event) => onPersonalizationConsentChange?.(event.target.checked)}
+            />
+            <span>Allow my career chat messages to be used for RPG personalization.</span>
+          </label>
+          {personalizationConsent && chatEntries.length > 0 && (
+            <label className="career-chat-history-consent">
+              <input
+                type="checkbox"
+                checked={Boolean(includePreviousMessages)}
+                onChange={(event) => onIncludePreviousMessagesChange?.(event.target.checked)}
+              />
+              <span>Also include messages from earlier in this conversation.</span>
+            </label>
+          )}
+          {personalizationConsent && (
+            <p className="career-chat-consent-note">Your permission is recorded. The current backend does not yet accept conversation history for RPG personalization, so chat content is not transferred to RPG progress.</p>
+          )}
+        </div>
 
-        <form className="career-chat-compose" onSubmit={(event) => { event.preventDefault(); onSend?.(draft) }}>
+        <form ref={composeForm} className="career-chat-compose" onSubmit={submitQuestion}>
           <textarea
             ref={draftInput}
             value={draft}
             onChange={(event) => onDraftChange(event.target.value)}
+            onKeyDown={handleComposerKeyDown}
             aria-label="Career chat question draft"
             placeholder="Ask about this career..."
             rows={2}
           />
           <button type="submit" disabled={!canSend || !draft.trim() || loading} aria-label="Send question">{loading ? 'Sending…' : 'Send'}</button>
         </form>
-        <p className="career-chat-local-note">The chat-personalization choice is separate. Current requests do not send or store chat history for RPG personalization.</p>
       </section>
     </div>
   )

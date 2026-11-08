@@ -26,7 +26,7 @@ class FallbackTests(unittest.TestCase):
         self.careers = [CareerRecord(**self.context.career.model_dump(), interest_tags=["test_tag"])]
         self.request = MatchRequest(responses=[{"card_id": "card_test", "preference": "like"}])
         self.config = settings(gemini_model="gemini-3.1-flash-lite", gemini_free_tier_confirmed=True,
-                               openrouter_key="fake-only", openrouter_model="openrouter/free")
+                               openrouter_key="fake-only", openrouter_model="fixture/model:free")
 
     def run_chain(self, service):
         return service.recommend(self.context, self.request, self.cards, self.careers)
@@ -46,7 +46,7 @@ class FallbackTests(unittest.TestCase):
         self.assertNotIn("plugins", payload)
 
     def test_paid_models_rejected_before_transport(self):
-        for model in ["openrouter/auto", "openai/gpt-4o-mini", "foo/bar:free:online", "foo/bar:free "]:
+        for model in ["openrouter/free", "openrouter/auto", "openai/gpt-4o-mini", "foo/bar:free:online", "foo/bar:free "]:
             transport = Mock()
             service = OpenRouterService(settings(openrouter_key="fake", openrouter_model=model), transport=transport)
             with self.assertRaises(AIServiceError) as caught:

@@ -41,7 +41,8 @@ class JobFirstCoordinator:
         if self.settings.enabled:
             if self.settings.gemini_free_tier_confirmed and self.settings.gemini_model in FREE_GEMINI_MODELS:
                 providers.append(("gemini", self.gemini))
-            providers.append(("openrouter", self.openrouter))
+            if not self.settings.public_demo:
+                providers.append(("openrouter", self.openrouter))
         reason = "ai_disabled" if not self.settings.enabled else "ai_unavailable"
         for name, provider in providers:
             try:
@@ -53,6 +54,8 @@ class JobFirstCoordinator:
                 return None, GuidanceMetadata(status="blocked", provider="none", reason="invalid_response")
             except AIServiceError as exc:
                 reason = exc.code
+                if self.settings.public_demo and exc.code in {"invalid_request", "failed_precondition", "permission_denied"}:
+                    break  # Configuration/access failure: local guidance only, never another provider.
                 if exc.code in LOCAL_ONLY_FAILURES:
                     break
                 if exc.code not in RECOVERABLE:
@@ -63,7 +66,7 @@ class JobFirstCoordinator:
     def target(context):
         return TargetOccupation(career_id=context.career.career_id, title=context.career.title)
 
-    def answer(self, career, request):
+    def answer(self, career, request, *, catalog_fallback=None):
         context = evidence_context(career, request)
         output, metadata = self.generate(context, "answer_question", Explanation)
         resources = context.career.mdc_resources + context.career.external_resources
@@ -71,6 +74,11 @@ class JobFirstCoordinator:
             return QuestionResponse(target_occupation=self.target(context), answer=output.explanation,
                                     source_urls=output.source_urls, resource_ids=output.resource_ids, metadata=metadata)
         blocked = metadata.status == "blocked"
+        if not blocked and catalog_fallback is not None:
+            local = catalog_fallback()
+            if local is not None:
+                return QuestionResponse(target_occupation=self.target(context), answer=local.answer,
+                                        source_urls=local.source_urls, resource_ids=local.resource_ids, metadata=metadata)
         answer = "The AI response could not be provided safely." if blocked else (
             "AI is unavailable. This is a catalog-based fallback, not an AI answer to your question. "
             + ("Review the linked verified resources for this target occupation; they are options, not required degrees."

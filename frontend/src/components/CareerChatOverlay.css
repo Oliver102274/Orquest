@@ -1,0 +1,45 @@
+.career-chat-personalization {
+  flex: none;
+  display: grid;
+  gap: 7px;
+  border-top: 2px solid #a1a4a1;
+  background: rgba(196, 199, 194, .55);
+  padding: 10px 14px 8px;
+}
+.career-chat-history-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: #4e5551;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 10px;
+  line-height: 1.4;
+}
+.career-chat-history-consent input {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  accent-color: #789b80;
+  margin: 0;
+}
+.career-chat-consent-note {
+  margin: 0 0 2px 22px;
+  color: #747a76;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 9px;
+  line-height: 1.35;
+}
+@media (max-width: 560px) {
+  .career-chat-personalization { padding: 8px 10px; }
+}
+
+.career-chat-personalization .career-chat-consent {
+  border-top: 0;
+  padding: 0;
+}
+.career-chat-personalization .career-chat-history-consent {
+  margin-left: 22px;
+}
+.career-chat-personalization .career-chat-consent input {
+  margin-top: 1px;
+}

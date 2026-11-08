@@ -1,0 +1,58 @@
+.quiz-rpg-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 12px 0 15px;
+  border: 2px solid #657d69;
+  border-left: 6px solid #8fb592;
+  background: linear-gradient(145deg, #c6cec2, #bcc5bb);
+  color: #414a43;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  padding: 11px 12px;
+}
+.quiz-rpg-consent input {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  accent-color: #789b80;
+  margin: 1px 0 0;
+}
+.quiz-rpg-consent span { display: grid; gap: 4px; }
+.quiz-rpg-consent strong {
+  color: #35443a;
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 9px;
+  line-height: 1.4;
+}
+.quiz-rpg-consent small {
+  color: #626b64;
+  font-size: 10px;
+  line-height: 1.4;
+}
+.quiz-answer-count {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 7px;
+  color: #6b7072;
+  font-family: 'Courier New', Consolas, monospace;
+  font-size: 8px;
+  font-weight: 700;
+}
+.quiz-answer-count.is-over-limit { color: #9a3e46; }
+.quiz-answer-error {
+  margin: 7px 0 0;
+  border-left: 4px solid #a2434e;
+  background: #ead6d6;
+  color: #842c39;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 10px;
+  line-height: 1.4;
+  padding: 8px 10px;
+}
+.quiz-next { max-width: 310px; }
+@media (max-width: 620px) {
+  .quiz-controls { grid-template-columns: 1fr 1fr; }
+  .quiz-controls .quiz-next { grid-column: 1 / -1; max-width: none; }
+  .quiz-answer-count { flex-direction: column; gap: 3px; }
+}

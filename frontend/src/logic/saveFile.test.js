@@ -27,6 +27,11 @@ function makeSave(overrides = {}) {
 }
 
 describe('versioned local save files', () => {
+  it('round-trips a catalog/discovery session without inventing legacy card answers', () => {
+    const save = makeSave({ responses: [] })
+    expect(parseSaveFile(JSON.stringify(save))).toEqual(save)
+    expect(save.data.career_paths[0].career_id).toBe(softwarePath.career_id)
+  })
   it('keeps start-fresh state and omits questionnaire answers unless consent was granted', () => {
     const save = makeSave()
     expect(save.format).toBe('orquest-saved-progress')

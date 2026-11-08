@@ -36,6 +36,8 @@ ROADMAP = {"steps": [{"title": "Explore", "instruction": "Review the supplied gu
 def settings(**overrides):
     return AISettings(**{
         "enabled": True, "max_requests": 5,
+        "swarms_enabled": True, "prune_enabled": True,
+        "openrouter_model": "fixture/model:free",
         "gemini_key": "test-gemini-only", "swarms_key": "test-swarms-only", "prune_key": "test-prune-only",
         "gemini_model": "test-gemini-model", "swarms_model": "test-swarms-model", "prune_model": "test-prune-model",
         **overrides,
@@ -130,7 +132,9 @@ class IntegrationTests(unittest.TestCase):
         self.assertEqual(len(captured), 1)
         self.assertEqual(captured[0].url.host, "generativelanguage.googleapis.com")
         self.assertEqual(captured[0].headers["x-goog-api-key"], "test-gemini-only")
-        self.assertIn("responseSchema", json.loads(captured[0].content)["generationConfig"])
+        config = json.loads(captured[0].content)["generationConfig"]
+        self.assertIn("responseJsonSchema", config)
+        self.assertNotIn("responseSchema", config)
 
     def test_swarms_agents_endpoint_and_limits(self):
         service, captured = self.http_service("swarms")

@@ -20,6 +20,7 @@ class AIServiceError(Exception):
 class AISettings(BaseModel):
     model_config = ConfigDict(frozen=True)
     enabled: bool = False
+    public_demo: bool = False
     max_requests: int = Field(default=0, ge=0, le=100)
     max_input_chars: int = Field(default=12000, ge=100, le=100000)
     max_output_tokens: int = Field(default=1024, ge=64, le=4096)
@@ -33,6 +34,8 @@ class AISettings(BaseModel):
     gemini_model: str = ""
     swarms_model: str = ""
     prune_model: str = ""
+    swarms_enabled: bool = False
+    prune_enabled: bool = False
 
     @classmethod
     def from_env(cls):
@@ -44,9 +47,25 @@ class AISettings(BaseModel):
             "gemini_model": "GEMINI_MODEL", "swarms_model": "SWARMS_MODEL", "prune_model": "PRUNE_MODEL",
             "openrouter_key": "OPENROUTER_API_KEY", "openrouter_model": "OPENROUTER_MODEL",
             "gemini_free_tier_confirmed": "GEMINI_FREE_TIER_CONFIRMED",
+            "swarms_enabled": "SWARMS_ENABLED", "prune_enabled": "PRUNE_ENABLED",
         }
         try:
-            return cls(**{field: os.environ[name] for field, name in names.items() if os.environ.get(name)})
+            settings = cls(**{field: os.environ[name] for field, name in names.items() if os.environ.get(name)})
+            if os.environ.get('ORQUESTRA_PUBLIC_DEMO', '').lower() == 'true':
+                allowed = (settings.enabled and settings.gemini_free_tier_confirmed
+                           and os.environ.get('PUBLIC_AI_ENABLED', '').lower() == 'true'
+                           and os.environ.get('GEMINI_UNBILLED_PROJECT_CONFIRMED', '').lower() == 'true'
+                           and settings.gemini_model == 'gemini-3.1-flash-lite'
+                           and 0 < settings.max_requests <= 5)
+                settings = settings.model_copy(update={
+                    'public_demo': True,
+                    'enabled': allowed, 'max_requests': settings.max_requests if allowed else 0,
+                    'max_input_chars': min(settings.max_input_chars, 6000),
+                    'max_output_tokens': min(settings.max_output_tokens, 512),
+                    'timeout_seconds': min(settings.timeout_seconds, 20),
+                    'openrouter_key': SecretStr(''), 'swarms_key': SecretStr(''), 'prune_key': SecretStr(''),
+                })
+            return settings
         except ValidationError:
             raise AIServiceError("invalid_configuration", "configuration") from None
 
@@ -60,6 +79,8 @@ class RequestBudget:
 
     def reserve(self, provider: str, settings: AISettings, payload: dict):
         if not settings.enabled:
+            raise AIServiceError("disabled", provider)
+        if provider in {"swarms", "prune"} and (settings.public_demo or not getattr(settings, provider + "_enabled")):
             raise AIServiceError("disabled", provider)
         if not getattr(settings, f"{provider}_key").get_secret_value().strip():
             raise AIServiceError("missing_key", provider)
@@ -106,6 +127,12 @@ def post_json(provider: str, url: str, key: str, payload: dict, settings: AISett
                           trust_env=False, transport=transport) as client:
             response = client.post(url, headers=headers, json=payload)
         if not 200 <= response.status_code < 300:
+            if provider == "prune" and response.headers.get("X-Prune-Shield-Code"):
+                # Only documented enums escape the transport, never provider text.
+                code = response.headers["X-Prune-Shield-Code"]
+                allowed = {"spend_cap", "token_budget", "customer_budget", "anomaly_spike",
+                           "rate_limit", "shield_unavailable"}
+                raise AIServiceError("shield_" + code if code in allowed else "shield_blocked", provider)
             if provider == "openrouter":
                 try:
                     blocked = refusal_error(response.json())

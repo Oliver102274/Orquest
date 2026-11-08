@@ -36,6 +36,10 @@ class Phase12Tests(unittest.TestCase):
         self.assertEqual(len(context.career.mdc_resources), 1)
         self.assertEqual(context.career.external_resources, [])
 
+    def test_manual_openrouter_preserves_explicit_free_choice(self):
+        _, settings = prepare("openrouter", AISettings(openrouter_model="fixture/model:free"))
+        self.assertEqual(settings.openrouter_model, "fixture/model:free")
+
     def test_real_endpoints_with_database_unavailable(self):
         root = Path(__file__).resolve().parents[1]
         with patch.dict(os.environ, {"ORQUESTRA_AI_ENABLED": "false"}, clear=True), patch("psycopg.connect", side_effect=AssertionError("No database calls")) as db:

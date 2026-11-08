@@ -39,7 +39,7 @@ class JobGuidanceTests(unittest.TestCase):
             requirements=["Unverified requirement"], sources=[], mdc_resources=[RESOURCE], external_resources=[])
         self.question = QuestionRequest(career_id="career_test", question="Where should I start?", education_level="High school",
             starting_point="New learner", goals=["Investigate this job"], interest_tags=["security"])
-        self.settings = AISettings(enabled=True, max_requests=5, gemini_key="fixture", openrouter_key="fixture",
+        self.settings = AISettings(enabled=True, max_requests=5, gemini_key="fixture", openrouter_key="fixture", openrouter_model="fixture/model:free",
             gemini_model="gemini-3.1-flash-lite", gemini_free_tier_confirmed=True)
 
     def result(self, output):

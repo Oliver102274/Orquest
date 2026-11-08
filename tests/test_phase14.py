@@ -18,7 +18,7 @@ class FinalIntegrationTests(unittest.TestCase):
         def unavailable(req):
             calls.append(req)
             return httpx.Response(429, json={"error": {"message": "Fixture rate limit"}})
-        settings = AISettings(enabled=True, max_requests=1, openrouter_key="fixture-only")
+        settings = AISettings(enabled=True, max_requests=1, openrouter_key="fixture-only", openrouter_model="fixture/model:free")
         router = OpenRouterService(settings, budget=RequestBudget(), transport=httpx.MockTransport(unavailable))
         gemini = Mock()
         coordinator = JobFirstCoordinator(settings, gemini=gemini, openrouter=router)
