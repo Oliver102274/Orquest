@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
+import { useAccount } from '../auth/AccountProvider.jsx'
 import ExperienceLayout from './ExperienceLayout.jsx'
 import SavedCareerPaths from './SavedCareerPaths.jsx'
-import { getCareerRoadmap, startProgress, completeMission } from '../services/api.js'
+import { getCareerRoadmap, startProgress, completeMission, startAccountProgress, completeAccountMission } from '../services/api.js'
 
 function ResourceSection({ title, resources }) {
   if (!resources.length) return null
@@ -38,7 +39,7 @@ function RoadmapResult({ roadmap, active = false }) {
         <p className="roadmap-error" role="status">The backend could not safely provide roadmap suggestions. No suggested steps are shown.</p>
       ) : (
         <>
-          <p className="roadmap-review-note">{active ? 'Practice missions are tracked temporarily below; completion is self-reported, not a qualification.' : 'These are roadmap suggestions, not active RPG missions. No progress or rewards are recorded.'}</p>
+          <p className="roadmap-review-note">{active ? 'Practice missions are tracked below; completion is self-reported, not a qualification.' : 'These are roadmap suggestions, not active RPG missions. No progress or rewards are recorded.'}</p>
 
           {roadmap.relevant_skills_and_qualifications.length > 0 && (
             <section className="roadmap-section">
@@ -84,7 +85,8 @@ function RoadmapResult({ roadmap, active = false }) {
   )
 }
 
-export default function RpgGame({ activeTargetCareer, careerPaths, onSelectCareerPath, swipePersonalizationConsent, quizAnswers, quizPersonalizationConsent, onExportSave, onBackToExplorer, progressSession, onProgressChange }) {
+export default function RpgGame({ accountStorage, activeTargetCareer, careerPaths, onSelectCareerPath, swipePersonalizationConsent, quizAnswers, quizPersonalizationConsent, onExportSave, onBackToExplorer, progressSession, onProgressChange }) {
+  const account = useAccount()
   const [roadmap, setRoadmap] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -140,8 +142,8 @@ export default function RpgGame({ activeTargetCareer, careerPaths, onSelectCaree
     setError('')
     try {
       const session = missionId
-        ? { ...progressSession, progress: await completeMission(progressSession, missionId, { signal: controller.signal }) }
-        : await startProgress(roadmapPayload(), { signal: controller.signal })
+        ? { ...progressSession, progress: await (account.authenticated ? completeAccountMission(progressSession, missionId, account.getToken, { signal: controller.signal }) : completeMission(progressSession, missionId, { signal: controller.signal })) }
+        : await (account.authenticated ? startAccountProgress(roadmapPayload(), account.getToken, { signal: controller.signal }) : startProgress(roadmapPayload(), { signal: controller.signal }))
       if (!controller.signal.aborted) onProgressChange(session)
     } catch (requestError) {
       if (requestError.name !== 'AbortError' && !controller.signal.aborted) setError(requestError.message)
@@ -171,10 +173,10 @@ export default function RpgGame({ activeTargetCareer, careerPaths, onSelectCaree
           <span>{loading ? 'REQUESTING ROADMAP…' : roadmap ? 'REQUEST UPDATED ROADMAP' : 'REQUEST CAREER ROADMAP'}</span><span aria-hidden="true">→</span>
         </button>}
         {error && <p className="roadmap-error" role="alert">{error}</p>}
-        {progressSession ? <section className="roadmap-panel" aria-label="Temporary mission progress">
+        {progressSession ? <section className="roadmap-panel" aria-label={progressSession.progress.storage === "persistent_postgres" ? "Saved mission progress" : "Temporary mission progress"}>
           <h2>Practice missions</h2>
           <p role="status">Demo XP: {progressSession.progress.total_xp}</p>
-          <p>{progressSession.progress.notice} Reloading this page loses access; save exports do not include missions or XP.</p>
+          <p>{progressSession.progress.notice} {account.authenticated ? 'Sign in with the same account to restore available progress. Save exports exclude missions and XP.' : 'Reloading this page loses access; save exports do not include missions or XP.'}</p>
           <ul>{progressSession.progress.missions.map(mission => <li key={mission.id}>
             <strong>{mission.title}</strong><p>{mission.instruction}</p>
             <button className="career-target-button" type="button" disabled={loading || mission.completed} onClick={() => updateProgress(mission.id)}>
@@ -182,8 +184,8 @@ export default function RpgGame({ activeTargetCareer, careerPaths, onSelectCaree
             </button>
           </li>)}</ul>
           <RoadmapResult roadmap={progressSession.progress.roadmap} active />
-        </section> : <button className="career-target-button" type="button" disabled={!activeTargetCareer || loading} onClick={() => updateProgress()}>
-          START TEMPORARY MISSIONS
+        </section> : <button className="career-target-button" type="button" disabled={!activeTargetCareer || loading || (account.authenticated && !accountStorage)} onClick={() => updateProgress()}>
+          {account.authenticated && !accountStorage ? 'ACCOUNT STORAGE UNAVAILABLE' : accountStorage === 'persistent_postgres' ? 'START SAVED MISSIONS' : 'START TEMPORARY MISSIONS'}
         </button>}
         {roadmap && !progressSession && <RoadmapResult roadmap={roadmap} />}
         {!roadmap && !progressSession && !error && !loading && (

@@ -36,7 +36,7 @@ class PublicDemoLimits:
             await response(scope, receive, safe_send)
 
         path = scope['path']
-        limited = scope['method'] == 'POST' and (path in {'/api/career-questions', '/api/roadmaps', '/api/progress'}
+        limited = scope['method'] == 'POST' and (path in {'/api/career-questions', '/api/roadmaps', '/api/progress', '/api/account/progress'}
                                                or (path.startswith('/api/occupations/') and path.endswith('/roadmap')))
         if limited:
             now = self.clock()

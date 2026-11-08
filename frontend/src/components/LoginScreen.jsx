@@ -58,7 +58,7 @@ export default function LoginScreen({ onLogin, onImportSave }) {
 
           <form className="login-form" onSubmit={handleSubmit} noValidate autoComplete="off">
             <button className="pixel-button login-submit" type="submit">
-              <span>Start Fresh / Enter the hall</span><span aria-hidden="true">▶</span>
+              <span>Continue as Guest / Start Fresh / Enter the hall</span><span aria-hidden="true">▶</span>
             </button>
           </form>
 

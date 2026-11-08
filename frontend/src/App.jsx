@@ -1,4 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useAccount, AccountControls } from './auth/AccountProvider.jsx'
+import { accountRequest, getCareer } from './services/api.js'
 import LoginScreen from './components/LoginScreen.jsx'
 import SwipeScreen from './components/SwipeScreen.jsx'
 import BubbleExplorer from './components/BubbleExplorer.jsx'
@@ -9,15 +11,56 @@ import { grantQuizPersonalizationConsent, initialPersonalizationConsents, setPer
 import { createSaveFile } from './logic/saveFile.js'
 
 export default function App() {
-  const [screen, setScreen] = useState('login')
+  const account = useAccount()
+  if (account.loading) return <><p role="status">Checking account session...</p><AccountControls navigation={{ screen: 'login' }} onGuest={() => {}} /></>
+  return <OrquestGame key={account.identity} />
+}
+
+function OrquestGame() {
+  const account = useAccount()
+  const navigation = account.returnedState
+  const [accountStatus, setAccountStatus] = useState(null)
+  const [accountError, setAccountError] = useState('')
+
+  const [screen, setScreen] = useState(['login', 'swipe', 'bubbles'].includes(navigation?.screen) ? navigation.screen : 'login')
   const [responses, setResponses] = useState([])
-  const [experienceScreen, setExperienceScreen] = useState(null)
+  const [experienceScreen, setExperienceScreen] = useState(['quiz', 'journey', 'rpg'].includes(navigation?.experienceScreen) ? navigation.experienceScreen : null)
   const [quizAnswers, setQuizAnswers] = useState([])
   const [exploredCareers, setExploredCareers] = useState([])
   const [careerPaths, setCareerPaths] = useState([])
   const [activeTargetCareer, setActiveTargetCareer] = useState(null)
   const [progressSessions, setProgressSessions] = useState({})
   const [personalizationConsents, setPersonalizationConsents] = useState(initialPersonalizationConsents)
+
+  useEffect(() => {
+    if (!account.authenticated) return
+    const controller = new AbortController()
+    async function restore() {
+      try {
+        const status = await accountRequest('/api/me', account.getToken, { signal: controller.signal })
+        const saved = await accountRequest('/api/account/progress', account.getToken, { signal: controller.signal })
+        if (controller.signal.aborted) return
+        setAccountStatus(status)
+        setProgressSessions(Object.fromEntries(saved.progress.map(progress => [progress.roadmap.target_occupation.career_id, { kind: 'account', progress }])))
+        setCareerPaths(saved.progress.map(progress => progress.roadmap.target_occupation))
+        const target = navigation?.target_id || saved.selected_target
+        if (target) {
+          const career = await getCareer(target, { signal: controller.signal })
+          if (controller.signal.aborted) return
+          setActiveTargetCareer(career)
+          if (navigation?.target_id && navigation.target_id !== saved.selected_target) {
+            await accountRequest('/api/account/selection', account.getToken, { signal: controller.signal, method: 'PUT', body: { target_id: career.career_id } })
+          }
+          if (controller.signal.aborted) return
+          if (!navigation || navigation.screen === 'login') setScreen('bubbles')
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) setAccountError(error.message)
+      }
+    }
+    restore()
+    return () => controller.abort()
+  }, [account.identity])
 
   function finishSwipe(nextResponses) {
     setResponses(nextResponses)
@@ -44,6 +87,11 @@ export default function App() {
           matched_interest_tags: Array.isArray(career.matched_interest_tags) ? career.matched_interest_tags : [],
         }])
     setActiveTargetCareer(career)
+    if (account.authenticated) {
+      setAccountError('')
+      accountRequest('/api/account/selection', account.getToken, { method: 'PUT', body: { target_id: career.career_id } })
+        .catch(error => setAccountError(error.message))
+    }
   }
 
   function exportSavedProgress() {
@@ -114,6 +162,8 @@ export default function App() {
 
   return (
     <main className="app-shell">
+      <AccountControls navigation={{ screen, experienceScreen, target_id: activeTargetCareer?.career_id }} onGuest={() => setScreen('swipe')} storage={accountStatus?.storage} />
+      {accountError && <p className="account-error" role="alert">{accountError}</p>}
       {screen === 'login' && <LoginScreen onLogin={() => setScreen('swipe')} onImportSave={importSavedProgress} />}
       {screen === 'swipe' && (
         <SwipeScreen
@@ -152,7 +202,7 @@ export default function App() {
             <StartYourJourney
               activeTargetCareer={activeTargetCareer}
               careerPaths={careerPaths}
-              onSelectCareerPath={setActiveTargetCareer}
+              onSelectCareerPath={chooseActiveTargetCareer}
               onExportSave={exportSavedProgress}
               onStart={() => setExperienceScreen('rpg')}
               onBackToExplorer={() => setExperienceScreen(null)}
@@ -160,11 +210,12 @@ export default function App() {
           )}
           {experienceScreen === 'rpg' && (
             <RpgGame
+              accountStorage={accountStatus?.storage}
               progressSession={progressSessions[activeTargetCareer?.career_id]}
               onProgressChange={(session) => setProgressSessions(current => ({ ...current, [session.progress.roadmap.target_occupation.career_id]: session }))}
               activeTargetCareer={activeTargetCareer}
               careerPaths={careerPaths}
-              onSelectCareerPath={setActiveTargetCareer}
+              onSelectCareerPath={chooseActiveTargetCareer}
               swipePersonalizationConsent={personalizationConsents.swipes}
               quizAnswers={quizAnswers}
               quizPersonalizationConsent={personalizationConsents.quiz}

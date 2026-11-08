@@ -1,0 +1,17 @@
+/* Scoped account controls; existing guest screens and Base44 styles are unchanged. */
+.account-controls {
+  position: relative;
+  z-index: 60;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--pixel-ink);
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 12px;
+}
+.account-controls p { margin: 0; }
+.account-controls button { min-height: 32px; }
+.account-error { position: relative; z-index: 60; margin: 0; padding: 8px 12px; background: var(--paper); color: var(--ink); }

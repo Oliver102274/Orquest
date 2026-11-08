@@ -3,6 +3,11 @@ WORKDIR /build/frontend
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm ci
 COPY frontend/ ./
+# Public SPA identifiers only. Never declare secret build arguments.
+ARG VITE_AUTH0_ENABLED=false
+ARG VITE_AUTH0_DOMAIN
+ARG VITE_AUTH0_CLIENT_ID
+ARG VITE_AUTH0_AUDIENCE
 RUN npm run build
 
 FROM python:3.11-slim-bookworm

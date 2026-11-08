@@ -162,6 +162,8 @@ def create_app(data_directory: Path | None = None, origins: list[str] | None = N
                          authorization: str | None = Header(default=None)):
         return progress_store.complete(progress_id, mission_id, authorization)
 
+    from backend.accounts import register_accounts
+    register_accounts(application, career, job_roadmap)
     return application
 
 

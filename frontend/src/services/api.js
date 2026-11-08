@@ -229,10 +229,10 @@ export async function getJobCatalog({ signal } = {}) {
   return { families: families.families, occupations: occupations.occupations, metadata: occupations.metadata }
 }
 
-function validateProgress(body) {
+function validateProgress(body, account = false) {
   if (typeof body?.id !== 'string' || !Array.isArray(body?.missions)
     || !body.missions.every(m => isMissionSuggestion(m) && typeof m.completed === 'boolean' && m.xp_reward === 10)
-    || !Number.isInteger(body.total_xp) || body.total_xp < 0 || body.storage !== 'temporary_memory'
+    || !Number.isInteger(body.total_xp) || body.total_xp < 0 || !(account ? ['temporary_memory', 'persistent_postgres'] : ['temporary_memory']).includes(body.storage)
     || !isTargetOccupation(body.roadmap?.target_occupation) || !isGuidanceMetadata(body.roadmap?.metadata)) {
     unexpectedGuidanceResponse('The progress response is invalid.')
   }
@@ -255,4 +255,32 @@ export async function completeMission(session, missionId, { signal } = {}) {
   return validateProgress(await request(`/api/progress/${encodeURIComponent(session.progress.id)}/missions/${encodeURIComponent(missionId)}/completion`, {
     method: 'PUT', signal, headers: { Authorization: `Bearer ${session.access_token}` }, body: JSON.stringify({ completed: true }),
   }))
+}
+
+// Access tokens are obtained on demand and used only by account endpoints.
+// Production authorization never follows a configurable cross-origin API URL.
+export async function accountRequest(path, getToken, { signal, method = 'GET', body } = {}) {
+  if (!/^\/api\/(?:me$|account\/)/.test(path)) throw new ApiError('Invalid account endpoint.')
+  if (!import.meta.env.DEV && getApiBaseUrl() && new URL(getApiBaseUrl(), window.location.origin).origin !== window.location.origin) {
+    throw new ApiError('Account requests require the same origin in production.')
+  }
+  let token
+  try { token = await getToken() } catch { throw new ApiError('Your account session expired. Sign in again; no save was confirmed.') }
+  if (!token) throw new ApiError('Sign in again to access account progress.')
+  return request(path, { signal, method, headers: { Authorization: `Bearer ${token}` }, ...(body ? { body: JSON.stringify(body) } : {}) })
+}
+
+export async function startAccountProgress(payload, getToken, options = {}) {
+  const body = { target_id: payload.career_id }
+  if (Array.isArray(payload.interest_tags)) body.interest_tags = payload.interest_tags
+  addConsentedQuestionnaireContext(body, payload.questionnaire_answers, payload.questionnaire_personalization_consent === true)
+  const progress = await accountRequest('/api/account/progress', getToken, { ...options, method: 'POST', body })
+  validateProgress(progress, true)
+  if (progress.roadmap.target_occupation.career_id !== body.target_id) unexpectedGuidanceResponse('Account target mismatch.')
+  return { kind: 'account', progress }
+}
+
+export async function completeAccountMission(session, missionId, getToken, options = {}) {
+  return validateProgress(await accountRequest(`/api/account/progress/${encodeURIComponent(session.progress.id)}/missions/${encodeURIComponent(missionId)}/completion`,
+    getToken, { ...options, method: 'PUT', body: { completed: true } }), true)
 }
