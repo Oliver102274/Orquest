@@ -71,7 +71,9 @@ def main():
     before = [hashlib.sha256(path.read_bytes()).hexdigest() for path in paths]
     repository = DataRepository(data)
     print(f"Schema validation: {len(repository.cards())} cards, {len(repository.careers())} careers", flush=True)
-    for filename, branch in [("cards.json", "feature/swipe-and-learning-data"), ("careers.json", "feature/career-resources")]:
+    # Careers now include the approved MDC PR; the older teammate branch is no
+    # longer its source of truth. Schema validation and before/after hashes apply.
+    for filename, branch in [("cards.json", "feature/swipe-and-learning-data")]:
         owner_bytes = subprocess.check_output(["git", "show", f"origin/{branch}:data/{filename}"], cwd=ROOT)
         import json
         assert json.loads(owner_bytes) == json.loads((data / filename).read_bytes()), f"Owner/frontend data differ: {filename}"

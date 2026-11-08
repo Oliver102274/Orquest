@@ -5,6 +5,50 @@ import { it, expect, vi } from 'vitest'
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import App from './src/App.jsx'
 
+for (const [id, title] of [['career_software_developer', 'Software Developer'], ['career_data_analyst', 'Data Analyst']]) {
+  it(`displays merged MDC resources for ${title} through chat and RPG`, async () => {
+    const realFetch = globalThis.fetch
+    const base = process.env.INTEGRATION_API_BASE
+    const cards = (await (await realFetch(base + '/api/cards')).json()).cards
+    const detail = await (await realFetch(base + '/api/careers/' + id)).json()
+    expect(detail.mdc_resources).toHaveLength(2)
+    vi.stubGlobal('fetch', (url, options = {}) => realFetch(base + new URL(url).pathname, options))
+    try {
+      render(<App />)
+      fireEvent.click(screen.getByRole('button', { name: /enter the hall/i }))
+      for (const card of cards) {
+        await screen.findByText(card.activity)
+        fireEvent.click(screen.getByRole('button', { name: 'Agree' }))
+      }
+      fireEvent.doubleClick(await screen.findByRole('button', { name: title }))
+      await screen.findByRole('dialog', { name: title })
+      for (const resource of detail.mdc_resources) {
+        expect(await screen.findByText(resource.title)).toBeTruthy()
+        expect(screen.getAllByRole('link', { name: 'Open source' }).some(link => link.href === resource.source_url)).toBe(true)
+      }
+      fireEvent.click(screen.getByRole('button', { name: 'CHOOSE THIS AS MY GOAL' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Close career details' }))
+      fireEvent.click(screen.getByRole('button', { name: title }))
+      fireEvent.change(await screen.findByLabelText('Ask a question about this career'), { target: { value: 'Which MDC learning resources are available?' } })
+      fireEvent.click(screen.getByRole('button', { name: 'Open career chat' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Send question' }))
+      await screen.findByText(/AI is unavailable\. This is a catalog-based fallback/i)
+      for (const r of detail.mdc_resources) expect(screen.getByRole('link', { name: r.source_url })).toBeTruthy()
+      fireEvent.click(screen.getByRole('button', { name: 'Collapse career chat' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Skip Quiz' }))
+      fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
+      fireEvent.click(screen.getByRole('button', { name: 'START TEMPORARY MISSIONS' }))
+      await screen.findByText('Demo XP: 0')
+      expect(screen.getByRole('heading', { name: 'Roadmap for ' + title })).toBeTruthy()
+      for (const r of detail.mdc_resources) expect(screen.getByText(r.title)).toBeTruthy()
+    } finally {
+      cleanup()
+      vi.unstubAllGlobals()
+    }
+  }, 30000)
+}
+
 it('integrates MDC details, explicit career chat, and the active RPG target with the live backend', async () => {
   const realFetch = globalThis.fetch
   const base = process.env.INTEGRATION_API_BASE
