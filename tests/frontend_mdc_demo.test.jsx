@@ -25,8 +25,6 @@ it('integrates MDC details, explicit career chat, and the active RPG target with
   })
   try {
     render(<App />)
-    fireEvent.change(screen.getByLabelText('Username'), { target: { value: 'student@mdc.edu' } })
-    fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'MDC2026' } })
     fireEvent.click(screen.getByRole('button', { name: /enter the hall/i }))
     for (const card of cards) {
       await screen.findByText(card.activity)
@@ -128,8 +126,6 @@ it('selects a catalog occupation, asks a question, and completes server missions
   })
   try {
     render(<App />)
-    fireEvent.change(screen.getByLabelText('Username'), { target: { value: 'student@mdc.edu' } })
-    fireEvent.change(screen.getByLabelText('Password'), { target: { value: 'MDC2026' } })
     fireEvent.click(screen.getByRole('button', { name: /enter the hall/i }))
     for (const card of cards) {
       await screen.findByText(card.activity)

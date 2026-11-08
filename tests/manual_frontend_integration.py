@@ -28,7 +28,7 @@ const base = process.env.INTEGRATION_API_BASE;
 const original = fs.readFileSync(process.env.INTEGRATION_API_FILE, 'utf8');
 // Emulate Vite's build-time env substitution in memory; never edit source.
 assert(original.includes('import.meta.env.VITE_API_BASE_URL'));
-const source = original.replaceAll('import.meta.env.VITE_API_BASE_URL', JSON.stringify(base));
+const source = original.replaceAll('import.meta.env.VITE_API_BASE_URL', JSON.stringify(base)).replaceAll('import.meta.env.DEV', 'false');
 const api = await import('data:text/javascript;base64,' + Buffer.from(source).toString('base64'));
 const cards = await api.getSwipeCards();
 assert(cards.length > 0);
@@ -41,8 +41,17 @@ for (const match of matches) {
   assert(Array.isArray(career.external_resources));
 }
 const preflight = await fetch(base + '/api/matches', {method:'OPTIONS', headers:{Origin:'http://localhost:5173', 'Access-Control-Request-Method':'POST','Access-Control-Request-Headers':'content-type'}});
-assert.equal(preflight.status,200);
-assert.equal(preflight.headers.get('access-control-allow-origin'),'http://localhost:5173');
+assert.equal(preflight.status,process.env.INTEGRATION_PUBLIC === 'true' ? 400 : 200);
+assert.equal(preflight.headers.get('access-control-allow-origin'),process.env.INTEGRATION_PUBLIC === 'true' ? null : 'http://localhost:5173');
+if (process.env.INTEGRATION_PUBLIC === 'true') {
+  for (const route of ['/', '/explore', '/roadmap']) {
+    const page = await fetch(base + route);
+    assert.equal(page.status, 200);
+    assert((await page.text()).includes('<div id="root">'));
+  }
+  assert.equal((await fetch(base + '/.env')).status, 404);
+  assert.equal((await fetch(base + '/api/not-found')).status, 404);
+}
 await assert.rejects(api.getCareer('unknown-integration-career'), error => error.status === 404);
 await assert.rejects(api.getCareerMatches([{card_id:'unknown-integration-card',preference:'like'}]), error => error.status === 422);
 const health = await fetch(base + '/api/health');
@@ -55,6 +64,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--worktree", type=Path, default=ROOT / ".integration" / "frontend")
     parser.add_argument("--mdc-demo", action="store_true")
+    parser.add_argument("--production", action="store_true", help="Test built single-origin app, never deploy")
     args = parser.parse_args()
     data = args.worktree / "data"
     paths = [data / "cards.json", data / "careers.json", args.worktree / "frontend" / "src" / "services" / "api.js"]
@@ -68,7 +78,13 @@ def main():
     sock = socket.socket()
     sock.bind(("127.0.0.1", 0))
     port = sock.getsockname()[1]
-    server = uvicorn.Server(uvicorn.Config(create_app(data, origins=["http://localhost:5173"], demo_enabled=args.mdc_demo), log_level="warning"))
+    if args.production:
+        from backend.production import create_public_app
+        os.environ['ORQUESTRA_MDC_DEMO_ENABLED'] = str(args.mdc_demo).lower()
+        application = create_public_app(args.worktree / 'frontend/dist')
+    else:
+        application = create_app(data, origins=["http://localhost:5173"], demo_enabled=args.mdc_demo)
+    server = uvicorn.Server(uvicorn.Config(application, log_level="warning"))
     worker = threading.Thread(target=server.run, kwargs={"sockets": [sock]}, daemon=True)
     try:
         worker.start()
@@ -78,6 +94,7 @@ def main():
                 raise RuntimeError("Local test server failed to start")
             time.sleep(0.05)
         env = {**os.environ, "ORQUESTRA_AI_ENABLED": "false", "AI_MAX_REQUESTS_PER_PROVIDER": "0",
+               "INTEGRATION_PUBLIC": str(args.production).lower(),
                "INTEGRATION_API_BASE": f"http://127.0.0.1:{port}", "INTEGRATION_API_FILE": str(paths[2])}
         subprocess.run(["node", "--input-type=module", "-e", NODE_CHECK], env=env, check=True, timeout=30)
         if args.mdc_demo:

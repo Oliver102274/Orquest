@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE_URL = 'http://localhost:8000'
+const DEFAULT_API_BASE_URL = import.meta.env.DEV ? 'http://localhost:8000' : ''
 
 export class ApiError extends Error {
   constructor(message, { status = 0, code = 'network_error' } = {}) {

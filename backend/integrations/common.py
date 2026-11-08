@@ -46,7 +46,21 @@ class AISettings(BaseModel):
             "gemini_free_tier_confirmed": "GEMINI_FREE_TIER_CONFIRMED",
         }
         try:
-            return cls(**{field: os.environ[name] for field, name in names.items() if os.environ.get(name)})
+            settings = cls(**{field: os.environ[name] for field, name in names.items() if os.environ.get(name)})
+            if os.environ.get('ORQUESTRA_PUBLIC_DEMO', '').lower() == 'true':
+                allowed = (settings.enabled and settings.gemini_free_tier_confirmed
+                           and os.environ.get('PUBLIC_AI_ENABLED', '').lower() == 'true'
+                           and os.environ.get('GEMINI_UNBILLED_PROJECT_CONFIRMED', '').lower() == 'true'
+                           and settings.gemini_model == 'gemini-3.1-flash-lite'
+                           and 0 < settings.max_requests <= 5)
+                settings = settings.model_copy(update={
+                    'enabled': allowed, 'max_requests': settings.max_requests if allowed else 0,
+                    'max_input_chars': min(settings.max_input_chars, 6000),
+                    'max_output_tokens': min(settings.max_output_tokens, 512),
+                    'timeout_seconds': min(settings.timeout_seconds, 20),
+                    'openrouter_key': SecretStr(''), 'swarms_key': SecretStr(''), 'prune_key': SecretStr(''),
+                })
+            return settings
         except ValidationError:
             raise AIServiceError("invalid_configuration", "configuration") from None
 

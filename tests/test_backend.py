@@ -15,7 +15,7 @@ async def request(app, method, path, body=None, headers=None):
     messages = []
     raw = json.dumps(body).encode() if body is not None else b""
     scope = {
-        "type": "http", "asgi": {"version": "3.0"}, "http_version": "1.1",
+        "type": "http", "asgi": {"version": "3.0", "spec_version": "2.4"}, "http_version": "1.1",
         "method": method, "scheme": "http", "path": path,
         "raw_path": path.encode(), "query_string": b"", "root_path": "",
         "headers": [(b"content-type", b"application/json"), *(headers or [])],

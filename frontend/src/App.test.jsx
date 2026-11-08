@@ -218,12 +218,6 @@ describe('career guidance API helpers', () => {
 })
 
 function enterDemoCredentials() {
-  fireEvent.change(screen.getByLabelText('Username'), {
-    target: { value: 'student@mdc.edu' },
-  })
-  fireEvent.change(screen.getByLabelText('Password'), {
-    target: { value: 'MDC2026' },
-  })
   fireEvent.click(screen.getByRole('button', { name: /enter the hall/i }))
 }
 
@@ -271,19 +265,13 @@ function readBlobText(blob) {
 }
 
 describe('Login → backend swipe cards → Bubble Explorer', () => {
-  it('shows the agreed error for incorrect demo credentials', () => {
+  it('offers guest access without collecting credentials', async () => {
     render(<App />)
-    fireEvent.change(screen.getByLabelText('Username'), {
-      target: { value: 'wrong@example.com' },
-    })
-    fireEvent.change(screen.getByLabelText('Password'), {
-      target: { value: 'wrong-password' },
-    })
+    expect(screen.queryByLabelText('Username')).toBeNull()
+    expect(screen.queryByLabelText('Password')).toBeNull()
+    expect(screen.getByText(/No account or password is needed/)).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: /enter the hall/i }))
-
-    expect(screen.getByRole('alert').textContent).toBe(
-      'Invalid Username or Password. Please Try Again!',
-    )
+    expect(await screen.findByText(cards[0].activity)).toBeTruthy()
   })
 
   it('validates and confirms a save import, restores multiple paths, and switches the active path', async () => {
