@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import OrquestLogo from './OrquestLogo.jsx'
 import CareerChatOverlay from './CareerChatOverlay.jsx'
 import { getCareer, getCareerMatches, submitCareerQuestion } from '../services/api.js'
-import { getJobFamilies, getOccupations, getOccupationDetail, getOccupationMappings, getOccupationRoadmap } from '../services/catalogApi.js'
+import { getJobFamilies, getOccupations, getOccupationDetail, getOccupationMappings, getOccupationRoadmap, getOccupationResources } from '../services/catalogApi.js'
 import { buildCareerFieldGroups, careerFieldForFamily } from '../data/careerFieldCategories.js'
 import jobCatalogSnapshot from '../data/jobCatalogSnapshot.json'
 import './BubbleExplorerExperience.css'
@@ -221,6 +221,10 @@ function CatalogOccupationDetails({
   resources,
   resourcesLoading,
   resourcesError,
+  mdcResources,
+  mdcLoading,
+  mdcError,
+  onRetryMdc,
   activeTargetCareer,
   onChooseGoal,
   onOpenChat,
@@ -328,6 +332,53 @@ function CatalogOccupationDetails({
           </>
         )}
       </section>
+      <section className="detail-section educational-resources-section">
+        <h3>Miami Dade College Programs to Explore</h3>
+        <p className="catalog-secondary-copy">
+          Programs matched to this occupation using SOC codes.
+          These are discovery candidates, not verified requirements
+          or guaranteed admission pathways.
+        </p>
+
+        {mdcLoading && <p role="status">LOADING MDC PROGRAMS…</p>}
+
+        {mdcError && (
+          <div className="catalog-detail-load-note" role="status">
+            MDC programs could not be loaded: {mdcError}
+            <button type="button" onClick={onRetryMdc}>
+              RETRY MDC PROGRAMS
+            </button>
+          </div>
+        )}
+
+        {!mdcLoading && !mdcError && (
+          <div className="catalog-resource-group">
+            <h4>Programs matching this occupation</h4>
+            {mdcResources?.resources?.length ? (
+              <ul>
+                {mdcResources.resources.map((resource) => (
+                  <li key={resource.id}>
+                    <strong>{resource.title}</strong>
+                    <span>{resource.organization} · {resource.type}</span>
+                    <small className="resource-verification is-unverified">
+                      UNVERIFIED
+                    </small>
+                    {resource.source_url && (
+                      <a href={resource.source_url} target="_blank" rel="noreferrer">
+                        Open resource
+                      </a>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="catalog-secondary-copy">
+                No matching MDC programs are currently available.
+              </p>
+            )}
+          </div>
+        )}
+      </section>
       <section className="detail-section">
         <h3>Catalog sources</h3>
         {sources.length ? <ul>{sources.map(({ reference, url }) => (
@@ -415,6 +466,9 @@ export default function BubbleExplorer({
   const [viewportWidth, setViewportWidth] = useState(() => (
     typeof window === 'undefined' ? 1280 : window.innerWidth
   ))
+  const [occupationMdcResources, setOccupationMdcResources] = useState({})
+  const [occupationMdcErrors, setOccupationMdcErrors] = useState({})
+  const [occupationMdcLoading, setOccupationMdcLoading] = useState(false)
   const [occupationRoadmaps, setOccupationRoadmaps] = useState({})
   const [occupationRoadmapErrors, setOccupationRoadmapErrors] = useState({})
   const [occupationRoadmapLoading, setOccupationRoadmapLoading] = useState(false)
@@ -593,8 +647,21 @@ export default function BubbleExplorer({
     familyController.current?.abort()
     occupationDetailController.current?.abort()
     setFamilyLoading(false)
+    if (mdcResult.status === 'fulfilled') {
+      setOccupationMdcResources((current) => ({
+        ...current,
+        [occupationId]: mdcResult.value,
+      }))
+    } else {
+      setOccupationMdcErrors((current) => ({
+        ...current,
+        [occupationId]: mdcResult.reason?.message || 'MDC programs unavailable.',
+      }))
+    }
+
     setOccupationDetailLoading(false)
     setOccupationRoadmapLoading(false)
+    setOccupationMdcLoading(false)
     setExplorerMode(mode)
     setDetailOpen(false)
     setSelectedId('')
@@ -681,17 +748,20 @@ export default function BubbleExplorer({
     const occupationId = occupation.id
     const needsDetail = !occupationDetails[occupationId]
     const needsResources = !occupationRoadmaps[occupationId]
-    if (!needsDetail && !needsResources) return
+    const needsMdc = !occupationMdcResources[occupationId]
+    if (!needsDetail && !needsResources && !needsMdc) return
 
     occupationDetailController.current?.abort()
     const controller = new AbortController()
     occupationDetailController.current = controller
     setOccupationDetailLoading(needsDetail)
     setOccupationRoadmapLoading(needsResources)
+    setOccupationMdcLoading(needsMdc)
+    setOccupationMdcErrors((current) => ({ ...current, [occupationId]: '' }))
     setOccupationDetailErrors((current) => ({ ...current, [occupationId]: '' }))
     setOccupationRoadmapErrors((current) => ({ ...current, [occupationId]: '' }))
 
-    const [detailResult, roadmapResult] = await Promise.allSettled([
+    const [detailResult, roadmapResult, mdcResult] = await Promise.allSettled([
       needsDetail
         ? getOccupationDetail(occupationId, { signal: controller.signal })
         : Promise.resolve(occupationDetails[occupationId]),
@@ -701,6 +771,9 @@ export default function BubbleExplorer({
         // No student profile or questionnaire data is sent here.
         ? getOccupationRoadmap(occupationId, { signal: controller.signal, profile: {} })
         : Promise.resolve(occupationRoadmaps[occupationId]),
+      needsMdc
+        ? getOccupationResources(occupationId, { signal: controller.signal })
+        : Promise.resolve(occupationMdcResources[occupationId]),
     ])
 
     if (controller.signal.aborted) return
@@ -1255,6 +1328,10 @@ export default function BubbleExplorer({
                   resources={occupationRoadmaps[selectedOccupation.id]}
                   resourcesLoading={occupationRoadmapLoading}
                   resourcesError={occupationRoadmapErrors[selectedOccupation.id]}
+                  mdcResources={occupationMdcResources[selectedOccupation.id]}
+                  mdcLoading={occupationMdcLoading}
+                  mdcError={occupationMdcErrors[selectedOccupation.id]}
+                  onRetryMdc={() => loadOccupationDetail(selectedOccupation)}
                   activeTargetCareer={activeTargetCareer}
                   onChooseGoal={() => chooseOccupationAsGoal(selectedOccupation)}
                   onOpenChat={(question) => openCareerChat(question, occupationAsCareerTarget(selectedOccupation))}
