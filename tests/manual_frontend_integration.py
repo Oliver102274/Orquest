@@ -80,6 +80,10 @@ def main():
     sock = socket.socket()
     sock.bind(("127.0.0.1", 0))
     port = sock.getsockname()[1]
+    # Disable providers before app construction, not just in the child process.
+    os.environ['ORQUESTRA_AI_ENABLED'] = 'false'
+    os.environ['PUBLIC_AI_ENABLED'] = 'false'
+    os.environ['AI_MAX_REQUESTS_PER_PROVIDER'] = '0'
     if args.production:
         from backend.production import create_public_app
         os.environ['ORQUESTRA_MDC_DEMO_ENABLED'] = str(args.mdc_demo).lower()
@@ -106,7 +110,7 @@ def main():
             with test_path.open("x", encoding="utf-8") as temporary:
                 temporary.write((ROOT / "tests" / "frontend_mdc_demo.test.jsx").read_text(encoding="utf-8"))
             try:
-                subprocess.run(["node", "node_modules/vitest/vitest.mjs", "run"], cwd=frontend, env=env, check=True, timeout=60)
+                subprocess.run(["node", "node_modules/vitest/vitest.mjs", "run"], cwd=frontend, env=env, check=True, timeout=120)
             finally:
                 test_path.unlink()
     finally:

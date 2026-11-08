@@ -98,7 +98,6 @@ export function parseSaveFile(text) {
   ]
   if (!hasOnlyKeys(data, allowedDataKeys)
     || !Array.isArray(data.swipe_responses)
-    || data.swipe_responses.length < 1
     || data.swipe_responses.length > 1000
     || !Array.isArray(data.explored_career_ids)
     || data.explored_career_ids.length > 1000

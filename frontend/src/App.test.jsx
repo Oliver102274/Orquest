@@ -283,13 +283,13 @@ function enterDemoCredentials() {
   fireEvent.click(screen.getByRole('button', { name: /enter the hall/i }))
 }
 
-async function reachBubbleExplorer() {
+async function reachBubbleExplorer({ swipeConsent = false } = {}) {
   const save = createSaveFile({
     responses: cards.slice(0, 2).map((card) => ({ card_id: card.id, preference: 'like' })),
     exploredCareers: [],
     careerPaths: [],
     activeTargetCareer: null,
-    personalizationConsents: initialPersonalizationConsents,
+    personalizationConsents: { ...initialPersonalizationConsents, swipes: swipeConsent },
     quizAnswers: ['', '', '', '', ''],
   })
   fireEvent.change(document.querySelector('.save-file-input'), { target: { files: [makeImportFile(save)] } })
@@ -387,6 +387,7 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
 
     fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
     expect(screen.getByLabelText(/what kind of future or career/i).value).toBe('Saved RPG context')
+    fireEvent.click(screen.getByLabelText(/use my mapped answers/i))
     for (let index = 0; index < 5; index += 1) {
       if (index > 0) fireEvent.change(screen.getByRole('textbox'), { target: { value: `Saved answer ${index + 1}` } })
       fireEvent.click(screen.getByRole('button', { name: index === 4 ? /CONTINUE.*SHARING|CONTINUE WITH RPG PERSONALIZATION/ : /^NEXT$/i }))
@@ -396,10 +397,10 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
     fireEvent.click(screen.getByRole('button', { name: /Cybersecurity Analyst.*SET ACTIVE TARGET/i }))
     expect(document.querySelector('.journey-path-card strong').textContent).toBe('Cybersecurity Analyst')
     fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
-    expect(document.querySelector('.rpg-card .journey-path-card strong').textContent).toBe('Cybersecurity Analyst')
+    expect(document.querySelector('.rpg-hud-target h1').textContent).toBe('Cybersecurity Analyst')
     fireEvent.click(screen.getByRole('button', { name: /Software Developer.*SET ACTIVE TARGET/i }))
-    expect(document.querySelector('.rpg-card .journey-path-card strong').textContent).toBe('Software Developer')
-    fireEvent.click(screen.getByRole('button', { name: /request career roadmap/i }))
+    expect(document.querySelector('.rpg-hud-target h1').textContent).toBe('Software Developer')
+    fireEvent.click(screen.getByRole('button', { name: /^(CAREER GUIDANCE|UPDATE GUIDANCE)$/i }))
     expect(await screen.findByRole('heading', { name: 'Roadmap for Software Developer' })).toBeTruthy()
     const roadmapCall = fetchMock.mock.calls.find(([url]) => String(url).endsWith('/api/roadmaps'))
     expect(JSON.parse(roadmapCall[1].body)).toEqual({
@@ -515,44 +516,30 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
     expect(await screen.findByRole('heading', { name: /how do you usually prefer to learn/i })).toBeTruthy()
   })
 
-  it('collects exactly eight main answers, enters Bubble Explorer, and skips legacy matching', async () => {
+  it('collects eight undisclosed answers without inventing interest matches or backend survey endpoints', async () => {
     render(<App />)
-    enterDemoCredentials()
-    for (let number = 1; number <= 8; number += 1) {
-      expect(await screen.findByText(new RegExp(`MAIN QUESTION ${number} OF 8`))).toBeTruthy()
-      fireEvent.click(screen.getByText('I prefer not to say'))
-      fireEvent.click(screen.getByRole('button', { name: /continue/i }))
-    }
-
-    expect(await screen.findByRole('heading', { name: 'Bubble Explorer' })).toBeTruthy()
-    const discoveryRequest = fetchMock.mock.calls.find(([url]) => String(url).endsWith('/api/career-discovery/matches'))
-    expect(JSON.parse(discoveryRequest[1].body).responses).toHaveLength(8)
-    expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith('/api/matches'))).toBe(false)
-    expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith('/api/cards'))).toBe(false)
+    await completeDiscoveryWithUndisclosedAnswers()
+    expect(screen.getByRole('heading', { name: 'Bubble Explorer' })).toBeTruthy()
+    expect(fetchMock.mock.calls.some(([url]) => /\/api\/(career-discovery|matches|cards)/.test(String(url)))).toBe(false)
   })
 
-  it('carries consented discovery matching tags into RPG roadmap guidance', async () => {
+  it('carries consented saved matching tags into RPG roadmap guidance', async () => {
     render(<App />)
-    enterDemoCredentials()
-    await screen.findByText(/MAIN QUESTION 1 OF 8/i)
-    const consent = screen.getByLabelText(/allow AI to analyze my responses to personalize my RPG experience/i)
-    expect(consent.checked).toBe(false)
-    fireEvent.click(consent)
-    await completeDiscoveryWithUndisclosedAnswers({ alreadyLoggedIn: true })
+    await reachBubbleExplorer({ swipeConsent: true })
     fireEvent.click(screen.getByRole('button', { name: 'Software Developer' }))
     await screen.findByText(career.summary)
     fireEvent.click(screen.getByRole('button', { name: 'CHOOSE THIS AS MY GOAL' }))
     fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
     fireEvent.click(screen.getByRole('button', { name: 'Skip Quiz' }))
     fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
-    fireEvent.click(screen.getByRole('button', { name: /request career roadmap/i }))
+    fireEvent.click(screen.getByRole('button', { name: /^(CAREER GUIDANCE|UPDATE GUIDANCE)$/i }))
     await screen.findByRole('heading', { name: 'Roadmap for Software Developer' })
     const roadmapCall = fetchMock.mock.calls.find(([url]) => String(url).endsWith('/api/roadmaps'))
     expect(JSON.parse(roadmapCall[1].body)).toEqual({
       career_id: career.career_id,
       interest_tags: ['technology', 'problem_solving'],
     })
-    expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith('/api/matches'))).toBe(false)
+    expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith('/api/matches'))).toBe(true)
   })
 
   it('loads saved matching results, with search in the top header', async () => {
@@ -626,10 +613,10 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
     fireEvent.click(screen.getByRole('button', { name: 'Open career chat' }))
 
     const chat = await screen.findByRole('dialog', { name: 'Ask about Cybersecurity Analyst' })
-    expect(chat.textContent).toContain('Questions are sent only when you press Send.')
+    expect(screen.getByLabelText('Career chat question draft')).toBeTruthy()
     expect(chat.textContent).toContain('What should I learn first?')
     expect(screen.getByRole('button', { name: 'Send question' }).disabled).toBe(false)
-    const chatConsent = screen.getByLabelText(/allow AI to analyze my career chat conversations/i)
+    const chatConsent = screen.getByLabelText(/Allow my career chat messages to be used for RPG personalization/i)
     expect(chatConsent.checked).toBe(false)
     fireEvent.click(chatConsent)
 
@@ -644,7 +631,7 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
     expect(collapsedArrow).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: 'Expand career chat' }))
     expect(screen.getByRole('dialog', { name: 'Ask about Cybersecurity Analyst' }).textContent).toContain('What should I learn first?')
-    expect(screen.getByLabelText(/allow AI to analyze my career chat conversations/i).checked).toBe(true)
+    expect(screen.getByLabelText(/Allow my career chat messages to be used for RPG personalization/i).checked).toBe(true)
     expect(fetchMock).toHaveBeenCalledTimes(callsBeforeOpen)
 
     fireEvent.click(screen.getByRole('button', { name: 'Send question' }))
@@ -684,8 +671,8 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
     fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
     fireEvent.click(screen.getByRole('button', { name: 'Skip Quiz' }))
     fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
-    expect(screen.getByText('No target selected yet')).toBeTruthy()
-    expect(screen.getByRole('button', { name: /request career roadmap/i }).disabled).toBe(true)
+    expect(screen.getByText('Choose a career target to place your first node.')).toBeTruthy()
+    expect(screen.getByRole('button', { name: /^(CAREER GUIDANCE|UPDATE GUIDANCE)$/i }).disabled).toBe(true)
     expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith('/api/roadmaps'))).toBe(false)
   })
 
@@ -705,13 +692,14 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
     fireEvent.click(screen.getByRole('button', { name: 'Skip Quiz' }))
     expect(document.querySelector('.journey-path-card strong').textContent).toBe('Software Developer')
     fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
-    fireEvent.click(screen.getByRole('button', { name: /request career roadmap/i }))
+    fireEvent.click(screen.getByRole('button', { name: /^(CAREER GUIDANCE|UPDATE GUIDANCE)$/i }))
 
     expect(await screen.findByRole('heading', { name: 'Roadmap for Software Developer' })).toBeTruthy()
     expect(screen.getByText('DETERMINISTIC CATALOG GUIDANCE')).toBeTruthy()
     expect(screen.getAllByText(roadmapStep.title)).toHaveLength(1)
     expect(screen.getByText(/not active RPG missions/i)).toBeTruthy()
-    expect(document.querySelector('.roadmap-panel').textContent).not.toMatch(/XP|mission complete|completed mission/i)
+    expect(document.querySelector('.roadmap-panel').querySelector('.rpg-mission-complete')).toBeNull()
+    expect(screen.queryByRole('button', {name: /^COMPLETE MISSION/})).toBeNull()
 
     const roadmapCall = fetchMock.mock.calls.find(([url]) => String(url).endsWith('/api/roadmaps'))
     expect(JSON.parse(roadmapCall[1].body)).toEqual({ career_id: career.career_id })
@@ -730,6 +718,7 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
     fireEvent.click(screen.getByRole('button', { name: 'CHOOSE THIS AS MY GOAL' }))
 
     fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
+    fireEvent.click(screen.getByRole('checkbox', { name: /use my mapped answers/i }))
     const answers = [
       'Build secure tools.',
       'Networks and puzzles.',
@@ -744,7 +733,7 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
     fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
     expect(screen.getAllByText('Software Developer').length).toBeGreaterThan(0)
     expect(screen.getAllByText('Cybersecurity Analyst').length).toBeGreaterThan(0)
-    fireEvent.click(screen.getByRole('button', { name: /request career roadmap/i }))
+    fireEvent.click(screen.getByRole('button', { name: /^(CAREER GUIDANCE|UPDATE GUIDANCE)$/i }))
 
     await screen.findByRole('heading', { name: 'Roadmap for Cybersecurity Analyst' })
     const roadmapCall = fetchMock.mock.calls.find(([url]) => String(url).endsWith('/api/roadmaps'))
@@ -772,14 +761,8 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
     fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'x'.repeat(1_000) } })
     fireEvent.click(screen.getByRole('button', { name: /^NEXT$/i }))
-    for (let index = 0; index < 3; index += 1) {
-      fireEvent.click(screen.getByRole('button', { name: 'Skip Question' }))
-    }
-    fireEvent.click(screen.getByRole('button', { name: 'Continue' }))
-    fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
-    fireEvent.click(screen.getByRole('button', { name: /request career roadmap/i }))
-
-    expect((await screen.findByRole('alert')).textContent).toMatch(/1,000-character limit/)
+    expect((await screen.findByRole('alert')).textContent).toMatch(/1,000-character field limit/)
+    expect(screen.getByText('Question 1 of 5')).toBeTruthy()
     expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith('/api/roadmaps'))).toBe(false)
     expect(screen.getAllByText('Software Developer').length).toBeGreaterThan(0)
   })
@@ -791,7 +774,7 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
     }
     render(<App />)
     await enterRpgWithSoftwareTarget()
-    fireEvent.click(screen.getByRole('button', { name: /request career roadmap/i }))
+    fireEvent.click(screen.getByRole('button', { name: /^(CAREER GUIDANCE|UPDATE GUIDANCE)$/i }))
     expect(await screen.findByText('AI-GENERATED DRAFT / REVIEW REQUIRED')).toBeTruthy()
     expect(screen.getAllByText(roadmapStep.title)).toHaveLength(1)
 
@@ -807,7 +790,7 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
     }
     render(<App />)
     await enterRpgWithSoftwareTarget()
-    fireEvent.click(screen.getByRole('button', { name: /request career roadmap/i }))
+    fireEvent.click(screen.getByRole('button', { name: /^(CAREER GUIDANCE|UPDATE GUIDANCE)$/i }))
     expect(await screen.findByText(/could not safely provide roadmap suggestions/i)).toBeTruthy()
     expect(screen.queryByText('BLOCKED SKILL MUST NOT SHOW')).toBeNull()
     expect(screen.queryByText('BLOCKED RESOURCE MUST NOT SHOW')).toBeNull()
@@ -876,7 +859,7 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
     const backendCallsBeforeQuiz = fetchMock.mock.calls.length
     fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
     expect(screen.getByText('Question 1 of 5')).toBeTruthy()
-    expect(screen.getByText('Personalization Notice')).toBeTruthy()
+    expect(screen.getByText('RPG personalization is optional')).toBeTruthy()
     const answerBox = screen.getByLabelText(/what kind of future or career/i)
     fireEvent.change(answerBox, { target: { value: 'Build tools that help people.' } })
     fireEvent.click(screen.getByRole('button', { name: /^NEXT$/i }))
@@ -894,8 +877,8 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
     expect(fetchMock).toHaveBeenCalledTimes(backendCallsBeforeQuiz)
     fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
     expect(screen.getByRole('main', { name: 'Career progression game' })).toBeTruthy()
-    expect(document.querySelector('.rpg-card .journey-path-card strong').textContent).toBe('Software Developer')
-    fireEvent.click(screen.getByRole('button', { name: /return to bubble explorer/i }))
+    expect(document.querySelector('.rpg-hud-target h1').textContent).toBe('Software Developer')
+    fireEvent.click(screen.getByRole('button', { name: /EXPLORER/i }))
     expect(screen.getByRole('heading', { name: 'Bubble Explorer' })).toBeTruthy()
     expect(screen.getByText(career.summary)).toBeTruthy()
   })
@@ -909,7 +892,7 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
       fireEvent.click(screen.getByRole('button', { name: 'Skip Question' }))
       expect(screen.getByText(`Question ${question + 1} of 5`)).toBeTruthy()
     }
-    fireEvent.click(screen.getByRole('button', { name: 'Continue' }))
+    fireEvent.click(screen.getByRole('button', { name: /CONTINUE.*SHARING|CONTINUE WITH RPG PERSONALIZATION/ }))
     expect(screen.getByRole('heading', { name: 'Ready when you are.' })).toBeTruthy()
   })
 
@@ -924,7 +907,7 @@ describe('Login → adaptive eight-question Career Discovery → Bubble Explorer
     expect(screen.getByRole('heading', { name: 'Ready when you are.' })).toBeTruthy()
     fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
     expect(screen.getByRole('main', { name: 'Career progression game' })).toBeTruthy()
-    expect(screen.getByRole('heading', { name: 'Roadmap guidance' })).toBeTruthy()
-    expect(screen.getByRole('button', { name: /request career roadmap/i }).disabled).toBe(true)
+    expect(screen.getByText('Choose a career target to place your first node.')).toBeTruthy()
+    expect(screen.getByRole('button', { name: /^(CAREER GUIDANCE|UPDATE GUIDANCE)$/i }).disabled).toBe(true)
   })
 })

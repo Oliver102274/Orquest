@@ -9,7 +9,7 @@ from backend.integrations.grounding import CareerContext, Explanation, RoadmapSu
 
 
 def is_free_model(model: str) -> bool:
-    return model == "openrouter/free" or bool(re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+:free", model))
+    return bool(re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+:free", model))
 
 
 class OpenRouterService:

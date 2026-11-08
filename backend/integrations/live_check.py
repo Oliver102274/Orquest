@@ -33,7 +33,7 @@ def prepare(provider, settings):
     limited = settings.model_copy(update={
         "enabled": True, "max_requests": 1, "max_input_chars": 4000 if provider == "gemini" else 6000,
         "max_output_tokens": 512, "timeout_seconds": 30,
-        "gemini_model": "gemini-3.1-flash-lite", "openrouter_model": "openrouter/free",
+        "gemini_model": "gemini-3.1-flash-lite", "openrouter_model": settings.openrouter_model,
         "swarms_key": SecretStr(""), "prune_key": SecretStr(""),
         ("openrouter_key" if provider == "gemini" else "gemini_key"): SecretStr(""),
     })

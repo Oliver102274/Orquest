@@ -365,6 +365,7 @@ export default function BubbleExplorer({
   activeTargetCareer,
   onSetActiveTargetCareer,
   onExportSave,
+  onExit,
   careerChatPersonalizationConsent,
   onCareerChatPersonalizationConsentChange,
   onCareerChatPersonalizationDataChange,
@@ -937,6 +938,7 @@ export default function BubbleExplorer({
         <div className="map-header-actions">
           <button className="save-export-button save-export-compact" type="button" aria-label="Export saved progress" onClick={onExportSave}>SAVE</button>
           <span className="session-active-label">SESSION ACTIVE</span>
+          {onExit && <button className="save-export-button" type="button" onClick={onExit}>START FRESH</button>}
         </div>
       </header>
 

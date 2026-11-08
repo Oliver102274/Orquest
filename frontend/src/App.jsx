@@ -79,8 +79,8 @@ export default function App() {
   function importSavedProgress(saveFile) {
     const { data } = saveFile
     setResponses(data.swipe_responses)
-    setDiscoveryMatches(null)
-    setDiscoveryMatchSource(null)
+    setDiscoveryMatches(data.swipe_responses.length ? null : [])
+    setDiscoveryMatchSource(data.swipe_responses.length ? null : 'skipped')
     setExploredCareers(data.explored_career_ids.map((career_id) => ({ career_id })))
     setCareerPaths(data.career_paths)
     setActiveTargetCareer(data.career_paths.find((path) => path.career_id === data.active_career_id) || null)
