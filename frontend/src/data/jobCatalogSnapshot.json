@@ -1,0 +1,2908 @@
+{
+  "schema_version": "1.0",
+  "title": "Orquest job-first occupation reference catalog",
+  "based_on": "job_families_20.md (teammate contribution)",
+  "source_data_date_as_reported": "2026-11-07",
+  "provenance": "Converted from teammate-provided Markdown; individual rows not independently checked",
+  "usage_notes": [
+    "Keep existing Orquest career IDs and data unchanged; map SOC-based reference IDs to existing careers explicitly.",
+    "Job-family grouping is for exploration only. Use a specific occupation ID for job-first roadmaps.",
+    "National May 2025 wages, not Florida/Miami salaries.",
+    "Typical entry-level education is descriptive, not a strict universal licensing requirement.",
+    "MDC programs, learning resources, and job vacancies are not included; only add verified sources separately."
+  ],
+  "sources": {
+    "occupation_projection": "https://www.bls.gov/emp/tables/occupational-projections-and-characteristics.htm",
+    "national_wages": "https://www.bls.gov/oes/tables.htm",
+    "onet": "https://www.onetonline.org/"
+  },
+  "families": [
+    {
+      "id": "family_01_computer_information_technology",
+      "name": "Computer & Information Technology",
+      "ordinal": 1,
+      "bls_group_code": "15-1200",
+      "bls_group_title": "Computer occupations",
+      "jobs_2025_thousands": 5036.2,
+      "median_wage_2025_usd": 109470,
+      "projected_growth_2025_2035_percent": 5.7,
+      "occupation_ids": [
+        "occupation_15_1252",
+        "occupation_15_1212",
+        "occupation_15_2051",
+        "occupation_15_1241",
+        "occupation_15_1221",
+        "occupation_15_1211"
+      ]
+    },
+    {
+      "id": "family_02_healthcare_practitioners_nursing_medicine",
+      "name": "Healthcare Practitioners: Nursing & Medicine",
+      "ordinal": 2,
+      "bls_group_code": "29-1000",
+      "bls_group_title": "Healthcare diagnosing or treating practitioners",
+      "jobs_2025_thousands": 6869.8,
+      "median_wage_2025_usd": 103500,
+      "projected_growth_2025_2035_percent": 8.6,
+      "occupation_ids": [
+        "occupation_29_1141",
+        "occupation_29_1171",
+        "occupation_29_1071",
+        "occupation_29_1051",
+        "occupation_29_1215",
+        "occupation_29_2061"
+      ]
+    },
+    {
+      "id": "family_03_allied_health_therapy_health_technology",
+      "name": "Allied Health, Therapy & Health Technology",
+      "ordinal": 3,
+      "bls_group_code": "29-2000",
+      "bls_group_title": "Health technologists and technicians",
+      "jobs_2025_thousands": 3218.3,
+      "median_wage_2025_usd": 58180,
+      "projected_growth_2025_2035_percent": 6.5,
+      "occupation_ids": [
+        "occupation_29_1123",
+        "occupation_31_2021",
+        "occupation_29_1127",
+        "occupation_29_2034",
+        "occupation_29_2032",
+        "occupation_29_1292"
+      ]
+    },
+    {
+      "id": "family_04_engineering",
+      "name": "Engineering",
+      "ordinal": 4,
+      "bls_group_code": "17-2000",
+      "bls_group_title": "Engineers",
+      "jobs_2025_thousands": 1835.7,
+      "median_wage_2025_usd": 108620,
+      "projected_growth_2025_2035_percent": 8.5,
+      "occupation_ids": [
+        "occupation_17_2141",
+        "occupation_17_2051",
+        "occupation_17_2071",
+        "occupation_17_2011",
+        "occupation_17_2112",
+        "occupation_17_2081"
+      ]
+    },
+    {
+      "id": "family_05_business_financial_operations",
+      "name": "Business & Financial Operations",
+      "ordinal": 5,
+      "bls_group_code": "13-0000",
+      "bls_group_title": "Business and financial operations occupations",
+      "jobs_2025_thousands": 11368.5,
+      "median_wage_2025_usd": 82660,
+      "projected_growth_2025_2035_percent": 5.5,
+      "occupation_ids": [
+        "occupation_13_2011",
+        "occupation_13_2051",
+        "occupation_13_2052",
+        "occupation_13_1161",
+        "occupation_13_1111",
+        "occupation_13_2041"
+      ]
+    },
+    {
+      "id": "family_06_management_executive_leadership",
+      "name": "Management & Executive Leadership",
+      "ordinal": 6,
+      "bls_group_code": "11-0000",
+      "bls_group_title": "Management occupations",
+      "jobs_2025_thousands": 13683.4,
+      "median_wage_2025_usd": 126520,
+      "projected_growth_2025_2035_percent": 6.2,
+      "occupation_ids": [
+        "occupation_11_1021",
+        "occupation_11_3021",
+        "occupation_11_3031",
+        "occupation_11_2021",
+        "occupation_11_9111",
+        "occupation_11_3121"
+      ]
+    },
+    {
+      "id": "family_07_education_training",
+      "name": "Education & Training",
+      "ordinal": 7,
+      "bls_group_code": "25-0000",
+      "bls_group_title": "Educational instruction and library occupations",
+      "jobs_2025_thousands": 9907.4,
+      "median_wage_2025_usd": 60570,
+      "projected_growth_2025_2035_percent": 1.4,
+      "occupation_ids": [
+        "occupation_25_2021",
+        "occupation_25_2031",
+        "occupation_25_2011",
+        "occupation_25_2052",
+        "occupation_21_1012",
+        "occupation_25_9031"
+      ]
+    },
+    {
+      "id": "family_08_legal",
+      "name": "Legal",
+      "ordinal": 8,
+      "bls_group_code": "23-0000",
+      "bls_group_title": "Legal occupations",
+      "jobs_2025_thousands": 1445.7,
+      "median_wage_2025_usd": 102500,
+      "projected_growth_2025_2035_percent": 2.9,
+      "occupation_ids": [
+        "occupation_23_1011",
+        "occupation_23_2011",
+        "occupation_23_1022",
+        "occupation_23_2093",
+        "occupation_43_6012"
+      ]
+    },
+    {
+      "id": "family_09_protective_service_public_safety",
+      "name": "Protective Service & Public Safety",
+      "ordinal": 9,
+      "bls_group_code": "33-0000",
+      "bls_group_title": "Protective service occupations",
+      "jobs_2025_thousands": 3871.0,
+      "median_wage_2025_usd": 50080,
+      "projected_growth_2025_2035_percent": 1.1,
+      "occupation_ids": [
+        "occupation_33_3051",
+        "occupation_33_2011",
+        "occupation_33_3021",
+        "occupation_33_3012",
+        "occupation_43_5031",
+        "occupation_33_9032"
+      ]
+    },
+    {
+      "id": "family_10_arts_design",
+      "name": "Arts & Design",
+      "ordinal": 10,
+      "bls_group_code": "27-1000",
+      "bls_group_title": "Art and design workers",
+      "jobs_2025_thousands": 934.8,
+      "median_wage_2025_usd": 58240,
+      "projected_growth_2025_2035_percent": 0.8,
+      "occupation_ids": [
+        "occupation_27_1024",
+        "occupation_27_1014",
+        "occupation_27_1011",
+        "occupation_27_1022",
+        "occupation_27_1025",
+        "occupation_27_1021"
+      ]
+    },
+    {
+      "id": "family_11_media_communication",
+      "name": "Media & Communication",
+      "ordinal": 11,
+      "bls_group_code": "27-3000",
+      "bls_group_title": "Media and communication workers",
+      "jobs_2025_thousands": 794.5,
+      "median_wage_2025_usd": 74250,
+      "projected_growth_2025_2035_percent": 0.3,
+      "occupation_ids": [
+        "occupation_27_3031",
+        "occupation_27_3043",
+        "occupation_27_4032",
+        "occupation_27_3023",
+        "occupation_27_3091",
+        "occupation_27_4021"
+      ]
+    },
+    {
+      "id": "family_12_architecture_surveying_construction_management",
+      "name": "Architecture, Surveying & Construction Management",
+      "ordinal": 12,
+      "bls_group_code": "17-1000",
+      "bls_group_title": "Architects, surveyors, and cartographers",
+      "jobs_2025_thousands": 214.7,
+      "median_wage_2025_usd": 87950,
+      "projected_growth_2025_2035_percent": 4.9,
+      "occupation_ids": [
+        "occupation_17_1011",
+        "occupation_17_1012",
+        "occupation_11_9021",
+        "occupation_17_3011",
+        "occupation_17_1022",
+        "occupation_13_1051"
+      ]
+    },
+    {
+      "id": "family_13_construction_trades",
+      "name": "Construction Trades",
+      "ordinal": 13,
+      "bls_group_code": "47-0000",
+      "bls_group_title": "Construction and extraction occupations",
+      "jobs_2025_thousands": 7492.9,
+      "median_wage_2025_usd": 59540,
+      "projected_growth_2025_2035_percent": 5.1,
+      "occupation_ids": [
+        "occupation_47_2111",
+        "occupation_47_2152",
+        "occupation_47_2031",
+        "occupation_47_2181",
+        "occupation_47_4011",
+        "occupation_47_2061"
+      ]
+    },
+    {
+      "id": "family_14_installation_maintenance_repair",
+      "name": "Installation, Maintenance & Repair",
+      "ordinal": 14,
+      "bls_group_code": "49-0000",
+      "bls_group_title": "Installation, maintenance, and repair occupations",
+      "jobs_2025_thousands": 6494.4,
+      "median_wage_2025_usd": 59620,
+      "projected_growth_2025_2035_percent": 5.4,
+      "occupation_ids": [
+        "occupation_49_9021",
+        "occupation_49_3011",
+        "occupation_49_9081",
+        "occupation_49_3023",
+        "occupation_49_2022",
+        "occupation_49_9071"
+      ]
+    },
+    {
+      "id": "family_15_transportation_aviation",
+      "name": "Transportation & Aviation",
+      "ordinal": 15,
+      "bls_group_code": "53-0000",
+      "bls_group_title": "Transportation and material moving occupations",
+      "jobs_2025_thousands": 14139.0,
+      "median_wage_2025_usd": 44350,
+      "projected_growth_2025_2035_percent": 4.3,
+      "occupation_ids": [
+        "occupation_53_2011",
+        "occupation_53_2012",
+        "occupation_53_2021",
+        "occupation_53_2031",
+        "occupation_53_5021",
+        "occupation_53_3032"
+      ]
+    },
+    {
+      "id": "family_16_hospitality_culinary_tourism",
+      "name": "Hospitality, Culinary & Tourism",
+      "ordinal": 16,
+      "bls_group_code": "35-0000",
+      "bls_group_title": "Food preparation and serving related occupations",
+      "jobs_2025_thousands": 13826.5,
+      "median_wage_2025_usd": 35050,
+      "projected_growth_2025_2035_percent": 4.4,
+      "occupation_ids": [
+        "occupation_35_1011",
+        "occupation_11_9051",
+        "occupation_11_9081",
+        "occupation_13_1121",
+        "occupation_35_2014",
+        "occupation_41_3041"
+      ]
+    },
+    {
+      "id": "family_17_life_physical_social_sciences",
+      "name": "Life, Physical & Social Sciences",
+      "ordinal": 17,
+      "bls_group_code": "19-0000",
+      "bls_group_title": "Life, physical, and social science occupations",
+      "jobs_2025_thousands": 1628.7,
+      "median_wage_2025_usd": 82530,
+      "projected_growth_2025_2035_percent": 7.5,
+      "occupation_ids": [
+        "occupation_19_1042",
+        "occupation_19_1021",
+        "occupation_19_2031",
+        "occupation_19_2041",
+        "occupation_19_1022",
+        "occupation_19_3011"
+      ]
+    },
+    {
+      "id": "family_18_community_social_service",
+      "name": "Community & Social Service",
+      "ordinal": 18,
+      "bls_group_code": "21-0000",
+      "bls_group_title": "Community and social service occupations",
+      "jobs_2025_thousands": 3270.1,
+      "median_wage_2025_usd": 58300,
+      "projected_growth_2025_2035_percent": 7.4,
+      "occupation_ids": [
+        "occupation_21_1018",
+        "occupation_21_1021",
+        "occupation_21_1013",
+        "occupation_21_1094",
+        "occupation_21_1092"
+      ]
+    },
+    {
+      "id": "family_19_mathematical_science_analytics",
+      "name": "Mathematical Science & Analytics",
+      "ordinal": 19,
+      "bls_group_code": "15-2000",
+      "bls_group_title": "Mathematical science occupations",
+      "jobs_2025_thousands": 457.4,
+      "median_wage_2025_usd": 107570,
+      "projected_growth_2025_2035_percent": 25.3,
+      "occupation_ids": [
+        "occupation_15_2011",
+        "occupation_15_2041",
+        "occupation_15_2031",
+        "occupation_15_2021"
+      ]
+    },
+    {
+      "id": "family_20_sales_business_development",
+      "name": "Sales & Business Development",
+      "ordinal": 20,
+      "bls_group_code": "41-0000",
+      "bls_group_title": "Sales and related occupations",
+      "jobs_2025_thousands": 14533.2,
+      "median_wage_2025_usd": 38530,
+      "projected_growth_2025_2035_percent": -1.4,
+      "occupation_ids": [
+        "occupation_41_9031",
+        "occupation_41_3031",
+        "occupation_41_4012",
+        "occupation_41_3021",
+        "occupation_41_9022"
+      ]
+    }
+  ],
+  "occupations": [
+    {
+      "id": "occupation_15_1252",
+      "family_id": "family_01_computer_information_technology",
+      "title": "Software Developer",
+      "bls_title": "Software developers",
+      "soc_code": "15-1252",
+      "onet_soc_code": "15-1252.00",
+      "summary": "Design, build and test applications and systems software; analyze user needs and oversee updates.",
+      "national_wage_2025": {
+        "median_annual_usd": 135980,
+        "p10_annual_usd": 82460,
+        "p90_annual_usd": 214670
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": 10.2,
+      "projected_job_change_as_reported": "+174,700",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_15_1212",
+      "family_id": "family_01_computer_information_technology",
+      "title": "Cybersecurity / Information Security Analyst",
+      "bls_title": "Information security analysts",
+      "soc_code": "15-1212",
+      "onet_soc_code": "15-1212.00",
+      "summary": "Plan and carry out security measures to protect networks and systems; monitor for breaches and respond to incidents.",
+      "national_wage_2025": {
+        "median_annual_usd": 129180,
+        "p10_annual_usd": 75090,
+        "p90_annual_usd": 199850
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; Less than 5 years related experience; Certs such as CompTIA Security+ are common",
+      "projected_growth_2025_2035_percent": 21.0,
+      "projected_job_change_as_reported": "+40,600",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_15_2051",
+      "family_id": "family_01_computer_information_technology",
+      "title": "Data Scientist",
+      "bls_title": "Data scientists",
+      "soc_code": "15-2051",
+      "onet_soc_code": "15-2051.00",
+      "summary": "Use analytics, statistics and machine learning to extract insights from large data sets.",
+      "national_wage_2025": {
+        "median_annual_usd": 120230,
+        "p10_annual_usd": 67240,
+        "p90_annual_usd": 199130
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": 34.6,
+      "projected_job_change_as_reported": "+95,400",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_15_1241",
+      "family_id": "family_01_computer_information_technology",
+      "title": "Cloud / Network Architect",
+      "bls_title": "Computer network architects",
+      "soc_code": "15-1241",
+      "onet_soc_code": "15-1241.00",
+      "summary": "Design and build data communication networks, including cloud infrastructure, LANs and WANs.",
+      "national_wage_2025": {
+        "median_annual_usd": 134050,
+        "p10_annual_usd": 79900,
+        "p90_annual_usd": 202680
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; 5 years or more related experience",
+      "projected_growth_2025_2035_percent": 7.7,
+      "projected_job_change_as_reported": "+14,100",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_15_1221",
+      "family_id": "family_01_computer_information_technology",
+      "title": "Machine Learning / AI Research Scientist",
+      "bls_title": "Computer and information research scientists",
+      "soc_code": "15-1221",
+      "onet_soc_code": "15-1221.00",
+      "summary": "Invent new approaches to computing technology and find new uses for existing technology, including AI and ML.",
+      "national_wage_2025": {
+        "median_annual_usd": 140300,
+        "p10_annual_usd": 82200,
+        "p90_annual_usd": 230630
+      },
+      "entry_requirements_as_reported": "Master's degree",
+      "projected_growth_2025_2035_percent": 21.8,
+      "projected_job_change_as_reported": "+8,400",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_15_1211",
+      "family_id": "family_01_computer_information_technology",
+      "title": "Computer Systems Analyst",
+      "bls_title": "Computer systems analysts",
+      "soc_code": "15-1211",
+      "onet_soc_code": "15-1211.00",
+      "summary": "Study an organization's computer systems and procedures and design more efficient solutions.",
+      "national_wage_2025": {
+        "median_annual_usd": 105850,
+        "p10_annual_usd": 67340,
+        "p90_annual_usd": 167710
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": 7.9,
+      "projected_job_change_as_reported": "+42,900",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_29_1141",
+      "family_id": "family_02_healthcare_practitioners_nursing_medicine",
+      "title": "Registered Nurse",
+      "bls_title": "Registered nurses",
+      "soc_code": "29-1141",
+      "onet_soc_code": "29-1141.00",
+      "summary": "Assess patients, administer treatment and medication, coordinate care and educate patients.",
+      "national_wage_2025": {
+        "median_annual_usd": 97550,
+        "p10_annual_usd": 68940,
+        "p90_annual_usd": 137470
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; State RN license via NCLEX-RN; ADN or nursing diploma also qualifies",
+      "projected_growth_2025_2035_percent": 5.6,
+      "projected_job_change_as_reported": "+194,700",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_29_1171",
+      "family_id": "family_02_healthcare_practitioners_nursing_medicine",
+      "title": "Nurse Practitioner",
+      "bls_title": "Nurse practitioners",
+      "soc_code": "29-1171",
+      "onet_soc_code": "29-1171.00",
+      "summary": "Diagnose and treat illness, order tests and prescribe medication as advanced practice nurses.",
+      "national_wage_2025": {
+        "median_annual_usd": 132300,
+        "p10_annual_usd": 101340,
+        "p90_annual_usd": 174420
+      },
+      "entry_requirements_as_reported": "Master's degree; RN license + APRN license and national certification",
+      "projected_growth_2025_2035_percent": 41.0,
+      "projected_job_change_as_reported": "+137,800",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_29_1071",
+      "family_id": "family_02_healthcare_practitioners_nursing_medicine",
+      "title": "Physician Assistant",
+      "bls_title": "Physician assistants",
+      "soc_code": "29-1071",
+      "onet_soc_code": "29-1071.00",
+      "summary": "Examine, diagnose and treat patients as part of a physician-led team.",
+      "national_wage_2025": {
+        "median_annual_usd": 135880,
+        "p10_annual_usd": 99380,
+        "p90_annual_usd": 190280
+      },
+      "entry_requirements_as_reported": "Master's degree; State license; pass PANCE",
+      "projected_growth_2025_2035_percent": 21.1,
+      "projected_job_change_as_reported": "+35,700",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_29_1051",
+      "family_id": "family_02_healthcare_practitioners_nursing_medicine",
+      "title": "Pharmacist",
+      "bls_title": "Pharmacists",
+      "soc_code": "29-1051",
+      "onet_soc_code": "29-1051.00",
+      "summary": "Dispense prescriptions and advise patients and providers on safe medication use.",
+      "national_wage_2025": {
+        "median_annual_usd": 140910,
+        "p10_annual_usd": 99290,
+        "p90_annual_usd": 174230
+      },
+      "entry_requirements_as_reported": "Doctoral or professional degree; PharmD + state license (NAPLEX)",
+      "projected_growth_2025_2035_percent": 5.2,
+      "projected_job_change_as_reported": "+17,100",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_29_1215",
+      "family_id": "family_02_healthcare_practitioners_nursing_medicine",
+      "title": "Family Medicine Physician",
+      "bls_title": "Family medicine physicians",
+      "soc_code": "29-1215",
+      "onet_soc_code": "29-1215.00",
+      "summary": "Diagnose, treat and provide ongoing preventive care for patients of all ages.",
+      "national_wage_2025": {
+        "median_annual_usd": 244180,
+        "p10_annual_usd": 76830,
+        "p90_annual_usd": 428550
+      },
+      "entry_requirements_as_reported": "Doctoral or professional degree; internship/residency; MD/DO + 3-year residency + state license",
+      "projected_growth_2025_2035_percent": 3.3,
+      "projected_job_change_as_reported": "+3,700",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_29_2061",
+      "family_id": "family_02_healthcare_practitioners_nursing_medicine",
+      "title": "Licensed Practical Nurse (LPN/LVN)",
+      "bls_title": "Licensed practical and licensed vocational nurses",
+      "soc_code": "29-2061",
+      "onet_soc_code": "29-2061.00",
+      "summary": "Provide basic nursing care such as monitoring vitals and assisting patients, under RN/physician direction.",
+      "national_wage_2025": {
+        "median_annual_usd": 64400,
+        "p10_annual_usd": 49740,
+        "p90_annual_usd": 83440
+      },
+      "entry_requirements_as_reported": "Postsecondary nondegree award; State license via NCLEX-PN",
+      "projected_growth_2025_2035_percent": 3.0,
+      "projected_job_change_as_reported": "+19,700",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_29_1123",
+      "family_id": "family_03_allied_health_therapy_health_technology",
+      "title": "Physical Therapist",
+      "bls_title": "Physical therapists",
+      "soc_code": "29-1123",
+      "onet_soc_code": "29-1123.00",
+      "summary": "Help injured or ill patients improve movement and manage pain through exercise and hands-on therapy.",
+      "national_wage_2025": {
+        "median_annual_usd": 102760,
+        "p10_annual_usd": 77140,
+        "p90_annual_usd": 135140
+      },
+      "entry_requirements_as_reported": "Doctoral or professional degree; DPT + state license",
+      "projected_growth_2025_2035_percent": 11.9,
+      "projected_job_change_as_reported": "+33,800",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_31_2021",
+      "family_id": "family_03_allied_health_therapy_health_technology",
+      "title": "Physical Therapist Assistant",
+      "bls_title": "Physical therapist assistants",
+      "soc_code": "31-2021",
+      "onet_soc_code": "31-2021.00",
+      "summary": "Carry out treatment plans under a physical therapist's direction.",
+      "national_wage_2025": {
+        "median_annual_usd": 68380,
+        "p10_annual_usd": 47750,
+        "p90_annual_usd": 89510
+      },
+      "entry_requirements_as_reported": "Associate's degree; State license/certification in most states",
+      "projected_growth_2025_2035_percent": 23.0,
+      "projected_job_change_as_reported": "+26,200",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_29_1127",
+      "family_id": "family_03_allied_health_therapy_health_technology",
+      "title": "Speech-Language Pathologist",
+      "bls_title": "Speech-language pathologists",
+      "soc_code": "29-1127",
+      "onet_soc_code": "29-1127.00",
+      "summary": "Assess, diagnose and treat speech, language, voice and swallowing disorders.",
+      "national_wage_2025": {
+        "median_annual_usd": 97870,
+        "p10_annual_usd": 62900,
+        "p90_annual_usd": 134160
+      },
+      "entry_requirements_as_reported": "Master's degree; internship/residency; State license; ASHA CCC-SLP common",
+      "projected_growth_2025_2035_percent": 16.6,
+      "projected_job_change_as_reported": "+32,100",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_29_2034",
+      "family_id": "family_03_allied_health_therapy_health_technology",
+      "title": "Radiologic Technologist",
+      "bls_title": "Radiologic technologists and technicians",
+      "soc_code": "29-2034",
+      "onet_soc_code": "29-2034.00",
+      "summary": "Perform diagnostic imaging exams such as X-rays.",
+      "national_wage_2025": {
+        "median_annual_usd": 80110,
+        "p10_annual_usd": 55980,
+        "p90_annual_usd": 118660
+      },
+      "entry_requirements_as_reported": "Associate's degree; ARRT certification and state license in most states",
+      "projected_growth_2025_2035_percent": 5.0,
+      "projected_job_change_as_reported": "+11,800",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_29_2032",
+      "family_id": "family_03_allied_health_therapy_health_technology",
+      "title": "Diagnostic Medical Sonographer",
+      "bls_title": "Diagnostic medical sonographers",
+      "soc_code": "29-2032",
+      "onet_soc_code": "29-2032.00",
+      "summary": "Operate ultrasound equipment to create images used in diagnosis.",
+      "national_wage_2025": {
+        "median_annual_usd": 96590,
+        "p10_annual_usd": 67820,
+        "p90_annual_usd": 129370
+      },
+      "entry_requirements_as_reported": "Associate's degree; Professional certification (e.g., ARDMS) usually expected",
+      "projected_growth_2025_2035_percent": 13.9,
+      "projected_job_change_as_reported": "+12,900",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_29_1292",
+      "family_id": "family_03_allied_health_therapy_health_technology",
+      "title": "Dental Hygienist",
+      "bls_title": "Dental hygienists",
+      "soc_code": "29-1292",
+      "onet_soc_code": "29-1292.00",
+      "summary": "Clean teeth, examine patients for oral disease and teach oral health.",
+      "national_wage_2025": {
+        "median_annual_usd": 98100,
+        "p10_annual_usd": 74880,
+        "p90_annual_usd": 126050
+      },
+      "entry_requirements_as_reported": "Associate's degree; State license",
+      "projected_growth_2025_2035_percent": 8.0,
+      "projected_job_change_as_reported": "+17,900",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_17_2141",
+      "family_id": "family_04_engineering",
+      "title": "Mechanical Engineer",
+      "bls_title": "Mechanical engineers",
+      "soc_code": "17-2141",
+      "onet_soc_code": "17-2141.00",
+      "summary": "Design, develop, build and test mechanical and thermal devices, tools and machines.",
+      "national_wage_2025": {
+        "median_annual_usd": 104110,
+        "p10_annual_usd": 73990,
+        "p90_annual_usd": 164340
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; PE license for senior/independent roles",
+      "projected_growth_2025_2035_percent": 11.2,
+      "projected_job_change_as_reported": "+33,500",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_17_2051",
+      "family_id": "family_04_engineering",
+      "title": "Civil Engineer",
+      "bls_title": "Civil engineers",
+      "soc_code": "17-2051",
+      "onet_soc_code": "17-2051.00",
+      "summary": "Plan, design and oversee construction of roads, bridges, water systems and other infrastructure.",
+      "national_wage_2025": {
+        "median_annual_usd": 100840,
+        "p10_annual_usd": 68240,
+        "p90_annual_usd": 163220
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; PE license often required to approve projects",
+      "projected_growth_2025_2035_percent": 6.4,
+      "projected_job_change_as_reported": "+24,500",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_17_2071",
+      "family_id": "family_04_engineering",
+      "title": "Electrical Engineer",
+      "bls_title": "Electrical engineers",
+      "soc_code": "17-2071",
+      "onet_soc_code": "17-2071.00",
+      "summary": "Design, develop and test electrical equipment, from motors to power generation systems.",
+      "national_wage_2025": {
+        "median_annual_usd": 120630,
+        "p10_annual_usd": 76550,
+        "p90_annual_usd": 184300
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": 9.9,
+      "projected_job_change_as_reported": "+19,800",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_17_2011",
+      "family_id": "family_04_engineering",
+      "title": "Aerospace Engineer",
+      "bls_title": "Aerospace engineers",
+      "soc_code": "17-2011",
+      "onet_soc_code": "17-2011.00",
+      "summary": "Design and test aircraft, spacecraft, satellites and missiles.",
+      "national_wage_2025": {
+        "median_annual_usd": 134960,
+        "p10_annual_usd": 86700,
+        "p90_annual_usd": 205890
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; Security clearance for some defense work",
+      "projected_growth_2025_2035_percent": 8.3,
+      "projected_job_change_as_reported": "+5,700",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_17_2112",
+      "family_id": "family_04_engineering",
+      "title": "Industrial Engineer",
+      "bls_title": "Industrial engineers",
+      "soc_code": "17-2112",
+      "onet_soc_code": "17-2112.00",
+      "summary": "Find ways to eliminate wastefulness in production processes.",
+      "national_wage_2025": {
+        "median_annual_usd": 102440,
+        "p10_annual_usd": 74370,
+        "p90_annual_usd": 159860
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": 12.4,
+      "projected_job_change_as_reported": "+45,400",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_17_2081",
+      "family_id": "family_04_engineering",
+      "title": "Environmental Engineer",
+      "bls_title": "Environmental engineers",
+      "soc_code": "17-2081",
+      "onet_soc_code": "17-2081.00",
+      "summary": "Apply engineering, soil science, biology and chemistry to solve environmental problems.",
+      "national_wage_2025": {
+        "median_annual_usd": 107110,
+        "p10_annual_usd": 69990,
+        "p90_annual_usd": 162220
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": 6.3,
+      "projected_job_change_as_reported": "+2,400",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_13_2011",
+      "family_id": "family_05_business_financial_operations",
+      "title": "Accountant / Auditor",
+      "bls_title": "Accountants and auditors",
+      "soc_code": "13-2011",
+      "onet_soc_code": "13-2011.00",
+      "summary": "Prepare and examine financial records for accuracy and compliance with laws.",
+      "national_wage_2025": {
+        "median_annual_usd": 83680,
+        "p10_annual_usd": 56020,
+        "p90_annual_usd": 144090
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; CPA license for public accounting",
+      "projected_growth_2025_2035_percent": 5.0,
+      "projected_job_change_as_reported": "+79,400",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_13_2051",
+      "family_id": "family_05_business_financial_operations",
+      "title": "Financial & Investment Analyst",
+      "bls_title": "Financial and investment analysts",
+      "soc_code": "13-2051",
+      "onet_soc_code": "13-2051.00",
+      "summary": "Evaluate investments and provide guidance to businesses and individuals.",
+      "national_wage_2025": {
+        "median_annual_usd": 102740,
+        "p10_annual_usd": 63720,
+        "p90_annual_usd": 180860
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; CFA charter valued; FINRA licenses for some roles",
+      "projected_growth_2025_2035_percent": 7.2,
+      "projected_job_change_as_reported": "+27,100",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_13_2052",
+      "family_id": "family_05_business_financial_operations",
+      "title": "Personal Financial Advisor",
+      "bls_title": "Personal financial advisors",
+      "soc_code": "13-2052",
+      "onet_soc_code": "13-2052.00",
+      "summary": "Help clients plan for goals such as retirement, education and investing.",
+      "national_wage_2025": {
+        "median_annual_usd": 105070,
+        "p10_annual_usd": 50190,
+        "p90_annual_usd": 357020
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; long-term on-the-job training; CFP common; FINRA licenses to sell securities",
+      "projected_growth_2025_2035_percent": 1.4,
+      "projected_job_change_as_reported": "+4,100",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_13_1161",
+      "family_id": "family_05_business_financial_operations",
+      "title": "Market Research Analyst",
+      "bls_title": "Market research analysts and marketing specialists",
+      "soc_code": "13-1161",
+      "onet_soc_code": "13-1161.00",
+      "summary": "Study market conditions to estimate potential sales of a product or service.",
+      "national_wage_2025": {
+        "median_annual_usd": 78760,
+        "p10_annual_usd": 43390,
+        "p90_annual_usd": 155480
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": 7.0,
+      "projected_job_change_as_reported": "+66,300",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_13_1111",
+      "family_id": "family_05_business_financial_operations",
+      "title": "Management Analyst / Consultant",
+      "bls_title": "Management analysts",
+      "soc_code": "13-1111",
+      "onet_soc_code": "13-1111.00",
+      "summary": "Recommend ways to improve an organization's efficiency and profitability.",
+      "national_wage_2025": {
+        "median_annual_usd": 101860,
+        "p10_annual_usd": 60640,
+        "p90_annual_usd": 171640
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; Less than 5 years related experience",
+      "projected_growth_2025_2035_percent": 10.1,
+      "projected_job_change_as_reported": "+109,200",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_13_2041",
+      "family_id": "family_05_business_financial_operations",
+      "title": "Credit Analyst",
+      "bls_title": "Credit analysts",
+      "soc_code": "13-2041",
+      "onet_soc_code": "13-2041.00",
+      "summary": "Analyze credit data and financial statements to assess the risk of lending.",
+      "national_wage_2025": {
+        "median_annual_usd": 83510,
+        "p10_annual_usd": 56250,
+        "p90_annual_usd": 169230
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": -4.3,
+      "projected_job_change_as_reported": "−2,800",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_11_1021",
+      "family_id": "family_06_management_executive_leadership",
+      "title": "General & Operations Manager",
+      "bls_title": "General and operations managers",
+      "soc_code": "11-1021",
+      "onet_soc_code": "11-1021.00",
+      "summary": "Plan, direct and coordinate the operations of organizations.",
+      "national_wage_2025": {
+        "median_annual_usd": 105770,
+        "p10_annual_usd": 50090,
+        "p90_annual_usd": 253390
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; 5 years or more related experience",
+      "projected_growth_2025_2035_percent": 5.0,
+      "projected_job_change_as_reported": "+181,300",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_11_3021",
+      "family_id": "family_06_management_executive_leadership",
+      "title": "IT / Information Systems Manager",
+      "bls_title": "Computer and information systems managers",
+      "soc_code": "11-3021",
+      "onet_soc_code": "11-3021.00",
+      "summary": "Plan, coordinate and direct an organization's computer-related activities.",
+      "national_wage_2025": {
+        "median_annual_usd": 175140,
+        "p10_annual_usd": 107550,
+        "p90_annual_usd": 297510
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; 5 years or more related experience",
+      "projected_growth_2025_2035_percent": 15.8,
+      "projected_job_change_as_reported": "+108,100",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_11_3031",
+      "family_id": "family_06_management_executive_leadership",
+      "title": "Financial Manager",
+      "bls_title": "Financial managers",
+      "soc_code": "11-3031",
+      "onet_soc_code": "11-3031.00",
+      "summary": "Oversee financial reports, investment activities and long-term financial goals.",
+      "national_wage_2025": {
+        "median_annual_usd": 166570,
+        "p10_annual_usd": 94310,
+        "p90_annual_usd": 323270
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; 5 years or more related experience",
+      "projected_growth_2025_2035_percent": 9.7,
+      "projected_job_change_as_reported": "+84,900",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_11_2021",
+      "family_id": "family_06_management_executive_leadership",
+      "title": "Marketing Manager",
+      "bls_title": "Marketing managers",
+      "soc_code": "11-2021",
+      "onet_soc_code": "11-2021.00",
+      "summary": "Plan programs to generate interest in products or services.",
+      "national_wage_2025": {
+        "median_annual_usd": 166790,
+        "p10_annual_usd": 90260,
+        "p90_annual_usd": 293610
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; 5 years or more related experience",
+      "projected_growth_2025_2035_percent": 6.9,
+      "projected_job_change_as_reported": "+29,100",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_11_9111",
+      "family_id": "family_06_management_executive_leadership",
+      "title": "Medical & Health Services Manager",
+      "bls_title": "Medical and health services managers",
+      "soc_code": "11-9111",
+      "onet_soc_code": "11-9111.00",
+      "summary": "Plan, direct and coordinate the business activities of healthcare providers.",
+      "national_wage_2025": {
+        "median_annual_usd": 123860,
+        "p10_annual_usd": 73390,
+        "p90_annual_usd": 224340
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; Less than 5 years related experience; Nursing home administrators need a state license",
+      "projected_growth_2025_2035_percent": 24.2,
+      "projected_job_change_as_reported": "+155,100",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_11_3121",
+      "family_id": "family_06_management_executive_leadership",
+      "title": "Human Resources Manager",
+      "bls_title": "Human resources managers",
+      "soc_code": "11-3121",
+      "onet_soc_code": "11-3121.00",
+      "summary": "Plan and direct an organization's administrative functions, including hiring and benefits.",
+      "national_wage_2025": {
+        "median_annual_usd": 149280,
+        "p10_annual_usd": 88200,
+        "p90_annual_usd": 267810
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; 5 years or more related experience",
+      "projected_growth_2025_2035_percent": 5.5,
+      "projected_job_change_as_reported": "+12,500",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_25_2021",
+      "family_id": "family_07_education_training",
+      "title": "Elementary School Teacher",
+      "bls_title": "Elementary school teachers, except special education",
+      "soc_code": "25-2021",
+      "onet_soc_code": "25-2021.00",
+      "summary": "Teach students basic subjects such as math and reading.",
+      "national_wage_2025": {
+        "median_annual_usd": 63970,
+        "p10_annual_usd": 47960,
+        "p90_annual_usd": 104340
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; State teaching license/certification (public schools)",
+      "projected_growth_2025_2035_percent": -0.4,
+      "projected_job_change_as_reported": "−5,800",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_25_2031",
+      "family_id": "family_07_education_training",
+      "title": "High School Teacher",
+      "bls_title": "Secondary school teachers, except special and career/technical education",
+      "soc_code": "25-2031",
+      "onet_soc_code": "25-2031.00",
+      "summary": "Teach academic lessons and skills students need for college or work.",
+      "national_wage_2025": {
+        "median_annual_usd": 72040,
+        "p10_annual_usd": 48780,
+        "p90_annual_usd": 107600
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; State teaching license/certification (public schools)",
+      "projected_growth_2025_2035_percent": -0.2,
+      "projected_job_change_as_reported": "−2,500",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_25_2011",
+      "family_id": "family_07_education_training",
+      "title": "Preschool Teacher",
+      "bls_title": "Preschool teachers, except special education",
+      "soc_code": "25-2011",
+      "onet_soc_code": "25-2011.00",
+      "summary": "Educate and care for children younger than age 5.",
+      "national_wage_2025": {
+        "median_annual_usd": 38140,
+        "p10_annual_usd": 28990,
+        "p90_annual_usd": 61390
+      },
+      "entry_requirements_as_reported": "Associate's degree; Requirements vary by state; CDA credential common",
+      "projected_growth_2025_2035_percent": 4.5,
+      "projected_job_change_as_reported": "+26,200",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_25_2052",
+      "family_id": "family_07_education_training",
+      "title": "Special Education Teacher (K-elementary)",
+      "bls_title": "Special education teachers, kindergarten and elementary school",
+      "soc_code": "25-2052",
+      "onet_soc_code": "25-2052.00",
+      "summary": "Adapt lessons for students with learning, emotional or physical disabilities.",
+      "national_wage_2025": {
+        "median_annual_usd": 65120,
+        "p10_annual_usd": 49350,
+        "p90_annual_usd": 103010
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; State special education license",
+      "projected_growth_2025_2035_percent": -0.4,
+      "projected_job_change_as_reported": "−900",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_21_1012",
+      "family_id": "family_07_education_training",
+      "title": "School & Career Counselor",
+      "bls_title": "Educational, guidance, and career counselors and advisors",
+      "soc_code": "21-1012",
+      "onet_soc_code": "21-1012.00",
+      "summary": "Help students develop academic and social skills; help people choose careers.",
+      "national_wage_2025": {
+        "median_annual_usd": 64330,
+        "p10_annual_usd": 45020,
+        "p90_annual_usd": 104770
+      },
+      "entry_requirements_as_reported": "Master's degree; State credential for school counselors",
+      "projected_growth_2025_2035_percent": 2.9,
+      "projected_job_change_as_reported": "+11,400",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_25_9031",
+      "family_id": "family_07_education_training",
+      "title": "Instructional Coordinator",
+      "bls_title": "Instructional coordinators",
+      "soc_code": "25-9031",
+      "onet_soc_code": "25-9031.00",
+      "summary": "Oversee school curricula and teaching standards.",
+      "national_wage_2025": {
+        "median_annual_usd": 77440,
+        "p10_annual_usd": 47980,
+        "p90_annual_usd": 121670
+      },
+      "entry_requirements_as_reported": "Master's degree; 5 years or more related experience; Teaching or administrator license often required in public schools",
+      "projected_growth_2025_2035_percent": 1.6,
+      "projected_job_change_as_reported": "+4,100",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_23_1011",
+      "family_id": "family_08_legal",
+      "title": "Lawyer",
+      "bls_title": "Lawyers",
+      "soc_code": "23-1011",
+      "onet_soc_code": "23-1011.00",
+      "summary": "Advise and represent individuals, businesses and agencies on legal issues and disputes.",
+      "national_wage_2025": {
+        "median_annual_usd": 159670,
+        "p10_annual_usd": 78360,
+        "p90_annual_usd": 351600
+      },
+      "entry_requirements_as_reported": "Doctoral or professional degree; JD + pass state bar exam",
+      "projected_growth_2025_2035_percent": 4.7,
+      "projected_job_change_as_reported": "+40,600",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_23_2011",
+      "family_id": "family_08_legal",
+      "title": "Paralegal / Legal Assistant",
+      "bls_title": "Paralegals and legal assistants",
+      "soc_code": "23-2011",
+      "onet_soc_code": "23-2011.00",
+      "summary": "Support lawyers by organizing files, conducting legal research and drafting documents.",
+      "national_wage_2025": {
+        "median_annual_usd": 62890,
+        "p10_annual_usd": 44740,
+        "p90_annual_usd": 101500
+      },
+      "entry_requirements_as_reported": "Associate's degree; Associate degree or paralegal certificate",
+      "projected_growth_2025_2035_percent": -0.3,
+      "projected_job_change_as_reported": "−1,100",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_23_1022",
+      "family_id": "family_08_legal",
+      "title": "Arbitrator / Mediator",
+      "bls_title": "Arbitrators, mediators, and conciliators",
+      "soc_code": "23-1022",
+      "onet_soc_code": "23-1022.00",
+      "summary": "Facilitate negotiation and dialogue between disputing parties to resolve conflicts outside court.",
+      "national_wage_2025": {
+        "median_annual_usd": 75530,
+        "p10_annual_usd": 47220,
+        "p90_annual_usd": 155440
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; Less than 5 years related experience; moderate-term on-the-job training",
+      "projected_growth_2025_2035_percent": 4.7,
+      "projected_job_change_as_reported": "+500",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_23_2093",
+      "family_id": "family_08_legal",
+      "title": "Title Examiner",
+      "bls_title": "Title examiners, abstractors, and searchers",
+      "soc_code": "23-2093",
+      "onet_soc_code": "23-2093.00",
+      "summary": "Search public records to determine the legal ownership of property.",
+      "national_wage_2025": {
+        "median_annual_usd": 58650,
+        "p10_annual_usd": 38170,
+        "p90_annual_usd": 90830
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; moderate-term on-the-job training",
+      "projected_growth_2025_2035_percent": 2.1,
+      "projected_job_change_as_reported": "+1,300",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_43_6012",
+      "family_id": "family_08_legal",
+      "title": "Legal Secretary / Administrative Assistant",
+      "bls_title": "Legal secretaries and administrative assistants",
+      "soc_code": "43-6012",
+      "onet_soc_code": "43-6012.00",
+      "summary": "Prepare legal documents and correspondence and assist with legal research.",
+      "national_wage_2025": {
+        "median_annual_usd": 55570,
+        "p10_annual_usd": 36500,
+        "p90_annual_usd": 91730
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; moderate-term on-the-job training",
+      "projected_growth_2025_2035_percent": -5.2,
+      "projected_job_change_as_reported": "−8,300",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_33_3051",
+      "family_id": "family_09_protective_service_public_safety",
+      "title": "Police / Sheriff's Patrol Officer",
+      "bls_title": "Police and sheriff's patrol officers",
+      "soc_code": "33-3051",
+      "onet_soc_code": "33-3051.00",
+      "summary": "Protect lives and property, patrol assigned areas and respond to calls.",
+      "national_wage_2025": {
+        "median_annual_usd": 76210,
+        "p10_annual_usd": 47510,
+        "p90_annual_usd": 115120
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; moderate-term on-the-job training; Police academy; state certification",
+      "projected_growth_2025_2035_percent": 3.5,
+      "projected_job_change_as_reported": "+24,200",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_33_2011",
+      "family_id": "family_09_protective_service_public_safety",
+      "title": "Firefighter",
+      "bls_title": "Firefighters",
+      "soc_code": "33-2011",
+      "onet_soc_code": "33-2011.00",
+      "summary": "Control and put out fires and respond to emergencies where life, property or the environment is at risk.",
+      "national_wage_2025": {
+        "median_annual_usd": 59280,
+        "p10_annual_usd": 34910,
+        "p90_annual_usd": 101040
+      },
+      "entry_requirements_as_reported": "Postsecondary nondegree award; long-term on-the-job training; Fire academy; EMT certification commonly required",
+      "projected_growth_2025_2035_percent": 3.7,
+      "projected_job_change_as_reported": "+13,100",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_33_3021",
+      "family_id": "family_09_protective_service_public_safety",
+      "title": "Detective / Criminal Investigator",
+      "bls_title": "Detectives and criminal investigators",
+      "soc_code": "33-3021",
+      "onet_soc_code": "33-3021.00",
+      "summary": "Gather facts and collect evidence of possible crimes.",
+      "national_wage_2025": {
+        "median_annual_usd": 93790,
+        "p10_annual_usd": 55390,
+        "p90_annual_usd": 160540
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; Less than 5 years related experience; moderate-term on-the-job training; Usually promoted from patrol experience",
+      "projected_growth_2025_2035_percent": 0.2,
+      "projected_job_change_as_reported": "+200",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_33_3012",
+      "family_id": "family_09_protective_service_public_safety",
+      "title": "Correctional Officer",
+      "bls_title": "Correctional officers and jailers",
+      "soc_code": "33-3012",
+      "onet_soc_code": "33-3012.00",
+      "summary": "Oversee people who have been arrested, are awaiting trial or have been sentenced.",
+      "national_wage_2025": {
+        "median_annual_usd": 58940,
+        "p10_annual_usd": 42760,
+        "p90_annual_usd": 93220
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; moderate-term on-the-job training; Training academy",
+      "projected_growth_2025_2035_percent": -7.4,
+      "projected_job_change_as_reported": "−29,500",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_43_5031",
+      "family_id": "family_09_protective_service_public_safety",
+      "title": "Public Safety Telecommunicator (911 Dispatcher)",
+      "bls_title": "Public safety telecommunicators",
+      "soc_code": "43-5031",
+      "onet_soc_code": "43-5031.00",
+      "summary": "Answer emergency and nonemergency calls and dispatch responders.",
+      "national_wage_2025": {
+        "median_annual_usd": 53040,
+        "p10_annual_usd": 37320,
+        "p90_annual_usd": 79830
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; moderate-term on-the-job training; State certification in many states",
+      "projected_growth_2025_2035_percent": 3.7,
+      "projected_job_change_as_reported": "+3,900",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_33_9032",
+      "family_id": "family_09_protective_service_public_safety",
+      "title": "Security Guard",
+      "bls_title": "Security guards",
+      "soc_code": "33-9032",
+      "onet_soc_code": "33-9032.00",
+      "summary": "Patrol and protect property against theft, vandalism and illegal activity.",
+      "national_wage_2025": {
+        "median_annual_usd": 38020,
+        "p10_annual_usd": 30210,
+        "p90_annual_usd": 58840
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; short-term on-the-job training; State license usually required",
+      "projected_growth_2025_2035_percent": 0.9,
+      "projected_job_change_as_reported": "+11,300",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_27_1024",
+      "family_id": "family_10_arts_design",
+      "title": "Graphic Designer",
+      "bls_title": "Graphic designers",
+      "soc_code": "27-1024",
+      "onet_soc_code": "27-1024.00",
+      "summary": "Create visual concepts, by hand or with software, to communicate ideas.",
+      "national_wage_2025": {
+        "median_annual_usd": 62960,
+        "p10_annual_usd": 39520,
+        "p90_annual_usd": 104910
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; Portfolio essential",
+      "projected_growth_2025_2035_percent": -1.7,
+      "projected_job_change_as_reported": "−4,200",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_27_1014",
+      "family_id": "family_10_arts_design",
+      "title": "Special Effects Artist / Animator",
+      "bls_title": "Special effects artists and animators",
+      "soc_code": "27-1014",
+      "onet_soc_code": "27-1014.00",
+      "summary": "Create images that appear to move and visual effects for media and video games.",
+      "national_wage_2025": {
+        "median_annual_usd": 102030,
+        "p10_annual_usd": 58600,
+        "p90_annual_usd": 177110
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; Portfolio essential",
+      "projected_growth_2025_2035_percent": -0.3,
+      "projected_job_change_as_reported": "−100",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_27_1011",
+      "family_id": "family_10_arts_design",
+      "title": "Art Director",
+      "bls_title": "Art directors",
+      "soc_code": "27-1011",
+      "onet_soc_code": "27-1011.00",
+      "summary": "Determine the visual style of publications, products and productions, and direct design staff.",
+      "national_wage_2025": {
+        "median_annual_usd": 114850,
+        "p10_annual_usd": 64900,
+        "p90_annual_usd": 213050
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; 5 years or more related experience",
+      "projected_growth_2025_2035_percent": 4.2,
+      "projected_job_change_as_reported": "+5,900",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_27_1022",
+      "family_id": "family_10_arts_design",
+      "title": "Fashion Designer",
+      "bls_title": "Fashion designers",
+      "soc_code": "27-1022",
+      "onet_soc_code": "27-1022.00",
+      "summary": "Create original clothing, accessories and footwear.",
+      "national_wage_2025": {
+        "median_annual_usd": 80960,
+        "p10_annual_usd": 39490,
+        "p90_annual_usd": 146870
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; Portfolio essential",
+      "projected_growth_2025_2035_percent": 0.1,
+      "projected_job_change_as_reported": "±0",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_27_1025",
+      "family_id": "family_10_arts_design",
+      "title": "Interior Designer",
+      "bls_title": "Interior designers",
+      "soc_code": "27-1025",
+      "onet_soc_code": "27-1025.00",
+      "summary": "Make interior spaces functional, safe and attractive.",
+      "national_wage_2025": {
+        "median_annual_usd": 67190,
+        "p10_annual_usd": 41420,
+        "p90_annual_usd": 114140
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; Some states require a license (NCIDQ exam)",
+      "projected_growth_2025_2035_percent": 2.7,
+      "projected_job_change_as_reported": "+2,600",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_27_1021",
+      "family_id": "family_10_arts_design",
+      "title": "Industrial / Commercial Designer",
+      "bls_title": "Commercial and industrial designers",
+      "soc_code": "27-1021",
+      "onet_soc_code": "27-1021.00",
+      "summary": "Develop the concepts for manufactured products such as cars and appliances.",
+      "national_wage_2025": {
+        "median_annual_usd": 83910,
+        "p10_annual_usd": 53460,
+        "p90_annual_usd": 139770
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": 2.4,
+      "projected_job_change_as_reported": "+900",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_27_3031",
+      "family_id": "family_11_media_communication",
+      "title": "Public Relations Specialist",
+      "bls_title": "Public relations specialists",
+      "soc_code": "27-3031",
+      "onet_soc_code": "27-3031.00",
+      "summary": "Create and maintain a favorable public image for clients.",
+      "national_wage_2025": {
+        "median_annual_usd": 74750,
+        "p10_annual_usd": 44110,
+        "p90_annual_usd": 135150
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": 1.8,
+      "projected_job_change_as_reported": "+5,700",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_27_3043",
+      "family_id": "family_11_media_communication",
+      "title": "Writer / Author",
+      "bls_title": "Writers and authors",
+      "soc_code": "27-3043",
+      "onet_soc_code": "27-3043.00",
+      "summary": "Develop written content for advertisements, books, magazines, film and media.",
+      "national_wage_2025": {
+        "median_annual_usd": 76910,
+        "p10_annual_usd": 44310,
+        "p90_annual_usd": 139870
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; long-term on-the-job training",
+      "projected_growth_2025_2035_percent": -0.3,
+      "projected_job_change_as_reported": "−500",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_27_4032",
+      "family_id": "family_11_media_communication",
+      "title": "Film & Video Editor",
+      "bls_title": "Film and video editors",
+      "soc_code": "27-4032",
+      "onet_soc_code": "27-4032.00",
+      "summary": "Manipulate and edit moving images for film, television and online content.",
+      "national_wage_2025": {
+        "median_annual_usd": 75420,
+        "p10_annual_usd": 40280,
+        "p90_annual_usd": 148550
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": 3.7,
+      "projected_job_change_as_reported": "+1,500",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_27_3023",
+      "family_id": "family_11_media_communication",
+      "title": "Reporter / Journalist",
+      "bls_title": "News analysts, reporters, and journalists",
+      "soc_code": "27-3023",
+      "onet_soc_code": "27-3023.00",
+      "summary": "Inform the public about news and events.",
+      "national_wage_2025": {
+        "median_annual_usd": 62200,
+        "p10_annual_usd": 36240,
+        "p90_annual_usd": 144140
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": -5.9,
+      "projected_job_change_as_reported": "−2,800",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_27_3091",
+      "family_id": "family_11_media_communication",
+      "title": "Interpreter / Translator",
+      "bls_title": "Interpreters and translators",
+      "soc_code": "27-3091",
+      "onet_soc_code": "27-3091.00",
+      "summary": "Convert information from one language into another.",
+      "national_wage_2025": {
+        "median_annual_usd": 60170,
+        "p10_annual_usd": 37070,
+        "p90_annual_usd": 103660
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; Certification (e.g., court or medical) for some settings",
+      "projected_growth_2025_2035_percent": 2.0,
+      "projected_job_change_as_reported": "+1,500",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_27_4021",
+      "family_id": "family_11_media_communication",
+      "title": "Photographer",
+      "bls_title": "Photographers",
+      "soc_code": "27-4021",
+      "onet_soc_code": "27-4021.00",
+      "summary": "Use technical expertise and composition skills to capture images.",
+      "national_wage_2025": {
+        "median_annual_usd": 44660,
+        "p10_annual_usd": 30820,
+        "p90_annual_usd": 91810
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; moderate-term on-the-job training",
+      "projected_growth_2025_2035_percent": -0.7,
+      "projected_job_change_as_reported": "−1,000",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_17_1011",
+      "family_id": "family_12_architecture_surveying_construction_management",
+      "title": "Architect",
+      "bls_title": "Architects, except landscape and naval",
+      "soc_code": "17-1011",
+      "onet_soc_code": "17-1011.00",
+      "summary": "Plan and design houses, offices and other structures.",
+      "national_wage_2025": {
+        "median_annual_usd": 99280,
+        "p10_annual_usd": 62300,
+        "p90_annual_usd": 161420
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; internship/residency; State license via ARE exam after supervised experience",
+      "projected_growth_2025_2035_percent": 4.3,
+      "projected_job_change_as_reported": "+5,300",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_17_1012",
+      "family_id": "family_12_architecture_surveying_construction_management",
+      "title": "Landscape Architect",
+      "bls_title": "Landscape architects",
+      "soc_code": "17-1012",
+      "onet_soc_code": "17-1012.00",
+      "summary": "Design parks and other outdoor spaces.",
+      "national_wage_2025": {
+        "median_annual_usd": 79870,
+        "p10_annual_usd": 54770,
+        "p90_annual_usd": 130190
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; internship/residency; State license in most states",
+      "projected_growth_2025_2035_percent": 4.4,
+      "projected_job_change_as_reported": "+1,000",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_11_9021",
+      "family_id": "family_12_architecture_surveying_construction_management",
+      "title": "Construction Manager",
+      "bls_title": "Construction managers",
+      "soc_code": "11-9021",
+      "onet_soc_code": "11-9021.00",
+      "summary": "Plan, coordinate, budget and supervise construction projects.",
+      "national_wage_2025": {
+        "median_annual_usd": 114990,
+        "p10_annual_usd": 69690,
+        "p90_annual_usd": 189440
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; moderate-term on-the-job training",
+      "projected_growth_2025_2035_percent": 9.1,
+      "projected_job_change_as_reported": "+55,200",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_17_3011",
+      "family_id": "family_12_architecture_surveying_construction_management",
+      "title": "Architectural & Civil Drafter",
+      "bls_title": "Architectural and civil drafters",
+      "soc_code": "17-3011",
+      "onet_soc_code": "17-3011.00",
+      "summary": "Turn engineers' and architects' designs into technical drawings using CAD.",
+      "national_wage_2025": {
+        "median_annual_usd": 66150,
+        "p10_annual_usd": 46260,
+        "p90_annual_usd": 99710
+      },
+      "entry_requirements_as_reported": "Associate's degree",
+      "projected_growth_2025_2035_percent": 5.2,
+      "projected_job_change_as_reported": "+5,400",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_17_1022",
+      "family_id": "family_12_architecture_surveying_construction_management",
+      "title": "Surveyor",
+      "bls_title": "Surveyors",
+      "soc_code": "17-1022",
+      "onet_soc_code": "17-1022.00",
+      "summary": "Establish official land, airspace and water boundaries.",
+      "national_wage_2025": {
+        "median_annual_usd": 75440,
+        "p10_annual_usd": 46880,
+        "p90_annual_usd": 125590
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; internship/residency; State license",
+      "projected_growth_2025_2035_percent": 5.8,
+      "projected_job_change_as_reported": "+3,000",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_13_1051",
+      "family_id": "family_12_architecture_surveying_construction_management",
+      "title": "Cost Estimator",
+      "bls_title": "Cost estimators",
+      "soc_code": "13-1051",
+      "onet_soc_code": "13-1051.00",
+      "summary": "Estimate the time, money, materials and labor needed to build or make a product.",
+      "national_wage_2025": {
+        "median_annual_usd": 78740,
+        "p10_annual_usd": 48530,
+        "p90_annual_usd": 130820
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; moderate-term on-the-job training",
+      "projected_growth_2025_2035_percent": -3.1,
+      "projected_job_change_as_reported": "−6,900",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_47_2111",
+      "family_id": "family_13_construction_trades",
+      "title": "Electrician",
+      "bls_title": "Electricians",
+      "soc_code": "47-2111",
+      "onet_soc_code": "47-2111.00",
+      "summary": "Install, maintain and repair electrical power, lighting and control systems.",
+      "national_wage_2025": {
+        "median_annual_usd": 63190,
+        "p10_annual_usd": 42640,
+        "p90_annual_usd": 108510
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; apprenticeship; Apprenticeship; state license in most states",
+      "projected_growth_2025_2035_percent": 9.2,
+      "projected_job_change_as_reported": "+75,900",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_47_2152",
+      "family_id": "family_13_construction_trades",
+      "title": "Plumber / Pipefitter",
+      "bls_title": "Plumbers, pipefitters, and steamfitters",
+      "soc_code": "47-2152",
+      "onet_soc_code": "47-2152.00",
+      "summary": "Install and repair piping fixtures and systems.",
+      "national_wage_2025": {
+        "median_annual_usd": 63800,
+        "p10_annual_usd": 44150,
+        "p90_annual_usd": 108420
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; apprenticeship; Apprenticeship; state license in most states",
+      "projected_growth_2025_2035_percent": 6.8,
+      "projected_job_change_as_reported": "+34,500",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_47_2031",
+      "family_id": "family_13_construction_trades",
+      "title": "Carpenter",
+      "bls_title": "Carpenters",
+      "soc_code": "47-2031",
+      "onet_soc_code": "47-2031.00",
+      "summary": "Construct, repair and install building frameworks and structures.",
+      "national_wage_2025": {
+        "median_annual_usd": 60580,
+        "p10_annual_usd": 40410,
+        "p90_annual_usd": 99910
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; apprenticeship",
+      "projected_growth_2025_2035_percent": 3.9,
+      "projected_job_change_as_reported": "+35,000",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_47_2181",
+      "family_id": "family_13_construction_trades",
+      "title": "Roofer",
+      "bls_title": "Roofers",
+      "soc_code": "47-2181",
+      "onet_soc_code": "47-2181.00",
+      "summary": "Replace, repair and install the roofs of buildings.",
+      "national_wage_2025": {
+        "median_annual_usd": 55440,
+        "p10_annual_usd": 37460,
+        "p90_annual_usd": 81720
+      },
+      "entry_requirements_as_reported": "No formal educational credential; moderate-term on-the-job training",
+      "projected_growth_2025_2035_percent": 5.3,
+      "projected_job_change_as_reported": "+8,800",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_47_4011",
+      "family_id": "family_13_construction_trades",
+      "title": "Construction & Building Inspector",
+      "bls_title": "Construction and building inspectors",
+      "soc_code": "47-4011",
+      "onet_soc_code": "47-4011.00",
+      "summary": "Ensure construction meets building codes, ordinances and contract specifications.",
+      "national_wage_2025": {
+        "median_annual_usd": 74690,
+        "p10_annual_usd": 47140,
+        "p90_annual_usd": 114200
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; 5 years or more related experience; moderate-term on-the-job training; State license or certification in many states",
+      "projected_growth_2025_2035_percent": 0.0,
+      "projected_job_change_as_reported": "±0",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_47_2061",
+      "family_id": "family_13_construction_trades",
+      "title": "Construction Laborer",
+      "bls_title": "Construction laborers",
+      "soc_code": "47-2061",
+      "onet_soc_code": "47-2061.00",
+      "summary": "Perform physical tasks on construction sites.",
+      "national_wage_2025": {
+        "median_annual_usd": 47120,
+        "p10_annual_usd": 35090,
+        "p90_annual_usd": 78090
+      },
+      "entry_requirements_as_reported": "No formal educational credential; short-term on-the-job training",
+      "projected_growth_2025_2035_percent": 7.3,
+      "projected_job_change_as_reported": "+109,300",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_49_9021",
+      "family_id": "family_14_installation_maintenance_repair",
+      "title": "HVAC Technician",
+      "bls_title": "Heating, air conditioning, and refrigeration mechanics and installers",
+      "soc_code": "49-9021",
+      "onet_soc_code": "49-9021.00",
+      "summary": "Install and repair heating, cooling and refrigeration systems.",
+      "national_wage_2025": {
+        "median_annual_usd": 61010,
+        "p10_annual_usd": 40050,
+        "p90_annual_usd": 95210
+      },
+      "entry_requirements_as_reported": "Postsecondary nondegree award; long-term on-the-job training; EPA Section 608 certification to handle refrigerants",
+      "projected_growth_2025_2035_percent": 10.9,
+      "projected_job_change_as_reported": "+48,200",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_49_3011",
+      "family_id": "family_14_installation_maintenance_repair",
+      "title": "Aircraft Mechanic",
+      "bls_title": "Aircraft mechanics and service technicians",
+      "soc_code": "49-3011",
+      "onet_soc_code": "49-3011.00",
+      "summary": "Repair, inspect and maintain aircraft.",
+      "national_wage_2025": {
+        "median_annual_usd": 79870,
+        "p10_annual_usd": 48780,
+        "p90_annual_usd": 128890
+      },
+      "entry_requirements_as_reported": "Postsecondary nondegree award; FAA Airframe & Powerplant (A&P) certificate",
+      "projected_growth_2025_2035_percent": 5.4,
+      "projected_job_change_as_reported": "+7,500",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_49_9081",
+      "family_id": "family_14_installation_maintenance_repair",
+      "title": "Wind Turbine Technician",
+      "bls_title": "Wind turbine service technicians",
+      "soc_code": "49-9081",
+      "onet_soc_code": "49-9081.00",
+      "summary": "Install, maintain and repair wind turbines.",
+      "national_wage_2025": {
+        "median_annual_usd": 64120,
+        "p10_annual_usd": 49230,
+        "p90_annual_usd": 92460
+      },
+      "entry_requirements_as_reported": "Postsecondary nondegree award; long-term on-the-job training",
+      "projected_growth_2025_2035_percent": 29.5,
+      "projected_job_change_as_reported": "+3,500",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_49_3023",
+      "family_id": "family_14_installation_maintenance_repair",
+      "title": "Automotive Service Technician",
+      "bls_title": "Automotive service technicians and mechanics",
+      "soc_code": "49-3023",
+      "onet_soc_code": "49-3023.00",
+      "summary": "Inspect, maintain and repair cars and light trucks.",
+      "national_wage_2025": {
+        "median_annual_usd": 50620,
+        "p10_annual_usd": 34660,
+        "p90_annual_usd": 81790
+      },
+      "entry_requirements_as_reported": "Postsecondary nondegree award; short-term on-the-job training; ASE certification common",
+      "projected_growth_2025_2035_percent": 5.0,
+      "projected_job_change_as_reported": "+40,900",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_49_2022",
+      "family_id": "family_14_installation_maintenance_repair",
+      "title": "Telecommunications Equipment Installer",
+      "bls_title": "Telecommunications equipment installers and repairers, except line installers",
+      "soc_code": "49-2022",
+      "onet_soc_code": "49-2022.00",
+      "summary": "Set up and maintain devices that carry communications signals.",
+      "national_wage_2025": {
+        "median_annual_usd": 63890,
+        "p10_annual_usd": 44240,
+        "p90_annual_usd": 96730
+      },
+      "entry_requirements_as_reported": "Postsecondary nondegree award; moderate-term on-the-job training",
+      "projected_growth_2025_2035_percent": -3.3,
+      "projected_job_change_as_reported": "−4,700",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_49_9071",
+      "family_id": "family_14_installation_maintenance_repair",
+      "title": "General Maintenance & Repair Worker",
+      "bls_title": "Maintenance and repair workers, general",
+      "soc_code": "49-9071",
+      "onet_soc_code": "49-9071.00",
+      "summary": "Maintain and repair machines, equipment and buildings.",
+      "national_wage_2025": {
+        "median_annual_usd": 49590,
+        "p10_annual_usd": 35350,
+        "p90_annual_usd": 77180
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; moderate-term on-the-job training",
+      "projected_growth_2025_2035_percent": 4.2,
+      "projected_job_change_as_reported": "+68,600",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_53_2011",
+      "family_id": "family_15_transportation_aviation",
+      "title": "Airline Pilot",
+      "bls_title": "Airline pilots, copilots, and flight engineers",
+      "soc_code": "53-2011",
+      "onet_soc_code": "53-2011.00",
+      "summary": "Fly airplanes for airlines that transport people and cargo on a fixed schedule.",
+      "national_wage_2025": {
+        "median_annual_usd": 232140,
+        "p10_annual_usd": 106710,
+        "p90_annual_usd": 463830
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; Less than 5 years related experience; moderate-term on-the-job training; FAA Airline Transport Pilot (ATP) certificate",
+      "projected_growth_2025_2035_percent": 8.3,
+      "projected_job_change_as_reported": "+8,700",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_53_2012",
+      "family_id": "family_15_transportation_aviation",
+      "title": "Commercial Pilot",
+      "bls_title": "Commercial pilots",
+      "soc_code": "53-2012",
+      "onet_soc_code": "53-2012.00",
+      "summary": "Fly aircraft for charter flights, rescue, firefighting, crop dusting and similar work.",
+      "national_wage_2025": {
+        "median_annual_usd": 123220,
+        "p10_annual_usd": 58850,
+        "p90_annual_usd": 266620
+      },
+      "entry_requirements_as_reported": "Postsecondary nondegree award; moderate-term on-the-job training; FAA commercial pilot certificate",
+      "projected_growth_2025_2035_percent": 5.2,
+      "projected_job_change_as_reported": "+2,600",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_53_2021",
+      "family_id": "family_15_transportation_aviation",
+      "title": "Air Traffic Controller",
+      "bls_title": "Air traffic controllers",
+      "soc_code": "53-2021",
+      "onet_soc_code": "53-2021.00",
+      "summary": "Coordinate aircraft movement to keep planes safely apart.",
+      "national_wage_2025": {
+        "median_annual_usd": 148080,
+        "p10_annual_usd": 78420,
+        "p90_annual_usd": 215610
+      },
+      "entry_requirements_as_reported": "Associate's degree; long-term on-the-job training; FAA Academy training; U.S. citizenship and medical exam",
+      "projected_growth_2025_2035_percent": 1.7,
+      "projected_job_change_as_reported": "+400",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_53_2031",
+      "family_id": "family_15_transportation_aviation",
+      "title": "Flight Attendant",
+      "bls_title": "Flight attendants",
+      "soc_code": "53-2031",
+      "onet_soc_code": "53-2031.00",
+      "summary": "Provide personal services to ensure passenger safety and comfort.",
+      "national_wage_2025": {
+        "median_annual_usd": 63580,
+        "p10_annual_usd": 35110,
+        "p90_annual_usd": 136430
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; Less than 5 years related experience; moderate-term on-the-job training; FAA Certificate of Demonstrated Proficiency",
+      "projected_growth_2025_2035_percent": 8.8,
+      "projected_job_change_as_reported": "+11,800",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_53_5021",
+      "family_id": "family_15_transportation_aviation",
+      "title": "Ship Captain / Mate / Pilot",
+      "bls_title": "Captains, mates, and pilots of water vessels",
+      "soc_code": "53-5021",
+      "onet_soc_code": "53-5021.00",
+      "summary": "Command or supervise operations of ships and water vessels.",
+      "national_wage_2025": {
+        "median_annual_usd": 92460,
+        "p10_annual_usd": 47420,
+        "p90_annual_usd": 170640
+      },
+      "entry_requirements_as_reported": "Postsecondary nondegree award; Less than 5 years related experience; U.S. Coast Guard Merchant Mariner Credential",
+      "projected_growth_2025_2035_percent": 4.0,
+      "projected_job_change_as_reported": "+1,700",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_53_3032",
+      "family_id": "family_15_transportation_aviation",
+      "title": "Heavy & Tractor-Trailer Truck Driver",
+      "bls_title": "Heavy and tractor-trailer truck drivers",
+      "soc_code": "53-3032",
+      "onet_soc_code": "53-3032.00",
+      "summary": "Transport goods from one location to another.",
+      "national_wage_2025": {
+        "median_annual_usd": 58640,
+        "p10_annual_usd": 40140,
+        "p90_annual_usd": 79380
+      },
+      "entry_requirements_as_reported": "Postsecondary nondegree award; short-term on-the-job training; Commercial driver's license (CDL)",
+      "projected_growth_2025_2035_percent": 3.8,
+      "projected_job_change_as_reported": "+83,800",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_35_1011",
+      "family_id": "family_16_hospitality_culinary_tourism",
+      "title": "Chef / Head Cook",
+      "bls_title": "Chefs and head cooks",
+      "soc_code": "35-1011",
+      "onet_soc_code": "35-1011.00",
+      "summary": "Oversee daily food preparation and direct kitchen staff.",
+      "national_wage_2025": {
+        "median_annual_usd": 62470,
+        "p10_annual_usd": 37900,
+        "p90_annual_usd": 98560
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; 5 years or more related experience; Culinary training helpful",
+      "projected_growth_2025_2035_percent": 6.6,
+      "projected_job_change_as_reported": "+14,400",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_11_9051",
+      "family_id": "family_16_hospitality_culinary_tourism",
+      "title": "Food Service Manager",
+      "bls_title": "Food service managers",
+      "soc_code": "11-9051",
+      "onet_soc_code": "11-9051.00",
+      "summary": "Run restaurants and food service establishments.",
+      "national_wage_2025": {
+        "median_annual_usd": 69390,
+        "p10_annual_usd": 45960,
+        "p90_annual_usd": 107640
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; Less than 5 years related experience; short-term on-the-job training; Food protection manager certification (e.g., ServSafe) widely required",
+      "projected_growth_2025_2035_percent": 5.8,
+      "projected_job_change_as_reported": "+19,900",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_11_9081",
+      "family_id": "family_16_hospitality_culinary_tourism",
+      "title": "Lodging Manager",
+      "bls_title": "Lodging managers",
+      "soc_code": "11-9081",
+      "onet_soc_code": "11-9081.00",
+      "summary": "Ensure guests have a pleasant experience while running a profitable hotel.",
+      "national_wage_2025": {
+        "median_annual_usd": 69250,
+        "p10_annual_usd": 40070,
+        "p90_annual_usd": 128880
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; Less than 5 years related experience; Hospitality degree often preferred at upscale hotels",
+      "projected_growth_2025_2035_percent": 3.8,
+      "projected_job_change_as_reported": "+2,100",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_13_1121",
+      "family_id": "family_16_hospitality_culinary_tourism",
+      "title": "Meeting, Convention & Event Planner",
+      "bls_title": "Meeting, convention, and event planners",
+      "soc_code": "13-1121",
+      "onet_soc_code": "13-1121.00",
+      "summary": "Coordinate all aspects of events and professional meetings.",
+      "national_wage_2025": {
+        "median_annual_usd": 61160,
+        "p10_annual_usd": 36830,
+        "p90_annual_usd": 101700
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; CMP certification optional",
+      "projected_growth_2025_2035_percent": 5.8,
+      "projected_job_change_as_reported": "+10,000",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_35_2014",
+      "family_id": "family_16_hospitality_culinary_tourism",
+      "title": "Restaurant Cook",
+      "bls_title": "Cooks, restaurant",
+      "soc_code": "35-2014",
+      "onet_soc_code": "35-2014.00",
+      "summary": "Prepare, season and cook a wide range of foods.",
+      "national_wage_2025": {
+        "median_annual_usd": 37390,
+        "p10_annual_usd": 28700,
+        "p90_annual_usd": 47900
+      },
+      "entry_requirements_as_reported": "No formal educational credential; Less than 5 years related experience; moderate-term on-the-job training",
+      "projected_growth_2025_2035_percent": 12.1,
+      "projected_job_change_as_reported": "+171,400",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_41_3041",
+      "family_id": "family_16_hospitality_culinary_tourism",
+      "title": "Travel Agent",
+      "bls_title": "Travel agents",
+      "soc_code": "41-3041",
+      "onet_soc_code": "41-3041.00",
+      "summary": "Sell transportation, lodging and entertainment for travelers.",
+      "national_wage_2025": {
+        "median_annual_usd": 50160,
+        "p10_annual_usd": 34610,
+        "p90_annual_usd": 76660
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; moderate-term on-the-job training",
+      "projected_growth_2025_2035_percent": 0.2,
+      "projected_job_change_as_reported": "+100",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_19_1042",
+      "family_id": "family_17_life_physical_social_sciences",
+      "title": "Medical Scientist",
+      "bls_title": "Medical scientists, except epidemiologists",
+      "soc_code": "19-1042",
+      "onet_soc_code": "19-1042.00",
+      "summary": "Conduct research aimed at improving human health.",
+      "national_wage_2025": {
+        "median_annual_usd": 103410,
+        "p10_annual_usd": 64800,
+        "p90_annual_usd": 177780
+      },
+      "entry_requirements_as_reported": "Doctoral or professional degree; PhD or MD; license if treating patients",
+      "projected_growth_2025_2035_percent": 12.6,
+      "projected_job_change_as_reported": "+22,700",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_19_1021",
+      "family_id": "family_17_life_physical_social_sciences",
+      "title": "Biochemist / Biophysicist",
+      "bls_title": "Biochemists and biophysicists",
+      "soc_code": "19-1021",
+      "onet_soc_code": "19-1021.00",
+      "summary": "Study the chemical and physical principles of living things.",
+      "national_wage_2025": {
+        "median_annual_usd": 127410,
+        "p10_annual_usd": 74290,
+        "p90_annual_usd": 201110
+      },
+      "entry_requirements_as_reported": "Doctoral or professional degree",
+      "projected_growth_2025_2035_percent": 12.3,
+      "projected_job_change_as_reported": "+4,300",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_19_2031",
+      "family_id": "family_17_life_physical_social_sciences",
+      "title": "Chemist",
+      "bls_title": "Chemists",
+      "soc_code": "19-2031",
+      "onet_soc_code": "19-2031.00",
+      "summary": "Study substances at the atomic and molecular levels.",
+      "national_wage_2025": {
+        "median_annual_usd": 91240,
+        "p10_annual_usd": 58460,
+        "p90_annual_usd": 160830
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": 6.4,
+      "projected_job_change_as_reported": "+5,500",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_19_2041",
+      "family_id": "family_17_life_physical_social_sciences",
+      "title": "Environmental Scientist",
+      "bls_title": "Environmental scientists and specialists, including health",
+      "soc_code": "19-2041",
+      "onet_soc_code": "19-2041.00",
+      "summary": "Use natural sciences to protect the environment and human health.",
+      "national_wage_2025": {
+        "median_annual_usd": 82220,
+        "p10_annual_usd": 52520,
+        "p90_annual_usd": 140010
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": 6.1,
+      "projected_job_change_as_reported": "+5,700",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_19_1022",
+      "family_id": "family_17_life_physical_social_sciences",
+      "title": "Microbiologist",
+      "bls_title": "Microbiologists",
+      "soc_code": "19-1022",
+      "onet_soc_code": "19-1022.00",
+      "summary": "Study microorganisms such as bacteria, viruses, algae and fungi.",
+      "national_wage_2025": {
+        "median_annual_usd": 87990,
+        "p10_annual_usd": 54670,
+        "p90_annual_usd": 150000
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": 6.2,
+      "projected_job_change_as_reported": "+1,300",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_19_3011",
+      "family_id": "family_17_life_physical_social_sciences",
+      "title": "Economist",
+      "bls_title": "Economists",
+      "soc_code": "19-3011",
+      "onet_soc_code": "19-3011.00",
+      "summary": "Study the production and distribution of resources, goods and services.",
+      "national_wage_2025": {
+        "median_annual_usd": 124720,
+        "p10_annual_usd": 67360,
+        "p90_annual_usd": 238060
+      },
+      "entry_requirements_as_reported": "Master's degree",
+      "projected_growth_2025_2035_percent": 4.7,
+      "projected_job_change_as_reported": "+900",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_21_1018",
+      "family_id": "family_18_community_social_service",
+      "title": "Mental Health / Substance Abuse Counselor",
+      "bls_title": "Substance abuse, behavioral disorder, and mental health counselors",
+      "soc_code": "21-1018",
+      "onet_soc_code": "21-1018.00",
+      "summary": "Advise people with mental health or substance use disorders.",
+      "national_wage_2025": {
+        "median_annual_usd": 59350,
+        "p10_annual_usd": 38940,
+        "p90_annual_usd": 97590
+      },
+      "entry_requirements_as_reported": "Master's degree; internship/residency; State license for private practice",
+      "projected_growth_2025_2035_percent": 18.4,
+      "projected_job_change_as_reported": "+98,000",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_21_1021",
+      "family_id": "family_18_community_social_service",
+      "title": "Child, Family & School Social Worker",
+      "bls_title": "Child, family, and school social workers",
+      "soc_code": "21-1021",
+      "onet_soc_code": "21-1021.00",
+      "summary": "Help people solve and cope with problems in their lives.",
+      "national_wage_2025": {
+        "median_annual_usd": 59550,
+        "p10_annual_usd": 42280,
+        "p90_annual_usd": 95530
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; State license/certification varies",
+      "projected_growth_2025_2035_percent": 4.4,
+      "projected_job_change_as_reported": "+17,800",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_21_1013",
+      "family_id": "family_18_community_social_service",
+      "title": "Marriage & Family Therapist",
+      "bls_title": "Marriage and family therapists",
+      "soc_code": "21-1013",
+      "onet_soc_code": "21-1013.00",
+      "summary": "Help people manage problems with their family and relationships.",
+      "national_wage_2025": {
+        "median_annual_usd": 66940,
+        "p10_annual_usd": 44650,
+        "p90_annual_usd": 123730
+      },
+      "entry_requirements_as_reported": "Master's degree; internship/residency; State license (LMFT) after supervised practice",
+      "projected_growth_2025_2035_percent": 13.5,
+      "projected_job_change_as_reported": "+10,300",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_21_1094",
+      "family_id": "family_18_community_social_service",
+      "title": "Community Health Worker",
+      "bls_title": "Community health workers",
+      "soc_code": "21-1094",
+      "onet_soc_code": "21-1094.00",
+      "summary": "Promote health within a community and connect people to services.",
+      "national_wage_2025": {
+        "median_annual_usd": 51850,
+        "p10_annual_usd": 38810,
+        "p90_annual_usd": 77180
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; short-term on-the-job training; State certification in some states",
+      "projected_growth_2025_2035_percent": 12.7,
+      "projected_job_change_as_reported": "+8,200",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_21_1092",
+      "family_id": "family_18_community_social_service",
+      "title": "Probation Officer / Correctional Treatment Specialist",
+      "bls_title": "Probation officers and correctional treatment specialists",
+      "soc_code": "21-1092",
+      "onet_soc_code": "21-1092.00",
+      "summary": "Supervise and assist people on probation or parole and help them reenter society.",
+      "national_wage_2025": {
+        "median_annual_usd": 66270,
+        "p10_annual_usd": 46840,
+        "p90_annual_usd": 107790
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; moderate-term on-the-job training; Agency training program",
+      "projected_growth_2025_2035_percent": 3.0,
+      "projected_job_change_as_reported": "+2,800",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_15_2011",
+      "family_id": "family_19_mathematical_science_analytics",
+      "title": "Actuary",
+      "bls_title": "Actuaries",
+      "soc_code": "15-2011",
+      "onet_soc_code": "15-2011.00",
+      "summary": "Use math, statistics and financial theory to analyze the financial costs of risk.",
+      "national_wage_2025": {
+        "median_annual_usd": 130000,
+        "p10_annual_usd": 78570,
+        "p90_annual_usd": 215100
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; long-term on-the-job training; Professional exams (SOA/CAS) for full credentials",
+      "projected_growth_2025_2035_percent": 9.2,
+      "projected_job_change_as_reported": "+2,900",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_15_2041",
+      "family_id": "family_19_mathematical_science_analytics",
+      "title": "Statistician",
+      "bls_title": "Statisticians",
+      "soc_code": "15-2041",
+      "onet_soc_code": "15-2041.00",
+      "summary": "Analyze data and apply statistical techniques to solve real-world problems.",
+      "national_wage_2025": {
+        "median_annual_usd": 105650,
+        "p10_annual_usd": 64000,
+        "p90_annual_usd": 174050
+      },
+      "entry_requirements_as_reported": "Master's degree",
+      "projected_growth_2025_2035_percent": 11.0,
+      "projected_job_change_as_reported": "+3,400",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_15_2031",
+      "family_id": "family_19_mathematical_science_analytics",
+      "title": "Operations Research Analyst",
+      "bls_title": "Operations research analysts",
+      "soc_code": "15-2031",
+      "onet_soc_code": "15-2031.00",
+      "summary": "Use mathematics and logic to help organizations make informed decisions.",
+      "national_wage_2025": {
+        "median_annual_usd": 88940,
+        "p10_annual_usd": 57060,
+        "p90_annual_usd": 159910
+      },
+      "entry_requirements_as_reported": "Bachelor's degree",
+      "projected_growth_2025_2035_percent": 11.9,
+      "projected_job_change_as_reported": "+13,500",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_15_2021",
+      "family_id": "family_19_mathematical_science_analytics",
+      "title": "Mathematician",
+      "bls_title": "Mathematicians",
+      "soc_code": "15-2021",
+      "onet_soc_code": "15-2021.00",
+      "summary": "Develop mathematical theory and apply it to business, science and engineering problems.",
+      "national_wage_2025": {
+        "median_annual_usd": 126710,
+        "p10_annual_usd": 69240,
+        "p90_annual_usd": 195190
+      },
+      "entry_requirements_as_reported": "Master's degree",
+      "projected_growth_2025_2035_percent": 0.6,
+      "projected_job_change_as_reported": "±0",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_41_9031",
+      "family_id": "family_20_sales_business_development",
+      "title": "Sales Engineer",
+      "bls_title": "Sales engineers",
+      "soc_code": "41-9031",
+      "onet_soc_code": "41-9031.00",
+      "summary": "Sell complex scientific and technological products or services to businesses.",
+      "national_wage_2025": {
+        "median_annual_usd": 124900,
+        "p10_annual_usd": 73870,
+        "p90_annual_usd": 195270
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; moderate-term on-the-job training; Engineering degree typical",
+      "projected_growth_2025_2035_percent": 2.8,
+      "projected_job_change_as_reported": "+1,400",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_41_3031",
+      "family_id": "family_20_sales_business_development",
+      "title": "Financial Services Sales Agent",
+      "bls_title": "Securities, commodities, and financial services sales agents",
+      "soc_code": "41-3031",
+      "onet_soc_code": "41-3031.00",
+      "summary": "Connect buyers and sellers in financial markets.",
+      "national_wage_2025": {
+        "median_annual_usd": 78660,
+        "p10_annual_usd": 48040,
+        "p90_annual_usd": 212880
+      },
+      "entry_requirements_as_reported": "Bachelor's degree; moderate-term on-the-job training; FINRA securities licenses",
+      "projected_growth_2025_2035_percent": 1.4,
+      "projected_job_change_as_reported": "+7,500",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_41_4012",
+      "family_id": "family_20_sales_business_development",
+      "title": "Wholesale & Manufacturing Sales Representative",
+      "bls_title": "Sales representatives, wholesale and manufacturing, except technical and scientific products",
+      "soc_code": "41-4012",
+      "onet_soc_code": "41-4012.00",
+      "summary": "Sell goods for wholesalers or manufacturers to businesses and organizations.",
+      "national_wage_2025": {
+        "median_annual_usd": 72080,
+        "p10_annual_usd": 39090,
+        "p90_annual_usd": 137550
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; moderate-term on-the-job training",
+      "projected_growth_2025_2035_percent": -0.9,
+      "projected_job_change_as_reported": "−11,200",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_41_3021",
+      "family_id": "family_20_sales_business_development",
+      "title": "Insurance Sales Agent",
+      "bls_title": "Insurance sales agents",
+      "soc_code": "41-3021",
+      "onet_soc_code": "41-3021.00",
+      "summary": "Contact potential customers and sell one or more types of insurance.",
+      "national_wage_2025": {
+        "median_annual_usd": 62280,
+        "p10_annual_usd": 37330,
+        "p90_annual_usd": 138140
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; moderate-term on-the-job training; State insurance license",
+      "projected_growth_2025_2035_percent": 3.3,
+      "projected_job_change_as_reported": "+18,800",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    },
+    {
+      "id": "occupation_41_9022",
+      "family_id": "family_20_sales_business_development",
+      "title": "Real Estate Sales Agent",
+      "bls_title": "Real estate sales agents",
+      "soc_code": "41-9022",
+      "onet_soc_code": "41-9022.00",
+      "summary": "Help clients buy, sell and rent properties.",
+      "national_wage_2025": {
+        "median_annual_usd": 52830,
+        "p10_annual_usd": 32970,
+        "p90_annual_usd": 123590
+      },
+      "entry_requirements_as_reported": "High school diploma or equivalent; moderate-term on-the-job training; State real estate license",
+      "projected_growth_2025_2035_percent": 1.7,
+      "projected_job_change_as_reported": "+7,400",
+      "source_refs": [
+        "occupation_projection",
+        "national_wages"
+      ],
+      "verified_per_row": false
+    }
+  ]
+}
