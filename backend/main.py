@@ -3,7 +3,7 @@
 import os
 from pathlib import Path
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Header
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -18,6 +18,8 @@ from backend.integrations.common import AIServiceError
 from backend.job_models import StudentProfile
 from backend.catalog_models import FamiliesResponse, OccupationsResponse, OccupationResponse
 from backend.services.job_catalog import JobCatalogRepository, CAREER_OCCUPATIONS
+from backend.services.progress import ProgressStore
+from backend.job_models import ProgressRequest, CompletionRequest, ProgressResponse, CreatedProgressResponse
 
 
 def create_app(data_directory: Path | None = None, origins: list[str] | None = None,
@@ -31,12 +33,13 @@ def create_app(data_directory: Path | None = None, origins: list[str] | None = N
     demo_directory = Path(__file__).resolve().parents[1] / "data" / "demo" if demo_enabled else None
     repository = DataRepository(directory, demo_directory=demo_directory)
     job_catalog = JobCatalogRepository(directory)
+    progress_store = ProgressStore()
     allowed_origins = origins if origins is not None else [
         os.environ.get("FRONTEND_ORIGIN") or "http://localhost:5173"
     ]
     application.add_middleware(
         CORSMiddleware, allow_origins=allowed_origins, allow_credentials=False,
-        allow_methods=["GET", "POST"], allow_headers=["Content-Type"],
+        allow_methods=["GET", "POST", "PUT"], allow_headers=["Content-Type", "Authorization"],
     )
 
     def error(status, code, message):
@@ -130,6 +133,24 @@ def create_app(data_directory: Path | None = None, origins: list[str] | None = N
         catalog, occupation = selected_occupation(occupation_id)
         target = job_catalog.guidance_career(catalog, occupation, repository)
         return JobFirstCoordinator().roadmap(target, JobRequest(career_id=occupation.id, **request.model_dump()))
+
+    @application.post("/api/progress", status_code=201, response_model=CreatedProgressResponse)
+    def start_progress(request: ProgressRequest):
+        profile = StudentProfile(**request.model_dump(exclude={"target_id"}))
+        if request.target_id.startswith("occupation_"):
+            roadmap = occupation_roadmap(request.target_id, profile)
+        else:
+            roadmap = job_roadmap(JobRequest(career_id=request.target_id, **profile.model_dump()))
+        return progress_store.create(roadmap)
+
+    @application.get("/api/progress/{progress_id}", response_model=ProgressResponse)
+    def get_progress(progress_id: str, authorization: str | None = Header(default=None)):
+        return progress_store.get(progress_id, authorization)
+
+    @application.put("/api/progress/{progress_id}/missions/{mission_id}/completion", response_model=ProgressResponse)
+    def complete_mission(progress_id: str, mission_id: str, request: CompletionRequest,
+                         authorization: str | None = Header(default=None)):
+        return progress_store.complete(progress_id, mission_id, authorization)
 
     return application
 
