@@ -60,6 +60,15 @@ class MDCPathwayCatalog(Model):
     pathways: list[MDCPathwayLink]
 
 
+class ExternalResourceLink(Model):
+    career_id: Identifier
+    external_resources: list[Resource]
+
+
+class ExternalResourceCatalog(Model):
+    careers: list[ExternalResourceLink]
+
+
 class CardsResponse(Model):
     cards: list[SwipeCard]
 

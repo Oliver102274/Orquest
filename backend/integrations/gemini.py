@@ -21,6 +21,12 @@ class GeminiService:
     def suggest_roadmap(self, context: CareerContext) -> ProviderResult:
         return self._generate(context, "Suggest up to eight personalized learning steps using supplied resources.", RoadmapSuggestions)
 
+    def answer_question(self, context: CareerContext) -> ProviderResult:
+        return self._generate(context, "Answer the student's question about the selected target occupation using only verified supplied evidence. State missing evidence explicitly. A degree is not automatically required.", Explanation)
+
+    def plan_job_roadmap(self, context: CareerContext) -> ProviderResult:
+        return self._generate(context, "Work backward from the target occupation's verified requirements to suggest up to eight ordered learning steps from the student's starting point. Use supplied resources as alternatives, not mandatory degrees. Do not invent requirements; identify evidence gaps. No XP or completion claims.", RoadmapSuggestions)
+
     def _generate(self, context, task, schema):
         contents = prompt(context, task)
         config = types.GenerateContentConfig(

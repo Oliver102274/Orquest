@@ -26,6 +26,8 @@ RECOVERABLE = frozenset({"disabled", "missing_key", "missing_model", "request_li
                          "timeout", "network_error", "authentication_failed", "billing_limit",
                          "rate_limited", "provider_error", "paid_model_blocked"})
 FREE_GEMINI_MODELS = frozenset({"gemini-3.1-flash-lite"})
+# Formatting failures may use local catalog guidance, never another AI attempt.
+LOCAL_ONLY_FAILURES = frozenset({"truncated_response", "invalid_structured_response"})
 
 
 class CareerFallbackService:
@@ -50,6 +52,8 @@ class CareerFallbackService:
             try:
                 return FallbackResult(tier=provider, ai=service.explain_career(context))
             except AIServiceError as exc:
+                if exc.code in LOCAL_ONLY_FAILURES:
+                    break
                 if exc.code not in RECOVERABLE:
                     raise
         matches = match_careers(request, cards, careers)

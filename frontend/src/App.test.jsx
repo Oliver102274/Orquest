@@ -1,0 +1,842 @@
+/** @vitest-environment jsdom */
+
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
+import App from './App.jsx'
+import { getCareerRoadmap, submitCareerQuestion } from './services/api.js'
+import { createSaveFile } from './logic/saveFile.js'
+import {
+  grantQuizPersonalizationConsent,
+  initialPersonalizationConsents,
+  setPersonalizationConsent,
+} from './logic/personalizationConsent.js'
+
+const styles = readFileSync(resolve(process.cwd(), 'src/styles.css'), 'utf8')
+
+const cards = [
+  { id: 'card_tools', activity: 'Building useful tools', interest_tags: ['technology', 'problem_solving'] },
+  { id: 'card_learners', activity: 'Helping learners grow', interest_tags: ['education'] },
+  ...Array.from({ length: 8 }, (_, index) => ({
+    id: `card_test_${index + 3}`,
+    activity: `Test activity ${index + 3}`,
+    interest_tags: ['technology'],
+  })),
+]
+
+const matches = [
+  {
+    career_id: 'career_software_developer',
+    title: 'Software Developer',
+    rationale: 'Shared liked tags: technology.',
+    matched_interest_tags: ['technology', 'problem_solving'],
+    interest_score: 80,
+  },
+  {
+    career_id: 'career_cybersecurity_analyst',
+    title: 'Cybersecurity Analyst',
+    rationale: 'Shared liked tags: technology and security.',
+    matched_interest_tags: ['technology', 'security'],
+    interest_score: 70,
+  },
+]
+
+const career = {
+  career_id: 'career_software_developer',
+  title: 'Software Developer',
+  summary: 'Software developers design, build, test, and maintain software applications and systems.',
+  requirements: ['Knowledge of programming languages', 'Problem-solving and analytical skills'],
+  sources: [{ title: 'BLS Occupational Outlook Handbook', url: 'https://example.org/career', verification_status: 'unverified', verified_at: null }],
+  mdc_resources: [],
+  external_resources: [],
+}
+
+const cybersecurityCareer = {
+  ...career,
+  career_id: 'career_cybersecurity_analyst',
+  title: 'Cybersecurity Analyst',
+  summary: 'Cybersecurity analysts investigate and help protect information systems.',
+}
+
+const questionResponse = {
+  target_occupation: { career_id: career.career_id, title: career.title },
+  answer: 'Catalog guidance for your submitted question.',
+  source_urls: ['https://example.org/career-guide'],
+  resource_ids: ['resource_guide'],
+  metadata: { status: 'deterministic', provider: 'deterministic', reason: 'ai_disabled', review_required: true },
+}
+
+const roadmapStep = {
+  id: 'draft_step_1',
+  title: 'Investigate a verified option',
+  instruction: 'Review the supplied resource with an advisor.',
+  resource_ids: ['resource_guide'],
+}
+
+const roadmapResponse = {
+  target_occupation: { career_id: career.career_id, title: career.title },
+  relevant_skills_and_qualifications: [],
+  mdc_pathways: [],
+  alternative_resources: [{
+    id: 'resource_guide', title: 'Career Guide', organization: 'Example', type: 'guide',
+    source_url: 'https://example.org/career-guide', verified_at: '2026-01-01T00:00:00Z', verification_status: 'verified',
+  }],
+  career_milestones: [roadmapStep],
+  suggested_missions: [roadmapStep],
+  source_urls: ['https://example.org/career-guide'],
+  evidence_gaps: ['Starting point or education level was not provided.'],
+  metadata: { status: 'deterministic', provider: 'deterministic', reason: 'ai_disabled', review_required: true },
+}
+
+let fetchMock
+let careerQuestionResult
+let careerRoadmapResult
+
+beforeEach(() => {
+  careerQuestionResult = questionResponse
+  careerRoadmapResult = roadmapResponse
+  fetchMock = vi.fn(async (url, options = {}) => {
+    let body
+    if (url.endsWith('/api/cards')) body = { cards }
+    else if (url.endsWith('/api/matches')) body = { status: 'ready', matches, score_description: 'Interest alignment only.' }
+    else if (url.endsWith('/api/careers/career_software_developer')) body = career
+    else if (url.endsWith('/api/careers/career_cybersecurity_analyst')) body = cybersecurityCareer
+    else if (url.endsWith('/api/career-questions')) {
+      const careerId = JSON.parse(options.body).career_id
+      const discussedCareer = careerId === cybersecurityCareer.career_id ? cybersecurityCareer : career
+      body = { ...careerQuestionResult, target_occupation: { career_id: discussedCareer.career_id, title: discussedCareer.title } }
+    }
+    else if (url.endsWith('/api/roadmaps')) {
+      const requestedCareerId = JSON.parse(options.body).career_id
+      const requestedCareer = matches.find(({ career_id }) => career_id === requestedCareerId) || matches[0]
+      body = {
+        ...careerRoadmapResult,
+        target_occupation: { career_id: requestedCareer.career_id, title: requestedCareer.title },
+      }
+    }
+    else return { ok: false, status: 404, json: async () => ({ error: { message: 'not found' } }) }
+    return { ok: true, status: 200, json: async () => body }
+  })
+  vi.stubGlobal('fetch', fetchMock)
+})
+
+afterEach(() => {
+  cleanup()
+  vi.restoreAllMocks()
+  vi.unstubAllGlobals()
+})
+
+describe('career guidance API helpers', () => {
+  it('posts only the explicit career and question and validates the question response', async () => {
+    const result = await submitCareerQuestion({
+      career_id: career.career_id,
+      question: 'What should I learn?',
+      questionnaire_answers: ['PRIVATE RPG ANSWER MUST NOT LEAK'],
+      questionnaire_personalization_consent: true,
+      preferences: ['inferred preference'],
+      conversation_history: [{ role: 'user', content: 'earlier' }],
+    })
+    const call = fetchMock.mock.calls.find(([url]) => String(url).endsWith('/api/career-questions'))
+    expect(call[1].method).toBe('POST')
+    expect(JSON.parse(call[1].body)).toEqual({ career_id: career.career_id, question: 'What should I learn?' })
+    expect(call[1].body).not.toContain('PRIVATE RPG ANSWER MUST NOT LEAK')
+    expect(result).toEqual(questionResponse)
+  })
+
+  it('posts only the active career and optional consented interest tags and validates the roadmap response', async () => {
+    const result = await getCareerRoadmap({
+      career_id: career.career_id,
+      interest_tags: ['technology'],
+      questionnaire_answers: ['private RPG answer'],
+      questionnaire_personalization_consent: false,
+      education_level: 'inferred',
+      goals: ['inferred goal'],
+    })
+    const call = fetchMock.mock.calls.find(([url]) => String(url).endsWith('/api/roadmaps'))
+    expect(call[1].method).toBe('POST')
+    expect(JSON.parse(call[1].body)).toEqual({ career_id: career.career_id, interest_tags: ['technology'] })
+    expect(result).toEqual(roadmapResponse)
+  })
+
+  it('sends only labeled, nonblank, mapped questionnaire answers to roadmaps with consent', async () => {
+    await getCareerRoadmap({
+      career_id: career.career_id,
+      questionnaire_personalization_consent: true,
+      questionnaire_answers: [
+        'Build tools that help people.',
+        'Music and biology.',
+        'Recognition and achievement.',
+        'Hands-on challenges.',
+        'A stable, creative future.',
+      ],
+      education_level: 'must not be inferred',
+      starting_point: 'must not be inferred',
+    })
+
+    const call = fetchMock.mock.calls.find(([url]) => String(url).endsWith('/api/roadmaps'))
+    expect(JSON.parse(call[1].body)).toEqual({
+      career_id: career.career_id,
+      goals: [
+        'Career or future goal: Build tools that help people.',
+        'Ideal future: A stable, creative future.',
+      ],
+      preferences: [
+        'Interests, hobbies, and subjects: Music and biology.',
+        'Preferred challenges and activities: Hands-on challenges.',
+      ],
+    })
+    expect(call[1].body).not.toContain('Recognition and achievement')
+  })
+
+  it('omits blank questionnaire answers and rejects labeled answers over 1,000 characters before sending', async () => {
+    await getCareerRoadmap({
+      career_id: career.career_id,
+      questionnaire_personalization_consent: true,
+      questionnaire_answers: ['', '   ', 'motivation only', '', 'future'],
+    })
+    const call = fetchMock.mock.calls.find(([url]) => String(url).endsWith('/api/roadmaps'))
+    expect(JSON.parse(call[1].body)).toEqual({
+      career_id: career.career_id,
+      goals: ['Ideal future: future'],
+    })
+
+    fetchMock.mockClear()
+    await expect(getCareerRoadmap({
+      career_id: career.career_id,
+      questionnaire_personalization_consent: true,
+      questionnaire_answers: ['x'.repeat(1_000)],
+    })).rejects.toMatchObject({ code: 'questionnaire_answer_too_long' })
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
+  it('rejects malformed guidance responses with a typed API error', async () => {
+    fetchMock.mockImplementationOnce(async () => ({ ok: true, status: 200, json: async () => ({ answer: 'missing required fields' }) }))
+    await expect(submitCareerQuestion({ career_id: career.career_id, question: 'Question' }))
+      .rejects.toMatchObject({ name: 'ApiError', code: 'unexpected_response' })
+  })
+})
+
+function enterDemoCredentials() {
+  fireEvent.change(screen.getByLabelText('Username'), {
+    target: { value: 'student@mdc.edu' },
+  })
+  fireEvent.change(screen.getByLabelText('Password'), {
+    target: { value: 'MDC2026' },
+  })
+  fireEvent.click(screen.getByRole('button', { name: /enter the hall/i }))
+}
+
+async function reachBubbleExplorer() {
+  enterDemoCredentials()
+  await screen.findByText(cards[0].activity)
+  for (let index = 0; index < cards.length; index += 1) {
+    await screen.findByText(cards[index].activity)
+    fireEvent.click(screen.getByRole('button', { name: index % 2 === 0 ? 'Agree' : 'Disagree' }))
+  }
+  await screen.findByRole('button', { name: 'Software Developer' })
+  await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(
+    expect.stringContaining('/api/careers/career_software_developer'), expect.any(Object),
+  ))
+}
+
+async function enterRpgWithSoftwareTarget({ quizAnswer } = {}) {
+  await reachBubbleExplorer()
+  fireEvent.click(screen.getByRole('button', { name: 'Software Developer' }))
+  await screen.findByText(career.summary)
+  fireEvent.click(screen.getByRole('button', { name: 'CHOOSE THIS AS MY GOAL' }))
+  fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
+  if (quizAnswer) {
+    fireEvent.change(screen.getByLabelText(/what kind of future or career/i), { target: { value: quizAnswer } })
+  }
+  fireEvent.click(screen.getByRole('button', { name: 'Skip Quiz' }))
+  fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
+  await screen.findByRole('heading', { name: 'Your journey begins.' })
+}
+
+function makeImportFile(save) {
+  const content = JSON.stringify(save)
+  const file = new File([content], 'orquest-save.json', { type: 'application/json' })
+  Object.defineProperty(file, 'text', { value: async () => content })
+  return file
+}
+
+function readBlobText(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = () => reject(reader.error)
+    reader.readAsText(blob)
+  })
+}
+
+describe('Login → backend swipe cards → Bubble Explorer', () => {
+  it('shows the agreed error for incorrect demo credentials', () => {
+    render(<App />)
+    fireEvent.change(screen.getByLabelText('Username'), {
+      target: { value: 'wrong@example.com' },
+    })
+    fireEvent.change(screen.getByLabelText('Password'), {
+      target: { value: 'wrong-password' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: /enter the hall/i }))
+
+    expect(screen.getByRole('alert').textContent).toBe(
+      'Invalid Username or Password. Please Try Again!',
+    )
+  })
+
+  it('validates and confirms a save import, restores multiple paths, and switches the active path', async () => {
+    const importedPaths = matches.map(({ career_id, title, matched_interest_tags }) => ({
+      career_id,
+      title,
+      matched_interest_tags,
+    }))
+    const save = createSaveFile({
+      responses: cards.slice(0, 3).map((card, index) => ({ card_id: card.id, preference: index ? 'dislike' : 'like' })),
+      exploredCareers: [{ career_id: importedPaths[1].career_id }],
+      careerPaths: importedPaths,
+      activeTargetCareer: importedPaths[0],
+      personalizationConsents: { quiz: true, swipes: false },
+      quizAnswers: ['Saved RPG context', '', '', '', ''],
+      exportedAt: '2026-11-07T12:00:00.000Z',
+    })
+    render(<App />)
+    expect(screen.getByRole('button', { name: /start fresh \/ enter the hall/i })).toBeTruthy()
+    fireEvent.change(document.querySelector('.save-file-input'), { target: { files: [makeImportFile(save)] } })
+
+    expect(await screen.findByText('Saved progress ready to import')).toBeTruthy()
+    expect(screen.getByText('3 swipe responses')).toBeTruthy()
+    expect(screen.getByText('2 saved career paths')).toBeTruthy()
+    expect(screen.getByText('1 non-empty questionnaire answers saved with consent')).toBeTruthy()
+    expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith('/api/matches'))).toBe(false)
+
+    fireEvent.click(screen.getByRole('button', { name: 'CONFIRM IMPORT' }))
+    expect(await screen.findByRole('heading', { name: 'Bubble Explorer' })).toBeTruthy()
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith(
+      expect.stringContaining('/api/matches'),
+      expect.objectContaining({ body: JSON.stringify({ responses: save.data.swipe_responses }) }),
+    ))
+    expect(document.querySelector('.guide-active-target').textContent).toContain('Software Developer')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
+    expect(screen.getByLabelText(/what kind of future or career/i).value).toBe('Saved RPG context')
+    for (let index = 0; index < 5; index += 1) {
+      if (index > 0) fireEvent.change(screen.getByRole('textbox'), { target: { value: `Saved answer ${index + 1}` } })
+      fireEvent.click(screen.getByRole('button', { name: index === 4 ? 'Continue' : 'Next' }))
+    }
+    expect(await screen.findByRole('heading', { name: 'Ready when you are.' })).toBeTruthy()
+    expect(document.querySelector('.journey-path-card strong').textContent).toBe('Software Developer')
+    fireEvent.click(screen.getByRole('button', { name: /Cybersecurity Analyst.*SET ACTIVE TARGET/i }))
+    expect(document.querySelector('.journey-path-card strong').textContent).toBe('Cybersecurity Analyst')
+    fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
+    expect(document.querySelector('.rpg-card .journey-path-card strong').textContent).toBe('Cybersecurity Analyst')
+    fireEvent.click(screen.getByRole('button', { name: /Software Developer.*SET ACTIVE TARGET/i }))
+    expect(document.querySelector('.rpg-card .journey-path-card strong').textContent).toBe('Software Developer')
+    fireEvent.click(screen.getByRole('button', { name: /request career roadmap/i }))
+    expect(await screen.findByRole('heading', { name: 'Roadmap for Software Developer' })).toBeTruthy()
+    const roadmapCall = fetchMock.mock.calls.find(([url]) => String(url).endsWith('/api/roadmaps'))
+    expect(JSON.parse(roadmapCall[1].body)).toEqual({
+      career_id: career.career_id,
+      goals: [
+        'Career or future goal: Saved RPG context',
+        'Ideal future: Saved answer 5',
+      ],
+      preferences: [
+        'Interests, hobbies, and subjects: Saved answer 2',
+        'Preferred challenges and activities: Saved answer 4',
+      ],
+    })
+    expect(roadmapCall[1].body).not.toContain('Saved answer 3')
+  })
+
+  it('reports a corrupted or incompatible save without loading it', async () => {
+    render(<App />)
+    fireEvent.change(document.querySelector('.save-file-input'), {
+      target: { files: [makeImportFile({ not: 'an Orquest save' })] },
+    })
+    expect((await screen.findByRole('alert')).textContent).toMatch(/not an Orquest/i)
+    expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith('/api/matches'))).toBe(false)
+  })
+
+  it('clears saved questionnaire consent and answers when the entire quiz is skipped', async () => {
+    const careerPath = {
+      career_id: career.career_id,
+      title: career.title,
+      matched_interest_tags: ['technology'],
+    }
+    const save = createSaveFile({
+      responses: [{ card_id: cards[0].id, preference: 'like' }],
+      exploredCareers: [],
+      careerPaths: [careerPath],
+      activeTargetCareer: careerPath,
+      personalizationConsents: { quiz: true, swipes: true },
+      quizAnswers: ['Previously consented answer', '', '', '', ''],
+    })
+    render(<App />)
+    fireEvent.change(document.querySelector('.save-file-input'), { target: { files: [makeImportFile(save)] } })
+    await screen.findByText('Saved progress ready to import')
+    fireEvent.click(screen.getByRole('button', { name: 'CONFIRM IMPORT' }))
+    await screen.findByRole('heading', { name: 'Bubble Explorer' })
+    fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
+    expect(screen.getByLabelText(/what kind of future or career/i).value).toBe('Previously consented answer')
+    fireEvent.click(screen.getByRole('button', { name: 'Skip Quiz' }))
+
+    const createObjectURL = vi.fn(() => 'blob:orquest-save')
+    vi.stubGlobal('URL', { createObjectURL, revokeObjectURL: vi.fn() })
+    vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {})
+    fireEvent.click(screen.getByRole('button', { name: 'EXPORT SAVED PROGRESS' }))
+    const exportedText = await readBlobText(createObjectURL.mock.calls[0][0])
+    const exportedSave = JSON.parse(exportedText)
+    expect(exportedSave.data.personalization_consents.quiz).toBe(false)
+    expect(exportedSave.data).not.toHaveProperty('questionnaire_answers')
+  })
+
+  it('exports the current demo state as a JSON Blob', async () => {
+    const createObjectURL = vi.fn(() => 'blob:orquest-save')
+    const revokeObjectURL = vi.fn()
+    const anchorClick = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {})
+    vi.stubGlobal('URL', { createObjectURL, revokeObjectURL })
+    render(<App />)
+    await reachBubbleExplorer()
+    fireEvent.click(screen.getByRole('button', { name: 'Export saved progress' }))
+    expect(createObjectURL).toHaveBeenCalledWith(expect.any(Blob))
+    expect(anchorClick).toHaveBeenCalled()
+  })
+
+  it('loads actual swipe cards and matches, with search in the top header', async () => {
+    render(<App />)
+    await reachBubbleExplorer()
+    expect(screen.getByRole('heading', { name: 'Bubble Explorer' })).toBeTruthy()
+    expect(screen.getByLabelText('Search careers, fields, or pathways...')).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Software Developer' })).toBeTruthy()
+    expect(screen.queryByText(/ORQUEST ORBIT/i)).toBeNull()
+    expect(screen.getByRole('button', { name: 'Toggle technology' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Toggle problem solving' })).toBeTruthy()
+
+    const technologyFilter = screen.getByRole('button', { name: 'Toggle technology' })
+    fireEvent.click(technologyFilter)
+    expect(technologyFilter.getAttribute('aria-pressed')).toBe('false')
+    expect(screen.getByRole('button', { name: 'Software Developer' }).className).toContain('is-muted')
+    fireEvent.click(technologyFilter)
+    expect(technologyFilter.getAttribute('aria-pressed')).toBe('true')
+
+    fireEvent.change(screen.getByLabelText('Search careers, fields, or pathways...'), { target: { value: 'developer' } })
+    expect(screen.getByRole('button', { name: 'Software Developer' }).className).toContain('is-search-match')
+    fireEvent.click(screen.getByRole('button', { name: 'Clear search' }))
+    expect(screen.getByLabelText('Search careers, fields, or pathways...').value).toBe('')
+  })
+
+  it('uses all backend cards, in backend order, for matching', async () => {
+    render(<App />)
+    enterDemoCredentials()
+    await screen.findByText(cards[0].activity)
+    expect(screen.getByText(/01 OF 10/)).toBeTruthy()
+    for (let index = 0; index < cards.length; index += 1) {
+      await screen.findByText(cards[index].activity)
+      fireEvent.click(screen.getByRole('button', { name: index % 2 === 0 ? 'Agree' : 'Disagree' }))
+    }
+    await screen.findByRole('button', { name: 'Software Developer' })
+    const matchesRequest = fetchMock.mock.calls.find(([url]) => String(url).endsWith('/api/matches'))
+    const submitted = JSON.parse(matchesRequest[1].body).responses
+    expect(submitted).toHaveLength(cards.length)
+    expect(submitted.map(({ card_id }) => card_id)).toEqual(cards.map(({ id }) => id))
+    expect(submitted.some(({ card_id }) => card_id === cards[8].id)).toBe(true)
+    expect(matchesRequest[1].body).not.toMatch(/questionnaire_answers|preferences|goals|education_level|starting_point/)
+  })
+
+  it('starts swipe personalization consent unchecked', async () => {
+    render(<App />)
+    enterDemoCredentials()
+    await screen.findByText(cards[0].activity)
+    const checkbox = screen.getByLabelText(/allow AI to analyze my swipe responses/i)
+    expect(checkbox.checked).toBe(false)
+    fireEvent.click(checkbox)
+    expect(checkbox.checked).toBe(true)
+  })
+
+  it('supports mouse drag swipes, returns short drags, and ignores A/D keys', async () => {
+    render(<App />)
+    enterDemoCredentials()
+    let card = await screen.findByRole('group', { name: `Swipe card 1: ${cards[0].activity}` })
+
+    fireEvent.keyDown(document, { key: 'd' })
+    fireEvent.keyDown(document, { key: 'a' })
+    expect(screen.getByRole('group', { name: `Swipe card 1: ${cards[0].activity}` })).toBeTruthy()
+
+    fireEvent.pointerDown(card, { pointerId: 1, pointerType: 'mouse', button: 0, clientX: 100 })
+    fireEvent.pointerMove(card, { pointerId: 1, pointerType: 'mouse', clientX: 145 })
+    fireEvent.pointerUp(card, { pointerId: 1, pointerType: 'mouse', clientX: 145 })
+    expect(card.style.getPropertyValue('--drag-x')).toBe('0px')
+    expect(screen.getByRole('group', { name: `Swipe card 1: ${cards[0].activity}` })).toBeTruthy()
+
+    fireEvent.pointerDown(card, { pointerId: 2, pointerType: 'mouse', button: 0, clientX: 100 })
+    fireEvent.pointerMove(card, { pointerId: 2, pointerType: 'mouse', clientX: 220 })
+    fireEvent.pointerUp(card, { pointerId: 2, pointerType: 'mouse', clientX: 220 })
+    card = await screen.findByRole('group', { name: `Swipe card 2: ${cards[1].activity}` })
+
+    fireEvent.pointerDown(card, { pointerId: 3, pointerType: 'touch', clientX: 220 })
+    fireEvent.pointerMove(card, { pointerId: 3, pointerType: 'touch', clientX: 90 })
+    fireEvent.pointerUp(card, { pointerId: 3, pointerType: 'touch', clientX: 90 })
+    expect(await screen.findByRole('group', { name: `Swipe card 3: ${cards[2].activity}` })).toBeTruthy()
+  })
+
+  it('keeps swipe, chat, and quiz personalization consent independent', () => {
+    const withSwipeConsent = setPersonalizationConsent(initialPersonalizationConsents, 'swipes', true)
+    expect(withSwipeConsent).toEqual({ quiz: false, swipes: true, careerChat: false })
+
+    const withChatConsent = setPersonalizationConsent(withSwipeConsent, 'careerChat', true)
+    expect(withChatConsent).toEqual({ quiz: false, swipes: true, careerChat: true })
+
+    const withQuizConsent = grantQuizPersonalizationConsent(withChatConsent)
+    expect(withQuizConsent).toEqual({ quiz: true, swipes: true, careerChat: true })
+    expect(setPersonalizationConsent(withQuizConsent, 'swipes', false)).toEqual({
+      quiz: true,
+      swipes: false,
+      careerChat: true,
+    })
+  })
+
+  it('opens a backend summary on single-click and closes it', async () => {
+    render(<App />)
+    await reachBubbleExplorer()
+    fireEvent.click(screen.getByRole('button', { name: 'Software Developer' }))
+    expect(await screen.findByText(career.summary)).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Software Developer' })).toBeTruthy()
+    expect(screen.getByLabelText('Ask a question about this career')).toBeTruthy()
+
+    const requestCount = fetchMock.mock.calls.length
+    fireEvent.change(screen.getByLabelText('Ask a question about this career'), { target: { value: 'What should I learn?' } })
+    expect(fetchMock).toHaveBeenCalledTimes(requestCount)
+    expect(fetchMock.mock.calls.some(([url]) => String(url).includes('/ai'))).toBe(false)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Close career summary' }))
+    expect(screen.queryByText(career.summary)).toBeNull()
+  })
+
+  it('submits career chat only on Send, for the discussed career, without history or quiz context', async () => {
+    render(<App />)
+    await reachBubbleExplorer()
+    fireEvent.click(screen.getByRole('button', { name: 'Software Developer' }))
+    await screen.findByText(career.summary)
+    fireEvent.click(screen.getByRole('button', { name: 'CHOOSE THIS AS MY GOAL' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Cybersecurity Analyst' }))
+    await screen.findByText(cybersecurityCareer.summary)
+    fireEvent.change(screen.getByLabelText('Ask a question about this career'), {
+      target: { value: 'What should I learn first?' },
+    })
+    const callsBeforeOpen = fetchMock.mock.calls.length
+    fireEvent.click(screen.getByRole('button', { name: 'Open career chat' }))
+
+    const chat = await screen.findByRole('dialog', { name: 'Ask about Cybersecurity Analyst' })
+    expect(chat.textContent).toContain('Questions are sent only when you press Send.')
+    expect(chat.textContent).toContain('What should I learn first?')
+    expect(screen.getByRole('button', { name: 'Send question' }).disabled).toBe(false)
+    const chatConsent = screen.getByLabelText(/allow AI to analyze my career chat conversations/i)
+    expect(chatConsent.checked).toBe(false)
+    fireEvent.click(chatConsent)
+
+    const arrow = document.querySelector('.career-chat-arrow.is-expanded')
+    expect(arrow.className).toContain('is-expanded')
+    expect(styles).toMatch(/\.career-chat-arrow\.is-expanded\s*\{[^}]*transform:\s*rotate\(180deg\)/)
+    expect(styles).toMatch(/\.career-chat-arrow\s*\{[^}]*transform:\s*rotate\(0deg\)/)
+    expect(fetchMock).toHaveBeenCalledTimes(callsBeforeOpen)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Collapse career chat' }))
+    const collapsedArrow = document.querySelector('.career-chat-dock .career-chat-arrow')
+    expect(collapsedArrow).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Expand career chat' }))
+    expect(screen.getByRole('dialog', { name: 'Ask about Cybersecurity Analyst' }).textContent).toContain('What should I learn first?')
+    expect(screen.getByLabelText(/allow AI to analyze my career chat conversations/i).checked).toBe(true)
+    expect(fetchMock).toHaveBeenCalledTimes(callsBeforeOpen)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Send question' }))
+    expect(await screen.findByText(questionResponse.answer)).toBeTruthy()
+    const questionCall = fetchMock.mock.calls.find(([url]) => String(url).endsWith('/api/career-questions'))
+    expect(JSON.parse(questionCall[1].body)).toEqual({
+      career_id: cybersecurityCareer.career_id,
+      question: 'What should I learn first?',
+    })
+    expect(document.querySelector('.guide-active-target').textContent).toContain('Software Developer')
+  })
+
+  it('hides the answer and sources returned with a blocked chat response', async () => {
+    careerQuestionResult = {
+      ...questionResponse,
+      answer: 'MUST NOT BE DISPLAYED',
+      source_urls: ['https://example.org/blocked-source'],
+      resource_ids: ['blocked_resource'],
+      metadata: { status: 'blocked', provider: 'none', reason: 'safety_refusal', review_required: true },
+    }
+    render(<App />)
+    await reachBubbleExplorer()
+    fireEvent.click(screen.getByRole('button', { name: 'Software Developer' }))
+    await screen.findByText(career.summary)
+    fireEvent.change(screen.getByLabelText('Ask a question about this career'), { target: { value: 'Can you help?' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Open career chat' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Send question' }))
+
+    expect(await screen.findByText('A response is unavailable for this question.')).toBeTruthy()
+    expect(screen.queryByText('MUST NOT BE DISPLAYED')).toBeNull()
+    expect(screen.queryByText('https://example.org/blocked-source')).toBeNull()
+  })
+
+  it('requires an explicitly selected RPG target before requesting a roadmap', async () => {
+    render(<App />)
+    await reachBubbleExplorer()
+    fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Skip Quiz' }))
+    fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
+    expect(screen.getByText('No target selected yet')).toBeTruthy()
+    expect(screen.getByRole('button', { name: /request career roadmap/i }).disabled).toBe(true)
+    expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith('/api/roadmaps'))).toBe(false)
+  })
+
+  it('keeps exploration separate from the active goal, excludes skipped quiz answers, and renders draft steps once', async () => {
+    render(<App />)
+    await reachBubbleExplorer()
+    fireEvent.click(screen.getByRole('button', { name: 'Software Developer' }))
+    await screen.findByText(career.summary)
+    fireEvent.click(screen.getByRole('button', { name: 'CHOOSE THIS AS MY GOAL' }))
+
+    fireEvent.click(screen.getByRole('button', { name: 'Cybersecurity Analyst' }))
+    await screen.findByText(cybersecurityCareer.summary)
+    expect(document.querySelector('.guide-active-target').textContent).toContain('Software Developer')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
+    fireEvent.change(screen.getByLabelText(/what kind of future or career/i), { target: { value: 'QUIZ ANSWER MUST NOT BE SENT' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Skip Quiz' }))
+    expect(document.querySelector('.journey-path-card strong').textContent).toBe('Software Developer')
+    fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
+    fireEvent.click(screen.getByRole('button', { name: /request career roadmap/i }))
+
+    expect(await screen.findByRole('heading', { name: 'Roadmap for Software Developer' })).toBeTruthy()
+    expect(screen.getByText('DETERMINISTIC CATALOG GUIDANCE')).toBeTruthy()
+    expect(screen.getAllByText(roadmapStep.title)).toHaveLength(1)
+    expect(screen.getByText(/not active RPG missions/i)).toBeTruthy()
+    expect(document.querySelector('.roadmap-panel').textContent).not.toMatch(/XP|mission complete|completed mission/i)
+
+    const roadmapCall = fetchMock.mock.calls.find(([url]) => String(url).endsWith('/api/roadmaps'))
+    expect(JSON.parse(roadmapCall[1].body)).toEqual({ career_id: career.career_id })
+    expect(roadmapCall[1].body).not.toContain('QUIZ ANSWER MUST NOT BE SENT')
+    expect(roadmapCall[1].body).not.toContain('career_cybersecurity_analyst')
+  })
+
+  it('personalizes only the active career roadmap with labeled consented answers and keeps saved paths', async () => {
+    render(<App />)
+    await reachBubbleExplorer()
+    fireEvent.click(screen.getByRole('button', { name: 'Software Developer' }))
+    await screen.findByText(career.summary)
+    fireEvent.click(screen.getByRole('button', { name: 'CHOOSE THIS AS MY GOAL' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Cybersecurity Analyst' }))
+    await screen.findByText(cybersecurityCareer.summary)
+    fireEvent.click(screen.getByRole('button', { name: 'CHOOSE THIS AS MY GOAL' }))
+
+    fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
+    const answers = [
+      'Build secure tools.',
+      'Networks and puzzles.',
+      'Recognition.',
+      'Investigative challenges.',
+      'Meaningful technical work.',
+    ]
+    for (let index = 0; index < answers.length; index += 1) {
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: answers[index] } })
+      fireEvent.click(screen.getByRole('button', { name: index === answers.length - 1 ? 'Continue' : 'Next' }))
+    }
+    fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
+    expect(screen.getAllByText('Software Developer').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Cybersecurity Analyst').length).toBeGreaterThan(0)
+    fireEvent.click(screen.getByRole('button', { name: /request career roadmap/i }))
+
+    await screen.findByRole('heading', { name: 'Roadmap for Cybersecurity Analyst' })
+    const roadmapCall = fetchMock.mock.calls.find(([url]) => String(url).endsWith('/api/roadmaps'))
+    expect(JSON.parse(roadmapCall[1].body)).toEqual({
+      career_id: cybersecurityCareer.career_id,
+      goals: [
+        'Career or future goal: Build secure tools.',
+        'Ideal future: Meaningful technical work.',
+      ],
+      preferences: [
+        'Interests, hobbies, and subjects: Networks and puzzles.',
+        'Preferred challenges and activities: Investigative challenges.',
+      ],
+    })
+    expect(roadmapCall[1].body).not.toContain('Recognition.')
+    expect(roadmapCall[1].body).not.toMatch(/education_level|starting_point/)
+  })
+
+  it('shows a length validation error and does not request a roadmap for an over-limit labeled answer', async () => {
+    render(<App />)
+    await reachBubbleExplorer()
+    fireEvent.click(screen.getByRole('button', { name: 'Software Developer' }))
+    await screen.findByText(career.summary)
+    fireEvent.click(screen.getByRole('button', { name: 'CHOOSE THIS AS MY GOAL' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'x'.repeat(1_000) } })
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
+    for (let index = 0; index < 3; index += 1) {
+      fireEvent.click(screen.getByRole('button', { name: 'Skip Question' }))
+    }
+    fireEvent.click(screen.getByRole('button', { name: 'Continue' }))
+    fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
+    fireEvent.click(screen.getByRole('button', { name: /request career roadmap/i }))
+
+    expect((await screen.findByRole('alert')).textContent).toMatch(/1,000-character limit/)
+    expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith('/api/roadmaps'))).toBe(false)
+    expect(screen.getAllByText('Software Developer').length).toBeGreaterThan(0)
+  })
+
+  it('labels AI roadmap results as drafts and suppresses blocked roadmap content', async () => {
+    careerRoadmapResult = {
+      ...roadmapResponse,
+      metadata: { status: 'ai_generated', provider: 'gemini', reason: null, review_required: true },
+    }
+    render(<App />)
+    await enterRpgWithSoftwareTarget()
+    fireEvent.click(screen.getByRole('button', { name: /request career roadmap/i }))
+    expect(await screen.findByText('AI-GENERATED DRAFT / REVIEW REQUIRED')).toBeTruthy()
+    expect(screen.getAllByText(roadmapStep.title)).toHaveLength(1)
+
+    cleanup()
+    careerRoadmapResult = {
+      ...roadmapResponse,
+      relevant_skills_and_qualifications: ['BLOCKED SKILL MUST NOT SHOW'],
+      alternative_resources: [{ ...roadmapResponse.alternative_resources[0], title: 'BLOCKED RESOURCE MUST NOT SHOW' }],
+      suggested_missions: [{ ...roadmapStep, title: 'BLOCKED STEP MUST NOT SHOW' }],
+      source_urls: ['https://example.org/blocked-roadmap-source'],
+      evidence_gaps: ['BLOCKED GAP MUST NOT SHOW'],
+      metadata: { status: 'blocked', provider: 'none', reason: 'safety_refusal', review_required: true },
+    }
+    render(<App />)
+    await enterRpgWithSoftwareTarget()
+    fireEvent.click(screen.getByRole('button', { name: /request career roadmap/i }))
+    expect(await screen.findByText(/could not safely provide roadmap suggestions/i)).toBeTruthy()
+    expect(screen.queryByText('BLOCKED SKILL MUST NOT SHOW')).toBeNull()
+    expect(screen.queryByText('BLOCKED RESOURCE MUST NOT SHOW')).toBeNull()
+    expect(screen.queryByText('BLOCKED STEP MUST NOT SHOW')).toBeNull()
+    expect(screen.queryByText('BLOCKED GAP MUST NOT SHOW')).toBeNull()
+    expect(screen.queryByText('https://example.org/blocked-roadmap-source')).toBeNull()
+  })
+
+  it('places the chat overlay above an open detailed career view', async () => {
+    render(<App />)
+    await reachBubbleExplorer()
+    const careerBubble = screen.getByRole('button', { name: 'Software Developer' })
+    fireEvent.click(careerBubble)
+    fireEvent.doubleClick(careerBubble)
+    await screen.findByRole('dialog', { name: 'Software Developer' })
+
+    fireEvent.change(screen.getByLabelText('Ask a question about this career'), {
+      target: { value: 'Which skills matter?' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Open career chat' }))
+    await screen.findByRole('dialog', { name: 'Ask about Software Developer' })
+
+    const detailBackdrop = document.querySelector('.career-detail-backdrop')
+    const chatBackdrop = document.querySelector('.career-chat-backdrop')
+    expect(styles).toMatch(/\.career-chat-backdrop\s*\{[^}]*z-index:\s*50/)
+    expect(styles).toMatch(/\.career-detail-backdrop\s*\{[^}]*z-index:\s*20/)
+    expect(detailBackdrop.getAttribute('aria-hidden')).toBe('true')
+  })
+
+  it('opens details on bubble or summary double-click and returns to the summary', async () => {
+    render(<App />)
+    await reachBubbleExplorer()
+    const careerBubble = screen.getByRole('button', { name: 'Software Developer' })
+    fireEvent.click(careerBubble)
+    fireEvent.click(careerBubble)
+    fireEvent.doubleClick(careerBubble)
+    expect(await screen.findByRole('dialog')).toBeTruthy()
+    expect(document.querySelector('.map-summary')).toBeNull()
+    expect(screen.getByText('Knowledge of programming languages')).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Career description' })).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Back to summary' }))
+    expect(screen.getByText(career.summary)).toBeTruthy()
+
+    fireEvent.doubleClick(screen.getByText(career.summary))
+    expect(screen.getByRole('dialog')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Close career details' }))
+    expect(screen.queryByRole('dialog')).toBeNull()
+  })
+
+  it('collapses and restores the Field Guide', async () => {
+    render(<App />)
+    await reachBubbleExplorer()
+    fireEvent.click(screen.getByRole('button', { name: 'Collapse Field Guide' }))
+    expect(screen.getByRole('button', { name: 'Expand Field Guide' })).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Expand Field Guide' }))
+    expect(screen.getByRole('button', { name: 'Collapse Field Guide' })).toBeTruthy()
+  })
+
+  it('shows a backend-unavailable state instead of demo cards', async () => {
+    fetchMock.mockRejectedValueOnce(new Error('offline'))
+    render(<App />)
+    enterDemoCredentials()
+    expect(await screen.findByRole('alert')).toBeTruthy()
+    expect(screen.getByText('SWIPE CARDS ARE UNAVAILABLE')).toBeTruthy()
+    expect(screen.queryByText('Solving puzzles and hunting down bugs in code')).toBeNull()
+  })
+
+  it('preserves the map and quiz answers through the optional journey flow without changing backend calls', async () => {
+    render(<App />)
+    await reachBubbleExplorer()
+    fireEvent.click(screen.getByRole('button', { name: 'Software Developer' }))
+    expect(await screen.findByText(career.summary)).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'CHOOSE THIS AS MY GOAL' }))
+
+    const backendCallsBeforeQuiz = fetchMock.mock.calls.length
+    fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
+    expect(screen.getByText('Question 1 of 5')).toBeTruthy()
+    expect(screen.getByText('Personalization Notice')).toBeTruthy()
+    const answerBox = screen.getByLabelText(/what kind of future or career/i)
+    fireEvent.change(answerBox, { target: { value: 'Build tools that help people.' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Next' }))
+    expect(screen.getByText('Question 2 of 5')).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Previous' }))
+    expect(screen.getByLabelText(/what kind of future or career/i).value).toBe('Build tools that help people.')
+
+    fireEvent.click(screen.getByRole('button', { name: /back to bubble explorer/i }))
+    expect(screen.getByRole('heading', { name: 'Bubble Explorer' })).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
+    expect(screen.getByLabelText(/what kind of future or career/i).value).toBe('Build tools that help people.')
+    fireEvent.click(screen.getByRole('button', { name: 'Skip Quiz' }))
+    expect(screen.getByRole('heading', { name: 'Ready when you are.' })).toBeTruthy()
+    expect(document.querySelector('.journey-path-card strong').textContent).toBe('Software Developer')
+    expect(fetchMock).toHaveBeenCalledTimes(backendCallsBeforeQuiz)
+    fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
+    expect(screen.getByRole('heading', { name: 'Your journey begins.' })).toBeTruthy()
+    expect(document.querySelector('.rpg-card .journey-path-card strong').textContent).toBe('Software Developer')
+    fireEvent.click(screen.getByRole('button', { name: /return to bubble explorer/i }))
+    expect(screen.getByRole('heading', { name: 'Bubble Explorer' })).toBeTruthy()
+    expect(screen.getByText(career.summary)).toBeTruthy()
+  })
+
+  it('lets the student skip questions through the final step and continue', async () => {
+    render(<App />)
+    await reachBubbleExplorer()
+    fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
+    expect(screen.getByText('Question 1 of 5')).toBeTruthy()
+    for (let question = 1; question < 5; question += 1) {
+      fireEvent.click(screen.getByRole('button', { name: 'Skip Question' }))
+      expect(screen.getByText(`Question ${question + 1} of 5`)).toBeTruthy()
+    }
+    fireEvent.click(screen.getByRole('button', { name: 'Continue' }))
+    expect(screen.getByRole('heading', { name: 'Ready when you are.' })).toBeTruthy()
+  })
+
+  it('finishes after answering the fifth question and opens roadmap guidance without inventing missions', async () => {
+    render(<App />)
+    await reachBubbleExplorer()
+    fireEvent.click(screen.getByRole('button', { name: 'Enter RPG' }))
+    for (let index = 0; index < 5; index += 1) {
+      fireEvent.change(screen.getByRole('textbox'), { target: { value: `Answer ${index + 1}` } })
+      fireEvent.click(screen.getByRole('button', { name: index === 4 ? 'Continue' : 'Next' }))
+    }
+    expect(screen.getByRole('heading', { name: 'Ready when you are.' })).toBeTruthy()
+    fireEvent.click(screen.getByRole('button', { name: /start your journey/i }))
+    expect(screen.getByRole('heading', { name: 'Your journey begins.' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Roadmap guidance' })).toBeTruthy()
+    expect(screen.getByRole('button', { name: /request career roadmap/i }).disabled).toBe(true)
+  })
+})
